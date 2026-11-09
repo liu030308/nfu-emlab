@@ -393,23 +393,39 @@ const allMembers: Member[] = [piProfile, ...memberGroups.flatMap((g) => g.member
             <div class="modal-section">
               <h3>{t(L.secLinks, lang)}</h3>
               <div class="modal-links">
-                {m.links.map((lk) => (
-                  <a
-                    class:list={['btn-link-pill', lk.icon === 'thesis' && 'primary']}
-                    href={lk.url}
-                    target={lk.url.startsWith('http') ? '_blank' : undefined}
-                    rel={lk.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  >
-                    {lk.icon === 'thesis' && '📜 '}
-                    {lk.icon === 'book' && '📚 '}
-                    {lk.icon === 'globe' && '🌐 '}
-                    {lk.icon === 'github' && '💻 '}
-                    {lk.icon === 'instagram' && '📸 '}
-                    {lk.icon === 'mail' && '✉️ '}
-                    {lk.icon === 'link' && '🔗 '}
-                    {t(lk.label, lang)} ↗
-                  </a>
-                ))}
+                {m.links.map((lk) => {
+                  const isMail = lk.icon === 'mail' || (lk.url && lk.url.startsWith('mailto:'));
+                  const email = isMail ? lk.url.replace(/^mailto:/, '') : '';
+                  const copyTip = lang === 'zh' ? '點擊複製電子信箱' : lang === 'en' ? 'Click to copy email' : 'クリックしてメールアドレスをコピー';
+                  const copyBadgeText = lang === 'zh' ? '點擊複製' : lang === 'en' ? 'Copy' : 'コピー';
+                  return isMail ? (
+                    <button
+                      type="button"
+                      class="btn-link-pill btn-copy-email"
+                      data-copy-email={email}
+                      title={copyTip}
+                    >
+                      <span class="copy-icon" aria-hidden="true">✉️</span>
+                      <span class="copy-text">{t(lk.label, lang)}</span>
+                      <span class="copy-badge">{copyBadgeText}</span>
+                    </button>
+                  ) : (
+                    <a
+                      class:list={['btn-link-pill', lk.icon === 'thesis' && 'primary']}
+                      href={lk.url}
+                      target={lk.url.startsWith('http') ? '_blank' : undefined}
+                      rel={lk.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    >
+                      {lk.icon === 'thesis' && '📜 '}
+                      {lk.icon === 'book' && '📚 '}
+                      {lk.icon === 'globe' && '🌐 '}
+                      {lk.icon === 'github' && '💻 '}
+                      {lk.icon === 'instagram' && '📸 '}
+                      {lk.icon === 'link' && '🔗 '}
+                      {t(lk.label, lang)} ↗
+                    </a>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -553,6 +569,50 @@ const allMembers: Member[] = [piProfile, ...memberGroups.flatMap((g) => g.member
           document.body.style.overflow = '';
         });
       });
+
+      // 點擊複製電子郵件（Click to copy email with feedback）
+      document.querySelectorAll('.btn-copy-email').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var email = btn.getAttribute('data-copy-email');
+          if (!email) return;
+
+          var badge = btn.querySelector('.copy-badge');
+          var origBadge = badge ? badge.textContent : '';
+
+          function onCopied() {
+            btn.classList.add('copied');
+            if (badge) badge.textContent = '✓ 已複製！';
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              if (badge) badge.textContent = origBadge;
+            }, 2000);
+          }
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(email).then(onCopied).catch(function () {
+              fallbackCopy(email, onCopied);
+            });
+          } else {
+            fallbackCopy(email, onCopied);
+          }
+        });
+      });
+
+      function fallbackCopy(text, cb) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          cb();
+        } catch (err) {}
+        document.body.removeChild(ta);
+      }
 
       // 歷屆碩士生系所篩選、年份摺疊與關鍵字即時搜尋
       var activeDept = 'all';
@@ -946,6 +1006,37 @@ const allMembers: Member[] = [piProfile, ...memberGroups.flatMap((g) => g.member
     background: var(--cyan);
     color: #061527;
     border-color: var(--cyan);
+  }
+  .btn-copy-email {
+    appearance: none;
+    cursor: pointer;
+    font-family: inherit;
+    border: 1px solid var(--line-strong);
+    background: var(--bg-alt);
+    color: var(--heading);
+  }
+  .copy-badge {
+    font-size: 0.72rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(0, 212, 255, 0.12);
+    color: var(--cyan);
+    font-weight: 700;
+    margin-left: 0.35rem;
+    transition: all 0.2s ease;
+  }
+  .btn-copy-email:hover .copy-badge {
+    background: var(--cyan);
+    color: #061527;
+  }
+  .btn-copy-email.copied {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+  }
+  .btn-copy-email.copied .copy-badge {
+    background: #10b981;
+    color: #ffffff;
   }
   .grad-toolbar {
     display: flex;

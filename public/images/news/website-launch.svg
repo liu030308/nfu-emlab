@@ -29,6 +29,6 @@
     <rect x="190" y="140" width="65" height="24" rx="6" fill="#1a3668" stroke="#00d4ff" stroke-width="1"/>
     <text x="222" y="156" fill="#fff" font-size="11" text-anchor="middle" font-weight="bold">日本語</text>
   </g>
-  <text x="400" y="490" fill="#ffffff" font-family="system-ui, sans-serif" font-size="28" font-weight="bold" text-anchor="middle">OFFICIAL WEBSITE LAUNCH</text>
+  <text x="400" y="490" fill="#ffffff" font-family="system-ui, sans-serif" font-size="28" font-weight="bold" text-anchor="middle">WEBSITE PROJECT STARTED</text>
   <text x="400" y="525" fill="#00e5ff" font-family="system-ui, sans-serif" font-size="16" text-anchor="middle" letter-spacing="2">NFU ELECTRONIC MEASUREMENT LAB</text>
 </svg>

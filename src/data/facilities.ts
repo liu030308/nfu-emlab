@@ -99,11 +99,15 @@ export type News = { date: string; title: L; body?: L; image?: string; url?: str
 export const news: News[] = [
   {
     date: '2026-11-07',
-    title: { zh: '實驗室網站正式上線！', en: 'Our new lab website is live!', ja: '研究室ウェブサイトを公開しました！' },
+    title: {
+      zh: '實驗室全新網站啟動建置',
+      en: 'New Lab Website Project Started',
+      ja: '研究室ウェブサイトの新規構築を開始',
+    },
     body: {
-      zh: '電子量測實驗室全新網站上線，支援繁體中文、English、日本語三語切換與深色模式。',
-      en: 'The new website of the Electronic Measurement Lab is now available in Chinese, English, and Japanese with dark mode support.',
-      ja: '電子計測研究室の新しいウェブサイトを公開しました。中国語・英語・日本語およびダークモードに対応しています。',
+      zh: '電子量測實驗室全新官方網站於 2026-11-07 正式啟動規劃與建置，全面支援繁體中文、English、日本語三語切換與深色模式，目前持續開發與微調測試中。',
+      en: 'Planning and development of the new Electronic Measurement Lab official website commenced on 2026-11-07, supporting Chinese, English, Japanese, and dark mode, currently in active development.',
+      ja: '電子計測研究室の新しい公式ウェブサイトの企画・構築を2026-11-07より開始しました。中国語・英語・日本語の3言語切替やダークモードに対応し、現在公開に向けて開発・調整中です。',
     },
     image: '/images/news/website-launch.svg',
   },
