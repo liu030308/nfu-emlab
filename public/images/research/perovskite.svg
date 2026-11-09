@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-prv" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#08131e"/>
+      <stop offset="100%" stop-color="#112638"/>
+    </linearGradient>
+    <linearGradient id="perov-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="50%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <radialGradient id="photon-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fde047" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#ca8a04" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#ca8a04" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg-prv)"/>
+  <g opacity="0.2">
+    <circle cx="100" cy="100" r="8" fill="#10b981"/>
+    <circle cx="200" cy="80" r="12" fill="#06b6d4"/>
+    <circle cx="680" cy="120" r="10" fill="#10b981"/>
+    <circle cx="720" cy="350" r="14" fill="#3b82f6"/>
+    <circle cx="120" cy="420" r="9" fill="#06b6d4"/>
+  </g>
+  <g stroke="#fbbf24" stroke-width="2.5" stroke-dasharray="6 4">
+    <path d="M120 40 L280 200"/>
+    <path d="M160 30 L320 190"/>
+    <path d="M200 20 L360 180"/>
+  </g>
+  <circle cx="130" cy="50" r="45" fill="url(#photon-glow)"/>
+  <text x="130" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="bold" fill="#78350f" text-anchor="middle">hν Photon</text>
+  <rect x="220" y="160" width="360" height="30" rx="4" fill="#e2e8f0" opacity="0.9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="400" y="180" font-family="Inter, sans-serif" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">Transparent Conducting FTO / Glass</text>
+  <rect x="220" y="195" width="360" height="25" rx="3" fill="#38bdf8" opacity="0.85"/>
+  <text x="400" y="212" font-family="Inter, sans-serif" font-size="11" font-weight="bold" fill="#082f49" text-anchor="middle">Electron Transport Layer (ETL: SnO2)</text>
+  <rect x="220" y="225" width="360" height="75" rx="4" fill="url(#perov-grad)" stroke="#34d399" stroke-width="2"/>
+  <text x="400" y="260" font-family="Inter, sans-serif" font-size="16" font-weight="900" fill="#ffffff" text-anchor="middle">Perovskite Absorber Layer (MAPbI3 / QDs)</text>
+  <text x="400" y="282" font-family="Inter, sans-serif" font-size="12" font-weight="bold" fill="#ecfdf5" text-anchor="middle">e- / h+ Photocarrier Generation</text>
+  <rect x="220" y="305" width="360" height="25" rx="3" fill="#a855f7" opacity="0.85"/>
+  <text x="400" y="322" font-family="Inter, sans-serif" font-size="11" font-weight="bold" fill="#3b0764" text-anchor="middle">Hole Transport Layer (HTL: PEDOT:PSS)</text>
+  <rect x="220" y="335" width="360" height="30" rx="4" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
+  <text x="400" y="355" font-family="Inter, sans-serif" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">Top Contact Metal Electrode (Ag / Au)</text>
+  <path d="M220 175 H160 V420 H340" fill="none" stroke="#38bdf8" stroke-width="3"/>
+  <path d="M580 350 H640 V420 H460" fill="none" stroke="#f43f5e" stroke-width="3"/>
+  <rect x="340" y="395" width="120" height="50" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="2"/>
+  <text x="400" y="425" font-family="Inter, sans-serif" font-size="14" font-weight="bold" fill="#10b981" text-anchor="middle">Power Output</text>
+  <rect x="30" y="30" width="250" height="36" rx="18" fill="rgba(15, 23, 42, 0.8)" stroke="#10b981" stroke-width="1.5"/>
+  <text x="155" y="53" font-family="Inter, sans-serif" font-size="13" font-weight="bold" fill="#34d399" text-anchor="middle">PEROVSKITE &amp; PHOTOVOLTAICS</text>
+</svg>

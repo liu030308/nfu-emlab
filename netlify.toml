@@ -1,0 +1,48 @@
+# Netlify 部署設定檔（國立虎尾科技大學 電子量測實驗室網站）
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+  NPM_FLAGS = "--no-audit --no-fund"
+
+# 相容舊版 /nfu-emlab 子路徑連結，自動 301 轉址至根目錄
+[[redirects]]
+  from = "/nfu-emlab/*"
+  to = "/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/nfu-emlab"
+  to = "/"
+  status = 301
+  force = true
+
+# 全站安全性標頭
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Astro 打包靜態資源（含 hash 檔名）設定一年長效快取，加速 CDN 載入
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# 圖片與圖示快取優化
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
+
+[[headers]]
+  for = "/favicon.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+

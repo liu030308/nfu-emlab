@@ -1,0 +1,445 @@
+---
+import Base from '../../layouts/Base.astro';
+import Img from '../../components/Img.astro';
+import { langPaths, pageUrl, t, ui, withBase, type Lang } from '../../i18n/ui';
+import { lab } from '../../data/lab';
+import { research } from '../../data/research';
+import { awards, patentGroups, publications } from '../../data/achievements';
+import { news } from '../../data/facilities';
+import { alumni } from '../../data/members';
+
+export const getStaticPaths = langPaths;
+const { lang } = Astro.props as { lang: Lang };
+
+const golds = awards.filter((a) => a.medal === 'gold').length;
+const patentCount = patentGroups.reduce((n, g) => n + g.patents.length, 0);
+const stats = [
+  { value: `${awards.length}+`, label: { zh: '國內外競賽與發明獎項', en: 'Invention & Innovation Awards', ja: '国内外受賞歴' } },
+  { value: `${golds}`, label: { zh: '國際金牌／首獎', en: 'Gold / Best Paper Awards', ja: '国際金賞・最優秀賞' } },
+  { value: `${patentCount}+`, label: { zh: '專利技術', en: 'Patents', ja: '特許・実用新案' } },
+  { value: `${alumni.length}+`, label: { zh: '歷屆培育人才', en: 'Graduates & Alumni', ja: '輩出人材・修了生' } },
+];
+const L = {
+  researchTitle: { zh: '研究領域', en: 'Research Areas', ja: '研究分野' },
+  researchLead: {
+    zh: '從材料、封裝到系統，三大主軸串起完整的光電量測技術鏈。',
+    en: 'Three research pillars spanning materials, packaging and systems.',
+    ja: '材料・実装・システムの三本柱で光電子計測技術をつなぎます。',
+  },
+  joinTitle: { zh: '一起來做研究吧！', en: 'Join our lab!', ja: '一緒に研究しませんか？' },
+  joinText: {
+    zh: '歡迎對半導體、LED、光電量測與感測系統有興趣的專題生與碩士生加入。',
+    en: 'We welcome undergraduate and graduate students interested in semiconductors, LEDs, optoelectronic measurement and sensing.',
+    ja: '半導体・LED・光電子計測・センシングに興味のある学部生・大学院生を歓迎します。',
+  },
+};
+---
+
+<Base lang={lang} page="">
+  <section class="hero">
+    <svg class="wave" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true">
+      <path
+        d="M0 120 H180 L210 60 L250 170 L290 40 L320 140 L340 110 H560 L580 90 L600 130 L620 100 H820 L850 30 L890 180 L930 70 L950 120 H1200"
+      ></path>
+    </svg>
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <p class="eyebrow">{t(ui.univ, lang)}</p>
+        <h1>{t(lab.name, lang)}</h1>
+        <p class="tagline">{t(lab.tagline, lang)}</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href={`${pageUrl(lang, 'contact')}#join`}>{t(ui.joinUs, lang)}</a>
+          <a class="btn btn-ghost" href={pageUrl(lang, 'research')}>{t(L.researchTitle, lang)}</a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div class="hero-logo-box">
+          <div class="hero-logo-halo" aria-hidden="true"></div>
+          <picture>
+            <source media="(prefers-reduced-motion: reduce)" srcset={withBase('/images/logo_hero_static.webp')} type="image/webp" />
+            <source media="(prefers-reduced-motion: reduce)" srcset={withBase('/images/logo_hero_static.png')} type="image/png" />
+            <source srcset={withBase('/images/logo_hero_animated.webp')} type="image/webp" />
+            <img
+              src={withBase('/images/logo_hero_animated.gif')}
+              alt="NFU LED LAB Logo"
+              width="480"
+              height="395"
+              class="hero-logo-img"
+              loading="eager"
+            />
+          </picture>
+          <div class="hero-logo-badge">
+            <span class="badge-dot" aria-hidden="true"></span>
+            <strong>NFU LED LAB</strong>
+            <span class="badge-sep">·</span>
+            <span>ATC 0102</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="container stats-grid">
+      {
+        stats.map((s) => (
+          <div class="stat">
+            <strong>{s.value}</strong>
+            <span>{t(s.label, lang)}</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">{t(L.researchTitle, lang)}</h2>
+      <p class="lead">{t(L.researchLead, lang)}</p>
+      <div class="grid grid-3">
+        {
+          research.map((r) => (
+            <a class="card" href={`${pageUrl(lang, 'research')}#${r.id}`}>
+              <Img src={r.image} alt={t(r.title, lang)} lang={lang} ratio="16/10" />
+              <h3>
+                {r.icon} {t(r.title, lang)}
+              </h3>
+              <p>{t(r.summary, lang)}</p>
+              <span class="more">{t(ui.learnMore, lang)} →</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container grid grid-2">
+      <div>
+        <h2 class="section-title">{t(ui.latestNews, lang)}</h2>
+        <ul class="news-list">
+          {
+            news.slice(0, 3).map((n) => (
+              <li>
+                <time>{n.date}</time>
+                <span>
+                  {n.url ? (
+                    <a class="pub-link" href={n.url} target="_blank" rel="noopener noreferrer">
+                      {t(n.title, lang)} ↗
+                    </a>
+                  ) : (
+                    t(n.title, lang)
+                  )}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <a href={pageUrl(lang, 'news')}>{t(ui.allNews, lang)} →</a>
+      </div>
+      <div>
+        <h2 class="section-title">Publications</h2>
+        <ul class="news-list">
+          {
+            publications.slice(0, 3).map((p) => (
+              <li>
+                <time>{p.year}</time>
+                <span>
+                  <a class="pub-link" href={p.url} target="_blank" rel="noopener noreferrer">
+                    {p.title} ↗
+                  </a>{' '}
+                  <em>— {p.venue}</em>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <a href={pageUrl(lang, 'achievements')}>{t(ui.allNews, lang)} →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container cta-inner">
+      <div>
+        <h2>{t(L.joinTitle, lang)}</h2>
+        <p>{t(L.joinText, lang)}</p>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href={`${pageUrl(lang, 'contact')}#join`}>{t(ui.joinUs, lang)}</a>
+        <a class="btn btn-ghost" href={`${pageUrl(lang, 'contact')}#collab`}>{t(ui.collab, lang)}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    background:
+      radial-gradient(circle at 82% 22%, rgba(19, 196, 217, 0.28) 0%, transparent 42%),
+      radial-gradient(circle at 18% 80%, rgba(59, 130, 246, 0.24) 0%, transparent 48%),
+      linear-gradient(135deg, #06152d 0%, var(--navy) 52%, #163e73 100%);
+    color: #fff;
+    overflow: hidden;
+    padding: 5.25rem 0 6.25rem;
+    border-bottom: 1px solid rgba(34, 211, 238, 0.22);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(34, 211, 238, 0.28) 1px, transparent 0),
+      linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size:
+      128px 128px,
+      32px 32px,
+      32px 32px;
+    mask-image: radial-gradient(ellipse 85% 80% at 55% 45%, #000 35%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 85% 80% at 55% 45%, #000 35%, transparent 100%);
+    pointer-events: none;
+  }
+  .wave {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    width: 100%;
+    height: 160px;
+    opacity: 0.35;
+  }
+  .wave path {
+    fill: none;
+    stroke: var(--cyan);
+    stroke-width: 2.5;
+    stroke-dasharray: 2600;
+    stroke-dashoffset: 2600;
+    animation: draw 4s ease-out forwards;
+  }
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .hero-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .eyebrow {
+    color: var(--cyan);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+  .hero h1 {
+    color: #fff;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    margin: 0.4rem 0 1rem;
+    font-weight: 900;
+  }
+  .tagline {
+    font-size: 1.15rem;
+    color: #c8d6e8;
+    margin: 0 0 2rem;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .hero-media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .hero-logo-box {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-logo-halo {
+    position: absolute;
+    inset: -15px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, rgba(19, 196, 217, 0.35), rgba(59, 130, 246, 0.18) 45%, transparent 70%);
+    filter: blur(40px);
+    z-index: -1;
+    pointer-events: none;
+    animation: haloPulse 4s ease-in-out infinite alternate;
+  }
+  @keyframes haloPulse {
+    0% {
+      opacity: 0.6;
+      transform: scale(0.94);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+  }
+  .hero-logo-img {
+    width: 100%;
+    max-width: 440px;
+    height: auto;
+    aspect-ratio: 1024 / 842;
+    display: block;
+    object-fit: contain;
+    background: transparent;
+    filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 24px rgba(34, 211, 238, 0.4));
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+  .hero-logo-box:hover .hero-logo-img {
+    transform: scale(1.03);
+    filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 35px rgba(34, 211, 238, 0.65));
+  }
+  .hero-logo-badge {
+    margin-top: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 1.15rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 0.88rem;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  }
+  .badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: livePulse 2s ease-in-out infinite;
+  }
+  @keyframes livePulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(0.85);
+    }
+  }
+  .badge-sep {
+    color: #94a3b8;
+  }
+  @media (max-width: 820px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .hero-cta {
+      justify-content: center;
+    }
+    .hero-logo-box {
+      max-width: 360px;
+      margin-top: 1.5rem;
+    }
+  }
+  .stats {
+    margin-top: -2.5rem;
+    position: relative;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .stat {
+    padding: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .stat + .stat {
+    border-left: 1px solid var(--line);
+  }
+  .stat strong {
+    font-size: 2.2rem;
+    color: var(--heading);
+    font-family: Inter, sans-serif;
+    font-weight: 800;
+  }
+  .stat span {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .more {
+    color: var(--cyan-text);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .news-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+  .news-list li {
+    display: flex;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .news-list time {
+    color: var(--cyan-text);
+    font-weight: 700;
+    white-space: nowrap;
+    font-family: Inter, sans-serif;
+    min-width: 6.5em;
+  }
+  .news-list em {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .pub-link {
+    color: var(--heading);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .pub-link:hover {
+    color: var(--cyan-text);
+    text-decoration: underline;
+  }
+  .cta {
+    background: linear-gradient(120deg, var(--navy-2), var(--navy));
+    color: #fff;
+    padding: 3.5rem 0;
+  }
+  .cta h2 {
+    color: #fff;
+    margin: 0 0 0.5rem;
+  }
+  .cta p {
+    color: #c8d6e8;
+    margin: 0;
+  }
+  .cta-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+</style>

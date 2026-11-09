@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import { pageUrl } from '../i18n/ui';
+---
+
+<Base lang="zh" page="404" title="找不到頁面 (404)" is404={true}>
+  <section class="section">
+    <div class="container not-found">
+      <span class="code">404</span>
+      <h1>找不到您要前往的頁面</h1>
+      <p class="lead">
+        您點擊的連結可能已變更或不存在。您可以返回電子量測實驗室首頁，或直接前往成員介紹與研究成果頁面。
+      </p>
+      <div class="actions">
+        <a class="btn btn-primary" href={pageUrl('zh')}>返回實驗室首頁</a>
+        <a class="btn btn-outline" href={pageUrl('zh', 'members')}>瀏覽實驗室成員</a>
+        <a class="btn btn-outline" href={pageUrl('zh', 'achievements')}>查看研究成果</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    text-align: center;
+    padding: 4rem 1rem;
+    max-width: 640px;
+  }
+  .code {
+    display: inline-block;
+    font-family: Inter, sans-serif;
+    font-size: clamp(4rem, 10vw, 6.5rem);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--cyan);
+    margin-bottom: 0.75rem;
+  }
+  .not-found h1 {
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  }
+  .not-found .lead {
+    margin: 0 auto 2rem;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.85rem;
+  }
+  .btn-outline {
+    border: 1.5px solid var(--line-strong);
+    color: var(--heading);
+    background: var(--card-bg);
+  }
+  .btn-outline:hover {
+    border-color: var(--cyan);
+    color: var(--cyan-text);
+  }
+</style>
+

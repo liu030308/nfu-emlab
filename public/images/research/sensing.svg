@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-sns" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a1128"/>
+      <stop offset="100%" stop-color="#161f38"/>
+    </linearGradient>
+    <linearGradient id="prism-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg-sns)"/>
+  <path d="M50 380 Q100 320 150 380 T250 380 T350 380 T450 380 T550 380 T650 380 T750 380" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.25"/>
+  <polygon points="260,260 400,100 540,260" fill="url(#prism-grad)" stroke="#38bdf8" stroke-width="2"/>
+  <line x1="240" y1="260" x2="560" y2="260" stroke="#eab308" stroke-width="6" stroke-linecap="round"/>
+  <text x="400" y="250" font-family="Inter, sans-serif" font-size="12" font-weight="bold" fill="#fef08a" text-anchor="middle">Au Thin Film (50nm SPR Active)</text>
+  <rect x="260" y="264" width="280" height="35" rx="4" fill="rgba(6, 182, 212, 0.2)" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="400" y="286" font-family="Inter, sans-serif" font-size="12" font-weight="bold" fill="#67e8f9" text-anchor="middle">Liquid Sample / Refractive Index n</text>
+  <rect x="110" y="110" width="80" height="45" rx="6" fill="#1e293b" stroke="#ef4444" stroke-width="2"/>
+  <text x="150" y="137" font-family="Inter, sans-serif" font-size="11" font-weight="bold" fill="#fca5a5" text-anchor="middle">Laser Diode</text>
+  <line x1="190" y1="132" x2="400" y2="260" stroke="#ef4444" stroke-width="3" stroke-dasharray="6 3"/>
+  <line x1="400" y1="260" x2="610" y2="132" stroke="#f43f5e" stroke-width="3" stroke-dasharray="6 3"/>
+  <rect x="610" y="110" width="80" height="45" rx="6" fill="#1e293b" stroke="#06b6d4" stroke-width="2"/>
+  <text x="650" y="137" font-family="Inter, sans-serif" font-size="11" font-weight="bold" fill="#67e8f9" text-anchor="middle">Photodetector</text>
+  <rect x="250" y="340" width="300" height="105" rx="8" fill="#0f172a" stroke="#818cf8" stroke-width="2"/>
+  <text x="400" y="370" font-family="Inter, sans-serif" font-size="15" font-weight="bold" fill="#c7d2fe" text-anchor="middle">Automated DAQ Platform</text>
+  <text x="400" y="392" font-family="Inter, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">Cypress FX2 USB 2.0 + LabVIEW Instrumentation</text>
+  <path d="M290 425 H360 Q380 435 400 410 Q420 435 440 425 H510" fill="none" stroke="#38bdf8" stroke-width="2"/>
+  <text x="400" y="432" font-family="Inter, sans-serif" font-size="9" fill="#38bdf8" text-anchor="middle">SPR Dip Detection</text>
+  <rect x="30" y="30" width="250" height="36" rx="18" fill="rgba(15, 23, 42, 0.8)" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="155" y="53" font-family="Inter, sans-serif" font-size="13" font-weight="bold" fill="#a5b4fc" text-anchor="middle">SMART SENSING &amp; AUTO-DAQ</text>
+</svg>

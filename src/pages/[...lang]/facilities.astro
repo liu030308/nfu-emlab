@@ -1,0 +1,112 @@
+---
+import Base from '../../layouts/Base.astro';
+import Img from '../../components/Img.astro';
+import { langPaths, nav, t, type Lang } from '../../i18n/ui';
+import { electricShockSOP, equipment, safetyRules } from '../../data/facilities';
+
+export const getStaticPaths = langPaths;
+const { lang } = Astro.props as { lang: Lang };
+const title = t(nav.find((n) => n.page === 'facilities')!.label, lang);
+const L = {
+  sub: { zh: '儀器設備與實驗室安全規範', en: 'Equipment and lab safety', ja: '設備と安全規則' },
+  equip: { zh: '儀器設備', en: 'Equipment', ja: '設備' },
+  safety: { zh: '安全規範', en: 'Safety Rules', ja: '安全規則' },
+  sop: { zh: '觸電急救 SOP', en: 'Electric Shock First Aid', ja: '感電時の応急処置' },
+};
+---
+
+<Base lang={lang} page="facilities" title={title}>
+  <section class="page-hero">
+    <div class="container">
+      <h1>{title}</h1>
+      <p>{t(L.sub, lang)}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">{t(L.equip, lang)}</h2>
+      <div class="grid grid-3" style="margin-top:1.5rem">
+        {
+          equipment.map((e) => (
+            <div class="card">
+              <Img src={e.image} alt={t(e.name, lang)} lang={lang} ratio="4/3" />
+              <h3>{t(e.name, lang)}</h3>
+              <p>{t(e.desc, lang)}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container">
+      <h2 class="section-title">{t(L.safety, lang)}</h2>
+      <div class="grid grid-3" style="margin-top:1.5rem">
+        {
+          safetyRules.map((r) => (
+            <div class="card rule">
+              <span class="icon">{r.icon}</span>
+              <h3>{t(r.title, lang)}</h3>
+              <p>{t(r.desc, lang)}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="card sop">
+        <h3>🆘 {t(L.sop, lang)}</h3>
+        <ol>
+          {electricShockSOP.map((s) => <li>{t(s, lang)}</li>)}
+        </ol>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .rule .icon {
+    font-size: 2rem;
+  }
+  .rule h3 {
+    margin-top: 0.25rem;
+  }
+  .sop {
+    margin-top: 2rem;
+    border: 2px solid #e5484d;
+    background: rgba(229, 72, 77, 0.08);
+  }
+  .sop h3 {
+    color: #ef4444;
+    margin-top: 0;
+  }
+  .sop ol {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    counter-reset: sop;
+  }
+  .sop li {
+    counter-increment: sop;
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid rgba(229, 72, 77, 0.35);
+    font-weight: 600;
+  }
+  .sop li::before {
+    content: counter(sop);
+    display: inline-grid;
+    place-items: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    background: #e5484d;
+    color: #fff;
+    margin-right: 0.5rem;
+  }
+</style>

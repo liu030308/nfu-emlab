@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-pkg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#081226"/>
+      <stop offset="100%" stop-color="#0f2347"/>
+    </linearGradient>
+    <linearGradient id="heat-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#f59e0b" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="gold-sub" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg-pkg)"/>
+  <g opacity="0.15" stroke="#38bdf8" stroke-width="1">
+    <path d="M50 0v500 M150 0v500 M250 0v500 M350 0v500 M450 0v500 M550 0v500 M650 0v500 M750 0v500"/>
+    <path d="M0 50h800 M0 150h800 M0 250h800 M0 350h800 M0 450h800"/>
+  </g>
+  <g fill="#1e293b" stroke="#334155" stroke-width="2">
+    <rect x="180" y="340" width="35" height="110" rx="4"/>
+    <rect x="235" y="340" width="35" height="110" rx="4"/>
+    <rect x="290" y="340" width="35" height="110" rx="4"/>
+    <rect x="345" y="340" width="35" height="110" rx="4"/>
+    <rect x="400" y="340" width="35" height="110" rx="4"/>
+    <rect x="455" y="340" width="35" height="110" rx="4"/>
+    <rect x="510" y="340" width="35" height="110" rx="4"/>
+    <rect x="565" y="340" width="35" height="110" rx="4"/>
+    <rect x="150" y="310" width="500" height="35" rx="4" fill="#334155" stroke="#475569"/>
+  </g>
+  <path d="M220 310 Q400 370 580 310" fill="none" stroke="url(#heat-grad)" stroke-width="8" opacity="0.7"/>
+  <rect x="200" y="250" width="400" height="35" rx="6" fill="url(#gold-sub)" stroke="#fef08a" stroke-width="2"/>
+  <text x="400" y="273" font-family="Inter, sans-serif" font-size="14" font-weight="bold" fill="#422006" text-anchor="middle">Al-Ge-In-Sn TLP Substrate</text>
+  <circle cx="280" cy="225" r="14" fill="#94a3b8" stroke="#38bdf8" stroke-width="2"/>
+  <circle cx="520" cy="225" r="14" fill="#94a3b8" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="250" y="120" width="300" height="90" rx="8" fill="#0284c7" stroke="#38bdf8" stroke-width="3"/>
+  <rect x="270" y="135" width="260" height="60" rx="4" fill="#0369a1"/>
+  <text x="400" y="172" font-family="Inter, sans-serif" font-size="18" font-weight="900" fill="#ffffff" text-anchor="middle">High-Power Flip-Chip LED</text>
+  <g stroke="#facc15" stroke-width="3" stroke-linecap="round" opacity="0.85">
+    <line x1="400" y1="95" x2="400" y2="45"/>
+    <line x1="340" y1="105" x2="305" y2="60"/>
+    <line x1="460" y1="105" x2="495" y2="60"/>
+    <line x1="285" y1="120" x2="235" y2="85"/>
+    <line x1="515" y1="120" x2="565" y2="85"/>
+  </g>
+  <g stroke="#06b6d4" stroke-width="2" fill="none" opacity="0.6">
+    <path d="M200 465 Q230 475 260 465 T320 465 T380 465 T440 465 T500 465 T560 465 T600 465"/>
+    <path d="M220 480 Q250 490 280 480 T340 480 T400 480 T460 480 T520 480 T580 480"/>
+  </g>
+  <rect x="30" y="30" width="230" height="36" rx="18" fill="rgba(15, 23, 42, 0.8)" stroke="#06b6d4" stroke-width="1.5"/>
+  <text x="145" y="53" font-family="Inter, sans-serif" font-size="13" font-weight="bold" fill="#38bdf8" text-anchor="middle">OPT-PKG &amp; THERMAL MGMT</text>
+</svg>

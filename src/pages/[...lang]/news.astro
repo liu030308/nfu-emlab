@@ -1,0 +1,80 @@
+---
+import Base from '../../layouts/Base.astro';
+import Img from '../../components/Img.astro';
+import { langPaths, nav, t, type Lang } from '../../i18n/ui';
+import { news } from '../../data/facilities';
+
+export const getStaticPaths = langPaths;
+const { lang } = Astro.props as { lang: Lang };
+const title = t(nav.find((n) => n.page === 'news')!.label, lang);
+const sub = { zh: '實驗室動態、獲獎與招生公告', en: 'Lab updates, awards and announcements', ja: '研究室の最新情報・受賞・募集' };
+---
+
+<Base lang={lang} page="news" title={title}>
+  <section class="page-hero">
+    <div class="container">
+      <h1>{title}</h1>
+      <p>{t(sub, lang)}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container list">
+      {
+        news.map((n) => (
+          <article class="card item">
+            <div class="thumb">
+              <Img src={n.image} alt={t(n.title, lang)} lang={lang} ratio="4/3" label="News" />
+            </div>
+            <div>
+              <time>{n.date}</time>
+              <h2>
+                {n.url ? (
+                  <a href={n.url} target="_blank" rel="noopener noreferrer">
+                    {t(n.title, lang)} ↗
+                  </a>
+                ) : (
+                  t(n.title, lang)
+                )}
+              </h2>
+              {n.body && <p>{t(n.body, lang)}</p>}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .list {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 860px;
+  }
+  .item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  @media (max-width: 600px) {
+    .item {
+      grid-template-columns: 1fr;
+    }
+  }
+  time {
+    color: var(--cyan);
+    font-weight: 700;
+    font-family: Inter, sans-serif;
+  }
+  h2 {
+    font-size: 1.25rem;
+    margin: 0.25rem 0;
+  }
+  p {
+    margin: 0;
+    color: var(--muted);
+  }
+</style>
+

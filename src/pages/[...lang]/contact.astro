@@ -1,0 +1,135 @@
+---
+import Base from '../../layouts/Base.astro';
+import { langPaths, nav, t, type Lang } from '../../i18n/ui';
+import { lab, pi } from '../../data/lab';
+
+export const getStaticPaths = langPaths;
+const { lang } = Astro.props as { lang: Lang };
+const title = t(nav.find((n) => n.page === 'contact')!.label, lang);
+const L = {
+  sub: { zh: '歡迎參觀、加入或洽談合作', en: 'Visit, join, or collaborate with us', ja: '見学・参加・共同研究のご相談' },
+  info: { zh: '聯絡資訊', en: 'Contact Information', ja: '連絡先' },
+  lab: { zh: '實驗室', en: 'Lab', ja: '研究室' },
+  addr: { zh: '地址', en: 'Address', ja: '住所' },
+  phone: { zh: '電話', en: 'Phone', ja: '電話' },
+  join: { zh: '加入我們', en: 'Join Us', ja: '研究室に参加' },
+  who: { zh: '適合對象', en: 'Who should apply', ja: '対象' },
+  whoList: [
+    {
+      zh: '對半導體元件、LED 封裝、光電材料有興趣的同學',
+      en: 'Students interested in semiconductor devices, LED packaging, optoelectronic materials',
+      ja: '半導体デバイス・LEDパッケージング・光電子材料に興味のある学生',
+    },
+    {
+      zh: '喜歡動手做量測系統、寫 LabVIEW / 程式的同學',
+      en: 'Students who enjoy building measurement systems and coding (LabVIEW, etc.)',
+      ja: '計測システム作りやプログラミング（LabVIEW等）が好きな学生',
+    },
+    {
+      zh: '大三、大四專題生與碩士班報考生',
+      en: 'Junior/senior undergraduates and prospective M.S. students',
+      ja: '学部3・4年生および修士課程志望者',
+    },
+  ],
+  gain: { zh: '你會學到', en: 'What you will learn', ja: '身につくこと' },
+  gainList: [
+    { zh: '精密電子/光電量測儀器操作', en: 'Operating precision electronic & optical instruments', ja: '精密電子・光学計測機器の操作' },
+    { zh: '半導體薄膜製程與分析', en: 'Thin-film fabrication and analysis', ja: '半導体薄膜の作製と解析' },
+    { zh: '產學合作專案經驗', en: 'Industry project experience', ja: '産学連携プロジェクトの経験' },
+    { zh: '國際發明展參賽機會', en: 'Chances to compete in international invention shows', ja: '国際発明展への出展機会' },
+  ],
+  collab: { zh: '產學合作', en: 'Industry Collaboration', ja: '産学連携' },
+  collabText: {
+    zh: '本實驗室在 LED 封裝、散熱設計、光電檢測與自動化量測系統具備豐富經驗，歡迎企業來信洽談技術合作或委託量測。',
+    en: 'With expertise in LED packaging, thermal design, optoelectronic inspection and automated measurement, we welcome industry partners for collaboration or testing services.',
+    ja: 'LEDパッケージング、放熱設計、光電子検査、自動計測システムの豊富な経験を活かし、企業との共同研究や計測受託のご相談を歓迎します。',
+  },
+  mail: { zh: '寄信給我們', en: 'Email us', ja: 'メールを送る' },
+};
+const mapQuery = encodeURIComponent('國立虎尾科技大學 綜合三館');
+---
+
+<Base lang={lang} page="contact" title={title}>
+  <section class="page-hero">
+    <div class="container">
+      <h1>{title}</h1>
+      <p>{t(L.sub, lang)}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2">
+      <div class="card">
+        <h2 class="section-title">{t(L.info, lang)}</h2>
+        <dl>
+          <dt>{t(L.lab, lang)}</dt>
+          <dd>{t(lab.location, lang)}</dd>
+          <dt>{t(L.addr, lang)}</dt>
+          <dd>{t(lab.address, lang)}</dd>
+          <dt>{t(L.phone, lang)}</dt>
+          <dd>{pi.phoneLab} / {pi.phoneOffice}</dd>
+          <dt>Email</dt>
+          <dd><a href={`mailto:${pi.email}`}>{pi.email}</a></dd>
+        </dl>
+        <a class="btn btn-primary" href={`mailto:${pi.email}`}>✉️ {t(L.mail, lang)}</a>
+      </div>
+      <iframe
+        class="map"
+        title="map"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}></iframe>
+    </div>
+  </section>
+
+  <section class="section alt" id="join">
+    <div class="container">
+      <h2 class="section-title">{t(L.join, lang)}</h2>
+      <div class="grid grid-2" style="margin-top:1.5rem">
+        <div class="card">
+          <h3>🎯 {t(L.who, lang)}</h3>
+          <ul>{L.whoList.map((x) => <li>{t(x, lang)}</li>)}</ul>
+        </div>
+        <div class="card">
+          <h3>🚀 {t(L.gain, lang)}</h3>
+          <ul>{L.gainList.map((x) => <li>{t(x, lang)}</li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="collab">
+    <div class="container">
+      <h2 class="section-title">{t(L.collab, lang)}</h2>
+      <p class="lead">{t(L.collabText, lang)}</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  dl {
+    margin: 1rem 0 1.5rem;
+  }
+  dt {
+    font-weight: 700;
+    color: var(--heading);
+    margin-top: 0.75rem;
+  }
+  dd {
+    margin: 0.15rem 0 0;
+  }
+  .map {
+    width: 100%;
+    min-height: 360px;
+    border: 0;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  ul {
+    padding-left: 1.2rem;
+  }
+  li::marker {
+    color: var(--cyan);
+  }
+</style>
+

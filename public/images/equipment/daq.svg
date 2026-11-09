@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="daq-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#09132b"/><stop offset="100%" stop-color="#162347"/></linearGradient>
+  </defs>
+  <rect width="600" height="450" fill="url(#daq-bg)"/>
+  <rect x="100" y="70" width="400" height="270" rx="10" fill="#0f172a" stroke="#6366f1" stroke-width="2.5"/>
+  <circle cx="115" cy="85" r="4" fill="#475569"/>
+  <circle cx="485" cy="85" r="4" fill="#475569"/>
+  <circle cx="115" cy="325" r="4" fill="#475569"/>
+  <circle cx="485" cy="325" r="4" fill="#475569"/>
+  <rect x="130" y="100" width="230" height="130" rx="6" fill="#020617" stroke="#1e293b" stroke-width="1.5"/>
+  <path d="M130 145 H360 M130 190 H360 M180 100 V230 M250 100 V230 M310 100 V230" stroke="#1e293b" stroke-width="1" stroke-dasharray="2 2"/>
+  <path d="M135 165 Q160 120 185 165 T235 165 T285 165 T335 165 T355 165" fill="none" stroke="#22c55e" stroke-width="2"/>
+  <g fill="#334155" stroke="#94a3b8" stroke-width="1.5">
+    <circle cx="400" cy="120" r="12"/>
+    <circle cx="445" cy="120" r="12"/>
+    <circle cx="400" cy="160" r="12"/>
+    <circle cx="445" cy="160" r="12"/>
+  </g>
+  <text x="400" y="140" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">CH 1</text>
+  <text x="445" y="140" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">CH 2</text>
+  <rect x="130" y="250" width="340" height="65" rx="6" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <rect x="145" y="262" width="80" height="40" rx="4" fill="#0284c7"/>
+  <text x="185" y="287" font-family="Inter, sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">FX2 USB</text>
+  <text x="240" y="278" font-family="Inter, sans-serif" font-size="11" font-weight="bold" fill="#e2e8f0">High-Speed Sampling Interface</text>
+  <text x="240" y="296" font-family="Inter, sans-serif" font-size="10" fill="#94a3b8">LabVIEW Virtual Instrument Driver</text>
+  <text x="300" y="385" font-family="Inter, sans-serif" font-size="16" font-weight="bold" fill="#f1f5f9" text-anchor="middle">Automated Data Acquisition (DAQ) Platform</text>
+</svg>

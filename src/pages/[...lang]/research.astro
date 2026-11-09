@@ -1,0 +1,131 @@
+---
+import Base from '../../layouts/Base.astro';
+import Img from '../../components/Img.astro';
+import { langPaths, nav, t, type Lang } from '../../i18n/ui';
+import { research } from '../../data/research';
+
+export const getStaticPaths = langPaths;
+const { lang } = Astro.props as { lang: Lang };
+const title = t(nav.find((n) => n.page === 'research')!.label, lang);
+const L = {
+  sub: {
+    zh: '材料 → 封裝 → 系統：完整的光電量測研究鏈',
+    en: 'Materials → Packaging → Systems',
+    ja: '材料 → 実装 → システム',
+  },
+  key: { zh: '關鍵技術', en: 'Key Technologies', ja: '主要技術' },
+  app: { zh: '應用領域', en: 'Applications', ja: '応用分野' },
+};
+---
+
+<Base lang={lang} page="research" title={title}>
+  <section class="page-hero">
+    <div class="container">
+      <h1>{title}</h1>
+      <p>{t(L.sub, lang)}</p>
+      <div class="jump">
+        {
+          research.map((r) => (
+            <a href={`#${r.id}`}>
+              {r.icon} {t(r.title, lang)}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    research.map((r, i) => (
+      <section class:list={['section', { alt: i % 2 === 1 }]} id={r.id}>
+        <div class:list={['container', 'area', { flip: i % 2 === 1 }]}>
+          <div>
+            <span class="idx">0{i + 1}</span>
+            <h2 class="section-title">
+              {r.icon} {t(r.title, lang)}
+            </h2>
+            <p class="lead">{t(r.summary, lang)}</p>
+            <h3>{t(L.key, lang)}</h3>
+            <ul>
+              {r.points.map((p) => (
+                <li>{t(p, lang)}</li>
+              ))}
+            </ul>
+            <h3>{t(L.app, lang)}</h3>
+            <div>
+              {r.applications.map((a) => (
+                <span class="tag">{t(a, lang)}</span>
+              ))}
+            </div>
+          </div>
+          <Img src={r.image} alt={t(r.title, lang)} lang={lang} ratio="4/3" />
+        </div>
+      </section>
+    ))
+  }
+</Base>
+
+<style>
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+  .jump a {
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+  }
+  .jump a:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+  .area {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .area.flip > :first-child {
+    order: 2;
+  }
+  @media (max-width: 820px) {
+    .area {
+      grid-template-columns: 1fr;
+    }
+    .area.flip > :first-child {
+      order: 0;
+    }
+  }
+  .idx {
+    font-family: Inter, sans-serif;
+    font-weight: 800;
+    color: var(--cyan);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+  }
+  .area h3 {
+    font-size: 1.05rem;
+    margin: 1.25rem 0 0.5rem;
+  }
+  .area ul {
+    padding-left: 1.2rem;
+    margin: 0;
+  }
+  .area li {
+    margin-bottom: 0.4rem;
+  }
+  .area li::marker {
+    color: var(--cyan);
+  }
+  .lead {
+    margin-bottom: 0.5rem;
+  }
+</style>
+

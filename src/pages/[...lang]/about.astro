@@ -1,0 +1,182 @@
+---
+import Base from '../../layouts/Base.astro';
+import Img from '../../components/Img.astro';
+import { langPaths, nav, t, type Lang } from '../../i18n/ui';
+import { lab, pi } from '../../data/lab';
+
+export const getStaticPaths = langPaths;
+const { lang } = Astro.props as { lang: Lang };
+const title = t(nav.find((n) => n.page === 'about')!.label, lang);
+const L = {
+  intro: { zh: '實驗室簡介', en: 'Introduction', ja: '研究室概要' },
+  mission: { zh: '人才培育', en: 'Education', ja: '人材育成' },
+  pi: { zh: '指導教授', en: 'Principal Investigator', ja: '指導教員' },
+  edu: { zh: '學歷', en: 'Education', ja: '学歴' },
+  exp: { zh: '專長', en: 'Expertise', ja: '専門分野' },
+  contact: { zh: '聯絡方式', en: 'Contact', ja: '連絡先' },
+  phoneLab: { zh: '研究室電話', en: 'Office Tel', ja: '研究室電話' },
+  phoneOffice: { zh: '系辦電話', en: 'Dept. Office', ja: '学科事務室' },
+  fax: { zh: '傳真', en: 'Fax', ja: 'FAX' },
+  experience: { zh: '教學與服務經歷', en: 'Academic & Service Experience', ja: '教育・職務経歴' },
+  courses: { zh: '開授課程方向', en: 'Courses Taught', ja: '担当科目分野' },
+  patents: { zh: '代表專利成果', en: 'Selected Patents', ja: '主な特許実績' },
+  officialPage: { zh: '虎科大電子系教師官方專頁', en: 'NFU Official Faculty Profile', ja: '虎尾科大 電子工学科 教員紹介ページ' },
+};
+---
+
+<Base lang={lang} page="about" title={title}>
+  <section class="page-hero">
+    <div class="container">
+      <h1>{title}</h1>
+      <p>{t(lab.tagline, lang)}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2 center">
+      <div>
+        <h2 class="section-title">{t(L.intro, lang)}</h2>
+        <p>{t(lab.intro, lang)}</p>
+        <p><span class="tag">📍 {t(lab.location, lang)}</span></p>
+      </div>
+      <Img src={lab.labImage} alt={t(lab.name, lang)} lang={lang} ratio="4/3" label="Lab Photo" />
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container">
+      <h2 class="section-title">{t(L.mission, lang)}</h2>
+      <div class="steps">
+        {
+          lab.mission.map((m, i) => (
+            <div class="card step">
+              <span class="num">0{i + 1}</span>
+              <h3>{t(m.title, lang)}</h3>
+              <p>{t(m.desc, lang)}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pi">
+    <div class="container">
+      <h2 class="section-title">{t(L.pi, lang)}</h2>
+      <div class="pi card">
+        <div class="pi-photo">
+          <Img src={pi.image} alt={t(pi.name, lang)} lang={lang} ratio="3/4" label={t(pi.name, lang)} />
+        </div>
+        <div>
+          <h3 class="pi-name">{t(pi.name, lang)} <small>{lang === 'zh' ? 'Wen-Ray Chen' : ''}</small></h3>
+          <p class="pi-title">{t(pi.title, lang)}</p>
+          <dl>
+            <dt>{t(L.edu, lang)}</dt>
+            <dd>{t(pi.education, lang)}</dd>
+            <dt>{t(L.exp, lang)}</dt>
+            <dd class="tag-row">{pi.expertise.map((e) => <span class="tag">{t(e, lang)}</span>)}</dd>
+            <dt>{t(L.experience, lang)}</dt>
+            <dd>
+              <ul class="pi-list">
+                {pi.experience.map((item) => <li>{t(item, lang)}</li>)}
+              </ul>
+            </dd>
+            <dt>{t(L.courses, lang)}</dt>
+            <dd class="tag-row">{pi.courses.map((c) => <span class="tag">{t(c, lang)}</span>)}</dd>
+            <dt>{t(L.patents, lang)}</dt>
+            <dd>
+              <ul class="pi-list">
+                {pi.patents.map((p) => <li>{t(p, lang)}</li>)}
+              </ul>
+            </dd>
+            <dt>{t(L.contact, lang)}</dt>
+            <dd>
+              📞 {t(L.phoneLab, lang)}：{pi.phoneLab}｜{t(L.phoneOffice, lang)}：{pi.phoneOffice}｜{t(L.fax, lang)}：{pi.fax}
+              <br />✉️ <a href={`mailto:${pi.email}`}>{pi.email}</a>
+              <br />🏢 {t(pi.office, lang)}
+              <br />🌐 <a href={pi.profileUrl} target="_blank" rel="noopener noreferrer">{t(L.officialPage, lang)} ↗</a>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .center {
+    align-items: center;
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    counter-reset: s;
+  }
+  .num {
+    font-family: Inter, sans-serif;
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--cyan);
+  }
+  .step h3 {
+    margin-top: 0.25rem;
+  }
+  .pi {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 2rem;
+  }
+  @media (max-width: 680px) {
+    .pi {
+      grid-template-columns: 1fr;
+    }
+    .pi-photo {
+      max-width: 240px;
+    }
+  }
+  .pi-name {
+    font-size: 1.7rem;
+    margin: 0;
+  }
+  .pi-name small {
+    font-size: 1rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .pi-title {
+    color: var(--cyan);
+    font-weight: 700;
+    margin: 0.25rem 0 1rem;
+  }
+  dl {
+    margin: 0;
+  }
+  dt {
+    font-weight: 700;
+    color: var(--heading);
+    margin-top: 0.75rem;
+  }
+  dd {
+    margin: 0.25rem 0 0;
+  }
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 0.35rem;
+  }
+  .pi-list {
+    margin: 0.25rem 0 0;
+    padding-left: 1.25rem;
+    color: var(--text);
+    line-height: 1.75;
+  }
+  .pi-list li + li {
+    margin-top: 0.15rem;
+  }
+  .muted {
+    color: var(--muted);
+  }
+</style>
+

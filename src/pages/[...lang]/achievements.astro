@@ -1,0 +1,254 @@
+---
+import Base from '../../layouts/Base.astro';
+import { langPaths, nav, t, type Lang } from '../../i18n/ui';
+import { awards, medalLabel, patentGroups, patentType, publications } from '../../data/achievements';
+
+export const getStaticPaths = langPaths;
+const { lang } = Astro.props as { lang: Lang };
+const title = t(nav.find((n) => n.page === 'achievements')!.label, lang);
+const L = {
+  sub: { zh: '國際競賽、全國創新實作、專利與學術發表', en: 'Awards, patents and publications', ja: '国際発明展・コンテスト・特許・論文' },
+  awards: { zh: '國內外競賽與國際發明展獲獎 (2010 – 2026)', en: 'Awards & Honors (2010 – 2026)', ja: '受賞歴 (2010 – 2026)' },
+  patents: { zh: '專利技術', en: 'Patents', ja: '特許・実用新案' },
+  pubs: { zh: '代表性論文發表', en: 'Selected Publications', ja: '主要論文' },
+  pubsNote: {
+    zh: '完整論文列表持續整理更新中。',
+    en: 'Full publication list is continuously updated.',
+    ja: '論文リストは随時更新中です。',
+  },
+};
+const medalIcon = { gold: '🥇', silver: '🥈', bronze: '🥉', award: '🏆' } as const;
+---
+
+<Base lang={lang} page="achievements" title={title}>
+  <section class="page-hero">
+    <div class="container">
+      <h1>{title}</h1>
+      <p>{t(L.sub, lang)}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">{t(L.awards, lang)}</h2>
+      <ol class="timeline">
+        {
+          awards.map((a) => (
+            <li class={a.medal}>
+              <span class="year">{a.year}</span>
+              <a class="card award award-link" href={a.url} target="_blank" rel="noopener noreferrer">
+                <span class="medal">{medalIcon[a.medal]}</span>
+                <div>
+                  <strong>{a.badgeLabel ? t(a.badgeLabel, lang) : t(medalLabel[a.medal], lang)}</strong>
+                  <p class="event-name">
+                    {t(a.event, lang)} <span class="ext-arrow">↗</span>
+                  </p>
+                  {a.detail && <p class="event-detail">{t(a.detail, lang)}</p>}
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container">
+      <h2 class="section-title">{t(L.patents, lang)}</h2>
+      <div class="grid grid-3" style="margin-top:1.5rem">
+        {
+          patentGroups.map((g) => (
+            <div class="card">
+              <h3>{t(g.category, lang)}</h3>
+              <ul class="plist">
+                {g.patents.map((p) => (
+                  <li>
+                    <span class:list={['ptype', p.type]}>{t(patentType[p.type], lang)}</span>
+                    {t(p.title, lang)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">{t(L.pubs, lang)}</h2>
+      <ol class="pubs">
+        {
+          publications.map((p) => (
+            <li>
+              <span class="pyear">{p.year}</span>
+              <div>
+                <strong>
+                  <a class="pub-title-link" href={p.url} target="_blank" rel="noopener noreferrer">
+                    {p.title} ↗
+                  </a>
+                </strong>
+                <p>
+                  {p.authors} — <em>{p.venue}</em>
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="notice">{t(L.pubsNote, lang)}</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0;
+    position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 3.5rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--line-strong);
+  }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  .timeline li::before {
+    content: '';
+    position: absolute;
+    left: calc(3.5rem - 6px);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--c);
+    border: 3px solid var(--card-bg);
+    box-shadow: 0 0 0 2px var(--c);
+  }
+  .gold {
+    --c: var(--gold);
+  }
+  .silver {
+    --c: var(--silver);
+  }
+  .bronze {
+    --c: var(--bronze);
+  }
+  .award {
+    --c: var(--award);
+  }
+  .year {
+    font-family: Inter, sans-serif;
+    font-weight: 800;
+    color: var(--heading);
+  }
+  .card.award {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-left: 4px solid var(--c);
+  }
+  .award-link {
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .award-link:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  .award-link:hover .event-name {
+    color: var(--cyan-text);
+  }
+  .ext-arrow {
+    color: var(--cyan-text);
+    font-size: 0.9em;
+  }
+  .event-name {
+    margin: 0.15rem 0 0;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .event-detail {
+    margin: 0.2rem 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .medal {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+  .plist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .plist li {
+    padding: 0.6rem 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .plist li:last-child {
+    border: 0;
+  }
+  .ptype {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.05rem 0.5rem;
+    border-radius: 6px;
+    margin-right: 0.4rem;
+    vertical-align: 2px;
+  }
+  .ptype.invention {
+    background: var(--navy);
+    color: #fff;
+  }
+  .ptype.utility {
+    background: var(--cyan-soft);
+    color: var(--cyan-text);
+  }
+  .pubs {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+  }
+  .pubs li {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .pubs p {
+    margin: 0.25rem 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .pyear {
+    font-family: Inter, sans-serif;
+    font-weight: 800;
+    color: var(--cyan-text);
+  }
+  .pub-title-link {
+    color: var(--heading);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .pub-title-link:hover {
+    color: var(--cyan-text);
+    text-decoration: underline;
+  }
+</style>

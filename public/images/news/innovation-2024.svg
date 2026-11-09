@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="i24Bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e2320"/>
+      <stop offset="100%" stop-color="#040d0c"/>
+    </linearGradient>
+    <linearGradient id="tealG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#20c997"/>
+      <stop offset="100%" stop-color="#099268"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#i24Bg)"/>
+  <g transform="translate(400, 220)">
+    <circle cx="0" cy="0" r="80" fill="#12443b" stroke="#20c997" stroke-width="3"/>
+    <circle cx="0" cy="0" r="65" fill="url(#tealG)"/>
+    <path d="M-20,-30 L20,-30 L10,-10 L-10,-10 Z" fill="#ffffff"/>
+    <rect x="-6" y="-10" width="12" height="45" rx="3" fill="#ffffff"/>
+    <polygon points="0,-50 5,-40 15,-40 7,-32 10,-22 0,-28 -10,-22 -7,-32 -15,-40 -5,-40" fill="#ffd43b" transform="translate(35, -25) scale(0.7)"/>
+  </g>
+  <text x="400" y="370" fill="#20c997" font-family="system-ui, sans-serif" font-size="24" font-weight="bold" text-anchor="middle">2024 全國大學校院產學創新專題競賽</text>
+  <text x="400" y="410" fill="#ffffff" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" text-anchor="middle">手工具創新設計獎</text>
+  <text x="400" y="450" fill="#a3e635" font-family="system-ui, sans-serif" font-size="16" text-anchor="middle">踏車發電在居家用長者復健系統之實現</text>
+</svg>

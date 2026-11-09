@@ -1,0 +1,1218 @@
+---
+import Base from '../../layouts/Base.astro';
+import Img from '../../components/Img.astro';
+import { langPaths, nav, pageUrl, t, ui, type Lang } from '../../i18n/ui';
+import { pi } from '../../data/lab';
+import { alumni, graduatedMsMembers, memberGroups, type Member } from '../../data/members';
+
+export const getStaticPaths = langPaths;
+const { lang } = Astro.props as { lang: Lang };
+const title = t(nav.find((n) => n.page === 'members')!.label, lang);
+
+const L = {
+  sub: {
+    zh: '一起在 ATC 0102 打拼的夥伴們（點擊成員或歷屆碩士生卡片可查看詳細介紹）',
+    en: 'The people behind ATC 0102 (click any member or graduate card for details)',
+    ja: 'ATC 0102 で研究する仲間たち（カードをクリックして詳細を表示）',
+  },
+  advisor: { zh: '指導教授', en: 'Principal Investigator', ja: '指導教員' },
+  empty: { zh: '名單待補，歡迎加入！', en: 'Coming soon — join us!', ja: '準備中 — 参加お待ちしています！' },
+  gradMs: {
+    zh: `歷年畢業碩士生 (2008 – 2026，共 ${graduatedMsMembers.length} 位)`,
+    en: `Graduated M.S. Students (2008 – 2026, ${graduatedMsMembers.length} Graduates)`,
+    ja: `歴代修士課程修了生 (2008 – 2026・計${graduatedMsMembers.length}名)`,
+  },
+  gradMsLead: {
+    zh: '點擊任一歷屆碩士生卡片，即可查看詳介紹。',
+    en: 'Click any graduated M.S. student card to view detailed profile.',
+    ja: 'カードをクリックすると詳細プロフィールを表示します。',
+  },
+  filterAll: { zh: '全部碩士生', en: 'All M.S.', ja: '全修了生' },
+  filterEe: { zh: '電子工程系碩士班', en: 'Electronic Eng. M.S.', ja: '電子工学科修士' },
+  filterOpto: { zh: '光電與材料科技碩士班', en: 'Electro-Optical & Mat. M.S.', ja: '光電・材料修士' },
+  searchPh: {
+    zh: '搜尋姓名、畢業年份或論文關鍵字…',
+    en: 'Search name, graduation year, or thesis keyword...',
+    ja: '氏名、修了年度、論文キーワードで検索…',
+  },
+  thesisBtn: {
+    zh: '📜 畢業論文（碩博士論文網）↗',
+    en: '📜 Master’s Thesis (NDLTD) ↗',
+    ja: '📜 修士論文（博碩士論文網）↗',
+  },
+  alumni: { zh: '歷屆畢業碩士與專題校友總表 (2008 – 2026)', en: 'Alumni & Thesis Directory (2008 – 2026)', ja: '修了生・卒業論文一覧表 (2008 – 2026)' },
+  year: { zh: '畢業年度', en: 'Year', ja: '修了年度' },
+  name: { zh: '姓名', en: 'Name', ja: '氏名' },
+  cat: { zh: '系所／類別', en: 'Dept. / Type', ja: '専攻・種別' },
+  thesis: { zh: '畢業論文題目／代表成果', en: 'Master’s Thesis / Project & Awards', ja: '修士論文題目・代表実績' },
+  thesisCol: { zh: '畢業論文連結', en: 'Thesis Link', ja: '論文リンク' },
+  catEe: { zh: '電子碩士', en: 'EE M.S.', ja: '電子修士' },
+  catOpto: { zh: '光電碩士', en: 'Opto. M.S.', ja: '光電修士' },
+  catProj: { zh: '專題・競賽', en: 'Project / Award', ja: '研究・受賞' },
+  alumniNote: {
+    zh: '資料來源：國家圖書館臺灣博碩士論文知識加值系統 (ndltd.ncl.edu.tw)、國立虎尾科技大學圖書館館藏系統與電子工程系榮譽榜（2008 – 2026）',
+    en: 'Source: National Digital Library of Theses and Dissertations in Taiwan (NDLTD), NFU Library Catalog & EE Honor Roll (2008 – 2026).',
+    ja: '出典：国家図書館「台湾博碩士論文知識加値システム (NDLTD)」、国立虎尾科技大学図書館蔵書システムおよび栄誉榜（2008 – 2026）',
+  },
+  secBio: { zh: '個人簡介', en: 'About', ja: '自己紹介' },
+  secSkills: { zh: '專業技能與研究方向', en: 'Skills & Research Interests', ja: '専門スキル・研究分野' },
+  secEdu: { zh: '畢業系所與學歷', en: 'Education & Experience', ja: '修了専攻・学歴' },
+  secProj: { zh: '畢業論文與代表成果', en: 'Master’s Thesis & Achievements', ja: '卒業修士論文・主な実績' },
+  secLinks: { zh: '畢業論文與外部連結', en: 'Thesis & External Links', ja: '修士論文・外部リンク' },
+  piMoreLink: { zh: '前往「關於我們」查看完整介紹', en: 'Full PI Profile on About Page', ja: '「研究室紹介」ページで詳細を見る' },
+  expandAll: { zh: '展開全部年份', en: 'Expand All Years', ja: '全年度を展開' },
+  collapseAll: { zh: '收合全部年份', en: 'Collapse All Years', ja: '全年度を折りたたむ' },
+  yearSuffix: { zh: '年畢業', en: 'Graduates', ja: '年修了' },
+  peopleUnit: { zh: '位', en: '', ja: '名' },
+  toggleTable: {
+    zh: `點擊展開／收合完整歷屆論文與校友總表（共 ${alumni.length} 筆紀錄）`,
+    en: `Click to expand / collapse full Alumni & Thesis Directory (${alumni.length} records)`,
+    ja: `クリックして全修了生・論文一覧表を展開／折りたたむ（全${alumni.length}件）`,
+  },
+};
+
+const eeCount = graduatedMsMembers.filter((m) => m.deptCode === 'ee').length;
+const optoCount = graduatedMsMembers.filter((m) => m.deptCode !== 'ee').length;
+
+// 依畢業年份分組（由新到舊），讓歷年碩士生可依年份摺疊收合
+const gradYears = Array.from(new Set(graduatedMsMembers.map((m) => m.year ?? 0))).sort((a, b) => b - a);
+const gradByYear = gradYears.map((yr) => ({
+  year: yr,
+  members: graduatedMsMembers.filter((m) => m.year === yr),
+}));
+
+// 將指導教授也轉成可點擊彈窗資料
+const piProfile: Member = {
+  id: 'pi-chen-wen-ray',
+  name: t(pi.name, lang),
+  nameEn: lang === 'zh' ? 'Wen-Ray Chen' : '陳文瑞',
+  role: pi.title,
+  topic: {
+    zh: '微電子元件・光學引擎開發・LED 封裝與熱管理・光電半導體薄膜',
+    en: 'Microelectronic Devices · Optical Engines · LED Packaging · Optoelectronic Thin Films',
+    ja: '微小電子デバイス・光学エンジン開発・LED実装・光電子半導体薄膜',
+  },
+  email: pi.email,
+  image: pi.image,
+  bio: {
+    zh: '陳文瑞教授畢業於國立成功大學微電子工程研究所博士班，現任國立虎尾科技大學電子工程系教授兼系主任，並主持電子量測實驗室（ATC 0102）。長期深耕微電子元件特性分析、高功率 LED 覆晶封裝與散熱管理、鈣鈦礦與量子點光電薄膜，以及工業自動化光電量測與 AIoT 感測系統，擁有 15 項中華民國發明與新型專利，並帶領碩士生與專題生於英國倫敦、韓國首爾、馬來西亞 ITEX、台灣創新技術博覽會及 IEEE 國際學術會議屢獲金牌與最佳論文獎。',
+    en: 'Dr. Wen-Ray Chen received his Ph.D. from the Institute of Microelectronics at National Cheng Kung University. He is currently a Professor and Chair of the Department of Electronic Engineering at National Formosa University, directing the Electronic Measurement Lab (ATC 0102). His research spans microelectronic devices, LED flip-chip packaging and thermal management, perovskite/QD thin films, and automated AIoT measurement systems, holding 15 R.O.C. invention and utility model patents.',
+    ja: '陳文瑞教授は国立成功大学微小電子工学研究所にて博士号を取得。現在、国立虎尾科技大学電子工学科の教授兼学科長を務め、電子計測研究室（ATC 0102）を主宰。微小電子デバイス、LEDパッケージングと熱管理、ペロブスカイト薄膜、自動計測・AIoTシステムを専門とし、15件の特許および多数の国際発明展金賞・IEEE最優秀論文賞の実績を持つ。',
+  },
+  skills: [...pi.expertise, ...pi.courses],
+  education: [
+    pi.education,
+    ...pi.experience,
+    pi.office,
+  ],
+  projects: [
+    {
+      title: {
+        zh: '中華民國發明與新型專利（共 15 項）',
+        en: 'R.O.C. Invention & Utility Model Patents (15 Patents)',
+        ja: '中華民国 発明・実用新案特許（計15件）',
+      },
+      badge: { zh: '專利成果', en: 'Patents', ja: '特許実績' },
+      desc: {
+        zh: '包含：紅外線拔罐器（發明）、以光穿透率面積監控潤滑油含水量之檢測方法（發明）、發光二極體優化照明裝置（發明）、紫外線發光二極體自我主動封裝方法（發明）、發光二極體食品溫熱器（發明）、主動吸附式承載裝置（新型）、蒸鍍機送料器（新型）等。',
+        en: 'Includes Infrared Cupping Device, Optical Transmittance Water-in-Oil Monitoring Method, Optimized LED Lighting Apparatus, Self-Active UV-LED Packaging Method, LED Food Warmer, Active Suction Carrier, and Evaporator Feeder.',
+        ja: '赤外線カッピング器、光透過率面積による潤滑油水分量監視法、LED最適化照明装置、紫外線LED自己能動パッケージング法、LED食品保温器など。',
+      },
+      url: pi.profileUrl,
+    },
+    {
+      title: {
+        zh: '國科會／科技部專題研究計畫與產學合作計畫',
+        en: 'NSTC / MOST Research Grants & Industry-Academia Projects',
+        ja: '国科会・科技部研究プロジェクトおよび産学連携',
+      },
+      badge: { zh: '研究計畫', en: 'Research Grants', ja: '研究計画' },
+      desc: {
+        zh: '主持多項國科會／科技部與產學計畫：陣列分佈多元件構裝熱源模組共軛熱傳與散熱提升、高效率高流明 LED 迷你投影機光源開發、鋁鍺錫暫態液相鍵合技術應用於 LED 覆晶封裝製程、感測器雲端預警系統及金屬加工機台聯網可視化管理等。',
+        en: 'Principal Investigator for multiple NSTC/MOST and industry projects on multi-chip module thermal management, high-lumen LED micro-projector light engines, Al-Ge-Sn transient liquid-phase flip-chip LED bonding, and cloud sensor early-warning systems.',
+        ja: 'マルチチップモジュール熱管理、高輝度LEDマイクロプロジェクタ光源、Al-Ge-Sn過渡液相接合によるフリップチップLED実装、クラウドセンサー予兆監視システムなど多数のプロジェクトを主宰。',
+      },
+      url: pi.profileUrl,
+    },
+  ],
+  links: [
+    {
+      label: {
+        zh: '虎科大電子系教師官方專頁',
+        en: 'NFU Official Faculty Profile',
+        ja: '虎尾科大 電子工学科 教員紹介ページ',
+      },
+      url: pi.profileUrl,
+      icon: 'globe',
+    },
+    {
+      label: L.piMoreLink,
+      url: `${pageUrl(lang, 'about')}#pi`,
+      icon: 'link',
+    },
+    {
+      label: {
+        zh: `研究室電話：${pi.phoneLab}`,
+        en: `Office Tel: ${pi.phoneLab}`,
+        ja: `研究室電話：${pi.phoneLab}`,
+      },
+      url: `tel:${pi.phoneLab}`,
+      icon: 'link',
+    },
+    {
+      label: { zh: pi.email, en: pi.email, ja: pi.email },
+      url: `mailto:${pi.email}`,
+      icon: 'mail',
+    },
+  ],
+};
+
+const allMembers: Member[] = [piProfile, ...memberGroups.flatMap((g) => g.members), ...graduatedMsMembers];
+---
+
+<Base lang={lang} page="members" title={title}>
+  <section class="page-hero">
+    <div class="container">
+      <h1>{title}</h1>
+      <p>{t(L.sub, lang)}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">{t(L.advisor, lang)}</h2>
+      <button type="button" class="card advisor member-trigger" data-member-open={piProfile.id}>
+        <div class="avatar">
+          <Img src={pi.image} alt={t(pi.name, lang)} lang={lang} ratio="1/1" round label="PI" />
+        </div>
+        <div class="advisor-info">
+          <h3>{t(pi.name, lang)} <small>Wen-Ray Chen</small></h3>
+          <p class="advisor-title">{t(pi.title, lang)}</p>
+          <p class="advisor-edu">🎓 {t(pi.education, lang)}</p>
+          <div class="advisor-tags">
+            {pi.expertise.map((e) => <span class="tag">{t(e, lang)}</span>)}
+          </div>
+          <p class="advisor-contact">
+            📞 {pi.phoneLab}｜✉️ {pi.email}｜🏢 ATC0303-2 / ATC0102
+          </p>
+          <span class="click-hint">{t(ui.viewProfile, lang)} →</span>
+        </div>
+      </button>
+
+      {
+        memberGroups
+          .filter((g) => g.title.zh !== '大學部專題生' && g.members.length > 0)
+          .map((g) => (
+          <div class="group">
+            <h2 class="section-title">{t(g.title, lang)}</h2>
+            {g.members.length === 0 ? (
+              <p class="notice">{t(L.empty, lang)}</p>
+            ) : (
+              <div class="grid grid-4">
+                {g.members.map((m) => (
+                  <button type="button" class="card member member-trigger" data-member-open={m.id}>
+                    <div class="avatar">
+                      <Img src={m.image} alt={m.name} lang={lang} ratio="1/1" round label={m.name} />
+                    </div>
+                    <h3>{m.name}</h3>
+                    {m.nameEn && <p class="en">{m.nameEn}</p>}
+                    {m.role && <span class="tag">{t(m.role, lang)}</span>}
+                    {m.topic && <p class="topic">{t(m.topic, lang)}</p>}
+                    <span class="click-hint">{t(ui.viewProfile, lang)} →</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        ))
+      }
+
+      <div class="group">
+        <h2 class="section-title">{t(L.gradMs, lang)}</h2>
+        <p class="notice" style="margin-bottom:1rem">{t(L.gradMsLead, lang)}</p>
+
+        <div class="grad-toolbar">
+          <div class="grad-tabs" role="tablist">
+            <button type="button" class="grad-tab active" data-dept-filter="all">
+              {t(L.filterAll, lang)} ({graduatedMsMembers.length})
+            </button>
+            <button type="button" class="grad-tab" data-dept-filter="ee">
+              {t(L.filterEe, lang)} ({eeCount})
+            </button>
+            <button type="button" class="grad-tab" data-dept-filter="opto">
+              {t(L.filterOpto, lang)} ({optoCount})
+            </button>
+            <button
+              type="button"
+              class="grad-tab toggle-all-btn"
+              id="toggle-all-years"
+              data-expand-text={t(L.expandAll, lang)}
+              data-collapse-text={t(L.collapseAll, lang)}
+            >
+              ▾ {t(L.expandAll, lang)}
+            </button>
+          </div>
+          <input
+            type="search"
+            id="grad-search"
+            class="grad-search"
+            placeholder={t(L.searchPh, lang)}
+            aria-label={t(L.searchPh, lang)}
+          />
+        </div>
+
+        <div class="grad-accordions" id="grad-ms-grid">
+          {
+            gradByYear.map((grp, idx) => (
+              <details class="year-accordion" data-year-group={grp.year} data-default-open={idx < 2 ? '1' : '0'} open={idx < 2}>
+                <summary class="year-summary">
+                  <div class="year-summary-left">
+                    <span class="year-badge">
+                      {lang === 'zh'
+                        ? `${grp.year} 年畢業（${grp.year - 1912} 學年度）`
+                        : lang === 'ja'
+                          ? `${grp.year}年修了（${grp.year - 1912}学年度）`
+                          : `${grp.year} Graduates (AY ${grp.year - 1912})`}
+                    </span>
+                    <span class="year-count" data-year-count>
+                      {grp.members.length} {t(L.peopleUnit, lang)}
+                    </span>
+                    <span class="year-names-preview">{grp.members.map((m) => m.name).join('、')}</span>
+                  </div>
+                  <span class="year-chevron" aria-hidden="true">
+                    ▾
+                  </span>
+                </summary>
+                <div class="grid grid-4 year-cards-grid">
+                  {grp.members.map((m) => (
+                    <button
+                      type="button"
+                      class="card member member-trigger grad-ms-card"
+                      data-member-open={m.id}
+                      data-dept={m.deptCode === 'ee' ? 'ee' : 'opto'}
+                      data-search={`${m.name} ${m.nameEn ?? ''} ${m.year ?? ''} ${m.year ? m.year - 1912 : ''}學年度 ${m.topic ? t(m.topic, lang) : ''}`.toLowerCase()}
+                    >
+                      <div class="avatar">
+                        <Img src={m.image} alt={m.name} lang={lang} ratio="1/1" round label={m.name} />
+                      </div>
+                      <h3>{m.name}</h3>
+                      {m.nameEn && <p class="en">{m.nameEn}</p>}
+                      {m.role && <span class="tag">{t(m.role, lang)}</span>}
+                      {m.topic && <p class="topic topic-clamp">{t(m.topic, lang)}</p>}
+                      <span class="click-hint">{t(ui.viewProfile, lang)} →</span>
+                    </button>
+                  ))}
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 成員詳細介紹彈窗 (Modals) -->
+  {
+    allMembers.map((m) => (
+      <dialog class="member-modal" id={`modal-${m.id}`} aria-labelledby={`modal-title-${m.id}`}>
+        <div class="modal-box">
+          <button type="button" class="modal-close" data-member-close aria-label={t(ui.closeModal, lang)}>
+            ✕
+          </button>
+
+          <div class="modal-header">
+            <div class="modal-avatar">
+              <Img src={m.image} alt={m.name} lang={lang} ratio="1/1" round label={m.name} />
+            </div>
+            <div class="modal-heading">
+              <h2 id={`modal-title-${m.id}`}>
+                {m.name} {m.nameEn && <small>{m.nameEn}</small>}
+              </h2>
+              {m.role && <span class="tag">{t(m.role, lang)}</span>}
+              {m.topic && <p class="modal-topic">{t(m.topic, lang)}</p>}
+            </div>
+          </div>
+
+          {m.quote && <blockquote class="modal-quote">{t(m.quote, lang)}</blockquote>}
+
+          {m.bio && (
+            <div class="modal-section">
+              <h3>{t(L.secBio, lang)}</h3>
+              <p>{t(m.bio, lang)}</p>
+            </div>
+          )}
+
+          {m.skills && m.skills.length > 0 && (
+            <div class="modal-section">
+              <h3>{t(L.secSkills, lang)}</h3>
+              <div class="modal-tags">
+                {m.skills.map((s) => (
+                  <span class="tag">{t(s, lang)}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {m.education && m.education.length > 0 && (
+            <div class="modal-section">
+              <h3>{t(L.secEdu, lang)}</h3>
+              <ul class="modal-list">
+                {m.education.map((ed) => (
+                  <li>{t(ed, lang)}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {m.projects && m.projects.length > 0 && (
+            <div class="modal-section">
+              <h3>{t(L.secProj, lang)}</h3>
+              <div class="modal-projects">
+                {m.projects.map((p) => (
+                  <div class="modal-proj-card">
+                    <div class="modal-proj-head">
+                      <strong>
+                        {p.url ? (
+                          <a href={p.url} target="_blank" rel="noopener noreferrer">
+                            {t(p.title, lang)} ↗
+                          </a>
+                        ) : (
+                          t(p.title, lang)
+                        )}
+                      </strong>
+                      {p.badge && <span class="tag">{t(p.badge, lang)}</span>}
+                    </div>
+                    <p>{t(p.desc, lang)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {m.links && m.links.length > 0 && (
+            <div class="modal-section">
+              <h3>{t(L.secLinks, lang)}</h3>
+              <div class="modal-links">
+                {m.links.map((lk) => (
+                  <a
+                    class:list={['btn-link-pill', lk.icon === 'thesis' && 'primary']}
+                    href={lk.url}
+                    target={lk.url.startsWith('http') ? '_blank' : undefined}
+                    rel={lk.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  >
+                    {lk.icon === 'thesis' && '📜 '}
+                    {lk.icon === 'book' && '📚 '}
+                    {lk.icon === 'globe' && '🌐 '}
+                    {lk.icon === 'github' && '💻 '}
+                    {lk.icon === 'instagram' && '📸 '}
+                    {lk.icon === 'mail' && '✉️ '}
+                    {lk.icon === 'link' && '🔗 '}
+                    {t(lk.label, lang)} ↗
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </dialog>
+    ))
+  }
+
+  <section class="section alt">
+    <div class="container">
+      <h2 class="section-title">{t(L.alumni, lang)}</h2>
+      <p class="notice">{t(L.alumniNote, lang)}</p>
+      <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>{t(L.year, lang)}</th>
+                <th>{t(L.name, lang)}</th>
+                <th>{t(L.cat, lang)}</th>
+                <th>{t(L.thesis, lang)}</th>
+                <th>{t(L.thesisCol, lang)}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                alumni.map((a) => (
+                  <tr class={a.id ? 'clickable-row' : undefined} data-member-open={a.id}>
+                    <td>
+                      <strong>{a.year}</strong>
+                      <small style="display:block;color:var(--muted);font-size:0.75rem;">
+                        {a.year - 1912} {lang === 'en' ? 'AY' : '學年'}
+                      </small>
+                    </td>
+                    <td>
+                      {a.id ? (
+                        <button type="button" class="row-name-btn" data-member-open={a.id}>
+                          {a.name}
+                        </button>
+                      ) : (
+                        a.name
+                      )}
+                    </td>
+                    <td>
+                      <span class:list={['cat-badge', a.type === 'ms' ? (a.deptCode === 'ee' ? 'ms' : 'opto') : 'project']}>
+                        {a.type === 'ms'
+                          ? a.deptCode === 'ee'
+                            ? t(L.catEe, lang)
+                            : t(L.catOpto, lang)
+                          : t(L.catProj, lang)}
+                      </span>
+                    </td>
+                    <td>
+                      <div>
+                        {a.thesisUrl ? (
+                          <a
+                            href={a.thesisUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="thesis-title-link"
+                            onclick="event.stopPropagation()"
+                          >
+                            {a.thesis}
+                          </a>
+                        ) : (
+                          a.thesis
+                        )}
+                      </div>
+                      {a.thesisEn && <small class="alumni-en">{a.thesisEn}</small>}
+                      {a.note && <small class="alumni-note">🏆 {a.note}</small>}
+                    </td>
+                    <td class="thesis-link-cell">
+                      {a.thesisUrl ? (
+                        <a
+                          href={a.thesisUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="thesis-ext-btn"
+                          onclick="event.stopPropagation()"
+                        >
+                          {t(L.thesisBtn, lang)}
+                        </a>
+                      ) : a.url ? (
+                        <a
+                          href={a.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="thesis-ext-btn"
+                          onclick="event.stopPropagation()"
+                        >
+                          🏆 獲獎公告 ↗
+                        </a>
+                      ) : (
+                        '—'
+                      )}
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function () {
+      function openMemberModal(id) {
+        var dlg = document.getElementById('modal-' + id);
+        if (dlg && typeof dlg.showModal === 'function') {
+          dlg.showModal();
+          document.body.style.overflow = 'hidden';
+          if (history.replaceState) {
+            history.replaceState(null, '', '#member-' + id);
+          }
+        }
+      }
+
+      function closeMemberModal(dlg) {
+        if (!dlg) return;
+        dlg.close();
+        document.body.style.overflow = '';
+        if (location.hash.indexOf('#member-') === 0 && history.replaceState) {
+          history.replaceState(null, '', location.pathname + location.search);
+        }
+      }
+
+      document.querySelectorAll('[data-member-open]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.getAttribute('data-member-open');
+          if (id) openMemberModal(id);
+        });
+      });
+
+      document.querySelectorAll('dialog.member-modal').forEach(function (dlg) {
+        dlg.addEventListener('click', function (e) {
+          if (e.target === dlg || e.target.closest('[data-member-close]')) {
+            closeMemberModal(dlg);
+          }
+        });
+        dlg.addEventListener('close', function () {
+          document.body.style.overflow = '';
+        });
+      });
+
+      // 歷屆碩士生系所篩選、年份摺疊與關鍵字即時搜尋
+      var activeDept = 'all';
+      var searchInput = document.getElementById('grad-search');
+      var yearGroups = document.querySelectorAll('.year-accordion');
+      var deptTabs = document.querySelectorAll('[data-dept-filter]');
+      var toggleAllBtn = document.getElementById('toggle-all-years');
+      var allExpanded = false;
+
+      function updateToggleBtnText() {
+        if (!toggleAllBtn) return;
+        var expTxt = toggleAllBtn.getAttribute('data-expand-text') || '展開全部年份';
+        var colTxt = toggleAllBtn.getAttribute('data-collapse-text') || '收合全部年份';
+        toggleAllBtn.textContent = (allExpanded ? '▴ ' + colTxt : '▾ ' + expTxt);
+      }
+
+      function filterGradCards() {
+        var q = searchInput ? searchInput.value.trim().toLowerCase() : '';
+        yearGroups.forEach(function (grp) {
+          var cards = grp.querySelectorAll('.grad-ms-card');
+          var visibleCount = 0;
+          cards.forEach(function (card) {
+            var d = card.getAttribute('data-dept');
+            var s = card.getAttribute('data-search') || '';
+            var matchDept = activeDept === 'all' || d === activeDept;
+            var matchQuery = !q || s.indexOf(q) !== -1;
+            if (matchDept && matchQuery) {
+              card.style.display = '';
+              visibleCount++;
+            } else {
+              card.style.display = 'none';
+            }
+          });
+          grp.style.display = visibleCount > 0 ? '' : 'none';
+          if (q && visibleCount > 0) {
+            grp.open = true;
+          } else if (!q && !allExpanded) {
+            grp.open = grp.getAttribute('data-default-open') === '1';
+          }
+        });
+      }
+
+      deptTabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          deptTabs.forEach(function (t) {
+            t.classList.remove('active');
+          });
+          tab.classList.add('active');
+          activeDept = tab.getAttribute('data-dept-filter') || 'all';
+          filterGradCards();
+        });
+      });
+
+      if (toggleAllBtn) {
+        toggleAllBtn.addEventListener('click', function () {
+          allExpanded = !allExpanded;
+          yearGroups.forEach(function (grp) {
+            if (grp.style.display !== 'none') {
+              grp.open = allExpanded;
+            }
+          });
+          updateToggleBtnText();
+        });
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener('input', filterGradCards);
+      }
+
+      if (location.hash && location.hash.indexOf('#member-') === 0) {
+        var initialId = location.hash.replace('#member-', '');
+        openMemberModal(initialId);
+      }
+    })();
+  </script>
+</Base>
+
+<style>
+  .member-trigger {
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+    position: relative;
+  }
+  .member-trigger:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--cyan);
+  }
+  .click-hint {
+    display: inline-block;
+    margin-top: 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--cyan-text);
+    transition: transform 0.2s;
+  }
+  .member-trigger:hover .click-hint {
+    transform: translateX(3px);
+  }
+  .advisor {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    max-width: 780px;
+    margin-bottom: 3rem;
+  }
+  .advisor .avatar {
+    width: 136px;
+    flex-shrink: 0;
+  }
+  .advisor h3 {
+    margin: 0;
+    font-size: 1.45rem;
+  }
+  .advisor h3 small {
+    font-size: 0.95rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .advisor .advisor-title {
+    margin: 0.2rem 0 0.45rem;
+    color: var(--cyan-text);
+    font-weight: 700;
+  }
+  .advisor .advisor-edu {
+    margin: 0 0 0.55rem;
+    color: var(--text);
+    font-size: 0.92rem;
+  }
+  .advisor-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 0.5rem;
+  }
+  .advisor-tags .tag {
+    margin: 0;
+  }
+  .advisor .advisor-contact {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  @media (max-width: 640px) {
+    .advisor {
+      flex-direction: column;
+      text-align: center;
+    }
+    .advisor-tags {
+      justify-content: center;
+    }
+  }
+  .group {
+    margin-bottom: 3rem;
+  }
+  .group .section-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
+  }
+  .member {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .member .avatar {
+    width: 120px;
+    margin: 0 auto;
+  }
+  .member h3 {
+    margin: 0.75rem 0 0.15rem;
+  }
+  .member .en {
+    margin: 0 0 0.4rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .topic {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0.35rem 0 0;
+  }
+  .topic-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .clickable-row {
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .clickable-row:hover {
+    background: var(--cyan-soft);
+  }
+  .row-name-btn {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    font-weight: 700;
+    color: var(--heading);
+    cursor: pointer;
+    text-align: left;
+    text-decoration: underline;
+    text-decoration-color: var(--cyan);
+    text-underline-offset: 3px;
+  }
+  .avatar :global(.ph-note) {
+    display: none;
+  }
+
+  /* 彈窗 Modal 樣式 */
+  .member-modal {
+    border: 1px solid var(--line-strong);
+    border-radius: calc(var(--radius) + 4px);
+    padding: 0;
+    max-width: min(720px, 92vw);
+    width: 100%;
+    max-height: 88vh;
+    background: var(--card-bg);
+    color: var(--text);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+  }
+  .member-modal::backdrop {
+    background: rgba(6, 15, 30, 0.68);
+    backdrop-filter: blur(6px);
+  }
+  .modal-box {
+    padding: 2rem;
+    max-height: 88vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  .modal-box::-webkit-scrollbar {
+    width: 6px;
+  }
+  .modal-box::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 14px 0;
+  }
+  .modal-box::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.32);
+    border-radius: 999px;
+  }
+  .modal-box::-webkit-scrollbar-thumb:hover {
+    background: var(--cyan);
+  }
+  .modal-box::-webkit-scrollbar-button {
+    display: none;
+  }
+  @supports not selector(::-webkit-scrollbar) {
+    .modal-box {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+    }
+  }
+  .modal-close {
+    position: sticky;
+    top: 0;
+    float: right;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--bg-alt);
+    color: var(--text);
+    font-size: 1rem;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: 0.2s;
+  }
+  .modal-close:hover {
+    border-color: var(--cyan);
+    color: var(--cyan-text);
+  }
+  .modal-header {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+  .modal-avatar {
+    width: 108px;
+    flex-shrink: 0;
+  }
+  .modal-heading h2 {
+    margin: 0 0 0.35rem;
+    font-size: 1.65rem;
+  }
+  .modal-heading h2 small {
+    font-size: 1rem;
+    color: var(--muted);
+    font-weight: 500;
+    margin-left: 0.35rem;
+  }
+  .modal-topic {
+    margin: 0.35rem 0 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+  .modal-quote {
+    margin: 1rem 0 1.25rem;
+    padding: 0.75rem 1rem;
+    border-left: 4px solid var(--cyan);
+    background: var(--cyan-soft);
+    border-radius: 0 10px 10px 0;
+    font-style: italic;
+    color: var(--heading);
+  }
+  .modal-section {
+    margin-top: 1.4rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--line);
+  }
+  .modal-section h3 {
+    font-size: 1.05rem;
+    margin: 0 0 0.65rem;
+    color: var(--cyan-text);
+  }
+  .modal-section p {
+    margin: 0;
+  }
+  .modal-list {
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+  .modal-list li {
+    margin-bottom: 0.35rem;
+  }
+  .modal-list li::marker {
+    color: var(--cyan);
+  }
+  .modal-projects {
+    display: grid;
+    gap: 0.85rem;
+  }
+  .modal-proj-card {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+  }
+  .modal-proj-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    margin-bottom: 0.35rem;
+  }
+  .modal-proj-card p {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .modal-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+  .btn-link-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: var(--bg-alt);
+    color: var(--heading);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: 0.2s;
+  }
+  .btn-link-pill:hover {
+    border-color: var(--cyan);
+    background: var(--cyan-soft);
+    color: var(--cyan-text);
+  }
+  .btn-link-pill.primary {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .btn-link-pill.primary:hover {
+    background: var(--cyan);
+    color: #061527;
+    border-color: var(--cyan);
+  }
+  .grad-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+  .grad-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .grad-tab {
+    padding: 0.48rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: var(--card-bg);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .grad-tab:hover {
+    border-color: var(--cyan);
+    color: var(--cyan-text);
+  }
+  .grad-tab.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .toggle-all-btn {
+    border-style: dashed;
+    color: var(--cyan-text);
+  }
+  .grad-accordions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .year-accordion,
+  .table-accordion {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card-bg);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .year-accordion[open],
+  .table-accordion[open] {
+    border-color: var(--line-strong);
+  }
+  .year-summary,
+  .table-summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+    background: var(--bg-alt);
+    font-weight: 600;
+    transition: background 0.15s;
+  }
+  .year-summary::-webkit-details-marker,
+  .table-summary::-webkit-details-marker {
+    display: none;
+  }
+  .year-summary:hover,
+  .table-summary:hover {
+    background: var(--cyan-soft);
+  }
+  .year-summary-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    min-width: 0;
+  }
+  .year-badge {
+    font-family: Inter, sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--heading);
+    white-space: nowrap;
+  }
+  .year-count {
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: var(--navy);
+    color: #fff;
+    white-space: nowrap;
+  }
+  .year-names-preview {
+    font-size: 0.86rem;
+    color: var(--muted);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 560px;
+  }
+  .year-accordion[open] .year-names-preview {
+    opacity: 0.65;
+  }
+  .year-chevron {
+    font-size: 1rem;
+    color: var(--cyan-text);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .year-accordion[open] > summary .year-chevron,
+  .table-accordion[open] > summary .year-chevron {
+    transform: rotate(180deg);
+  }
+  .year-cards-grid {
+    padding: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .table-accordion {
+    margin-top: 1rem;
+  }
+  .table-accordion .table-wrap {
+    margin-top: 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+  }
+  .grad-search {
+    min-width: 240px;
+    flex: 1;
+    max-width: 340px;
+    padding: 0.52rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: var(--card-bg);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.9rem;
+  }
+  .grad-search:focus {
+    outline: none;
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px var(--cyan-soft);
+  }
+  @media (max-width: 560px) {
+    .modal-header {
+      flex-direction: column;
+      text-align: center;
+    }
+    .modal-box {
+      padding: 1.35rem;
+    }
+    .grad-search {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+
+  /* 校友表格 */
+  .table-wrap {
+    overflow-x: auto;
+    margin-top: 1.25rem;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  th {
+    background: var(--navy);
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  td:first-child {
+    font-family: Inter, sans-serif;
+    font-weight: 700;
+    color: var(--cyan-text);
+    white-space: nowrap;
+  }
+  td:nth-child(2) {
+    font-weight: 600;
+    min-width: 105px;
+    white-space: nowrap;
+  }
+  .cat-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15rem 0.55rem;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .cat-badge.ms {
+    background: var(--navy);
+    color: #fff;
+  }
+  .cat-badge.opto {
+    background: #1e4b7a;
+    color: #fff;
+  }
+  .cat-badge.project {
+    background: var(--cyan-soft);
+    color: var(--cyan-text);
+  }
+  .thesis-title-link {
+    color: var(--heading);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .thesis-title-link:hover {
+    color: var(--cyan-text);
+    text-decoration: underline;
+  }
+  .alumni-en {
+    display: block;
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 0.18rem;
+    font-family: Inter, sans-serif;
+  }
+  .alumni-note {
+    display: block;
+    color: var(--cyan-text);
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-top: 0.25rem;
+  }
+  .thesis-link-cell {
+    white-space: nowrap;
+  }
+  .thesis-ext-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.32rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: var(--bg-alt);
+    color: var(--cyan-text);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.2s;
+  }
+  .thesis-ext-btn:hover {
+    background: var(--cyan);
+    color: #061527;
+    border-color: var(--cyan);
+  }
+</style>

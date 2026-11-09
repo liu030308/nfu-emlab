@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="i25Bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#181028"/>
+      <stop offset="100%" stop-color="#080414"/>
+    </linearGradient>
+    <linearGradient id="bronze" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e59866"/>
+      <stop offset="100%" stop-color="#ba4a00"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#i25Bg)"/>
+  <g transform="translate(400, 230)">
+    <path d="M-60,-80 L60,-80 L45,0 C30,40 -30,40 -45,0 Z" fill="url(#bronze)"/>
+    <path d="M-60,-60 C-90,-60 -90,-20 -50,-10" fill="none" stroke="#e59866" stroke-width="8" stroke-linecap="round"/>
+    <path d="M60,-60 C90,-60 90,-20 50,-10" fill="none" stroke="#e59866" stroke-width="8" stroke-linecap="round"/>
+    <rect x="-15" y="35" width="30" height="35" fill="#873600"/>
+    <rect x="-50" y="70" width="100" height="30" rx="6" fill="#512e10" stroke="#e59866" stroke-width="2"/>
+    <text x="0" y="-30" fill="#ffffff" font-size="28" font-weight="bold" text-anchor="middle">3rd</text>
+  </g>
+  <text x="400" y="390" fill="#e59866" font-family="system-ui, sans-serif" font-size="24" font-weight="bold" text-anchor="middle">2025 全國大學校院產學創新專題競賽</text>
+  <text x="400" y="430" fill="#ffffff" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" text-anchor="middle">大會第三名</text>
+  <text x="400" y="470" fill="#d2b4de" font-family="system-ui, sans-serif" font-size="16" text-anchor="middle">智慧型跌倒即時監測系統之開發與實現</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="rta-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0b1526"/><stop offset="100%" stop-color="#13243d"/></linearGradient>
+    <radialGradient id="lamp-glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f59e0b" stop-opacity="0.9"/><stop offset="100%" stop-color="#b45309" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="600" height="450" fill="url(#rta-bg)"/>
+  <rect x="100" y="80" width="400" height="280" rx="12" fill="#1e293b" stroke="#38bdf8" stroke-width="3"/>
+  <rect x="140" y="130" width="320" height="140" rx="6" fill="rgba(56, 189, 248, 0.1)" stroke="#0ea5e9" stroke-width="1.5"/>
+  <g fill="#fbbf24" stroke="#f59e0b" stroke-width="2">
+    <circle cx="190" cy="160" r="16" fill="url(#lamp-glow)"/>
+    <circle cx="260" cy="160" r="16" fill="url(#lamp-glow)"/>
+    <circle cx="340" cy="160" r="16" fill="url(#lamp-glow)"/>
+    <circle cx="410" cy="160" r="16" fill="url(#lamp-glow)"/>
+  </g>
+  <rect x="180" y="220" width="240" height="18" rx="4" fill="#64748b" stroke="#94a3b8" stroke-width="1.5"/>
+  <rect x="220" y="214" width="160" height="6" rx="2" fill="#10b981"/>
+  <text x="300" y="206" font-family="Inter, sans-serif" font-size="11" font-weight="bold" fill="#6ee7b7" text-anchor="middle">Perovskite / QD Thin Film Wafer</text>
+  <path d="M60 200 H100" stroke="#06b6d4" stroke-width="4" stroke-linecap="round"/>
+  <text x="55" y="190" font-family="Inter, sans-serif" font-size="12" font-weight="bold" fill="#38bdf8">Ar Gas In</text>
+  <rect x="140" y="290" width="320" height="50" rx="6" fill="#020617" stroke="#334155" stroke-width="1"/>
+  <text x="200" y="322" font-family="Inter, monospace" font-size="18" font-weight="bold" fill="#ef4444">850 °C</text>
+  <text x="360" y="322" font-family="Inter, sans-serif" font-size="13" fill="#94a3b8">RAMP: 50°C/s | STEP: 180s</text>
+  <text x="300" y="405" font-family="Inter, sans-serif" font-size="16" font-weight="bold" fill="#f1f5f9" text-anchor="middle">Rapid Thermal Annealing (RTA) System</text>
+</svg>

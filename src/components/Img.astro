@@ -1,0 +1,143 @@
+---
+// 圖片元件：有 src 就顯示圖片；無 src 時若是頭像 (round=true) 則顯示精緻 Monogram / 字母頭像，非頭像則顯示簡約示意區塊
+import { t, ui, withBase, type Lang } from '../i18n/ui';
+
+interface Props {
+  src?: string;
+  alt: string;
+  lang: Lang;
+  ratio?: string; // 例如 '16/9'、'1/1'、'4/3'
+  label?: string; // 佔位提示
+  round?: boolean;
+}
+const { src, alt, lang, ratio = '16/9', label, round = false } = Astro.props;
+
+// 依姓名或標籤產生色彩豐富且穩定的漸層色（避免全站頭像色彩單調）
+function getAvatarBg(str: string): string {
+  const gradients = [
+    'linear-gradient(135deg, #0284c7, #1d4ed8)', // 科技藍
+    'linear-gradient(135deg, #0d9488, #0f766e)', // 青綠
+    'linear-gradient(135deg, #7c3aed, #5b21b6)', // 邃紫
+    'linear-gradient(135deg, #d97706, #b45309)', // 琥珀
+    'linear-gradient(135deg, #e11d48, #be123c)', // 緋紅
+    'linear-gradient(135deg, #059669, #047857)', // 翠綠
+    'linear-gradient(135deg, #4f46e5, #3730a3)', // 靛藍
+  ];
+  let hash = 0;
+  const name = str || 'NFU';
+  for (let i = 0; i < name.length; i++) {
+    hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
+  }
+  return gradients[hash % gradients.length];
+}
+
+// 擷取姓名代表首字（中文取首字或最後一字，英數取首字母）
+const displayName = (alt || label || 'N').trim();
+const isCjk = /[\u4e00-\u9fa5\u3040-\u30ff]/.test(displayName);
+const initial = isCjk
+  ? displayName.slice(0, 1)
+  : displayName.slice(0, 1).toUpperCase();
+const avatarBg = getAvatarBg(displayName);
+---
+
+{
+  src ? (
+    <img
+      class:list={['img', { round }]}
+      src={withBase(src)}
+      alt={alt}
+      style={`aspect-ratio:${ratio}`}
+      loading="lazy"
+    />
+  ) : round ? (
+    <div
+      class="avatar-monogram"
+      style={`aspect-ratio:${ratio}; background:${avatarBg}`}
+      role="img"
+      aria-label={alt}
+    >
+      <span class="monogram-text">{initial}</span>
+    </div>
+  ) : (
+    <div
+      class="ph"
+      style={`aspect-ratio:${ratio}`}
+      role="img"
+      aria-label={alt}
+    >
+      <svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true" class="ph-icon">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M4 5h16v14H4zM4 15l4-4 4 4 3-3 5 5M15.5 9.5a1.5 1.5 0 1 0 0-.01"
+        />
+      </svg>
+      <span class="ph-label">{label ?? alt}</span>
+    </div>
+  )
+}
+
+<style>
+  .img {
+    width: 100%;
+    object-fit: cover;
+    object-position: center 22%;
+    border-radius: var(--radius);
+    display: block;
+  }
+  .round {
+    border-radius: 50%;
+  }
+
+  /* 精緻頭像 Fallback */
+  .avatar-monogram {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 4px 14px rgba(0, 0, 0, 0.25);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .avatar-monogram:hover {
+    transform: scale(1.04);
+  }
+  .monogram-text {
+    color: #ffffff;
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  /* 非頭像的示意區塊 */
+  .ph {
+    width: 100%;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-align: center;
+    padding: 1rem;
+  }
+  .ph-icon {
+    opacity: 0.6;
+    color: var(--accent);
+  }
+  .ph-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+</style>

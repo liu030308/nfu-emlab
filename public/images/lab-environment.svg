@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="labBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a1128"/>
+      <stop offset="50%" stop-color="#0e1d3e"/>
+      <stop offset="100%" stop-color="#050814"/>
+    </linearGradient>
+    <linearGradient id="neonCyan" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00d4ff"/>
+      <stop offset="100%" stop-color="#0066ff"/>
+    </linearGradient>
+    <linearGradient id="benchGlow" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#00e5ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#labBg)"/>
+  
+  <g stroke="rgba(0, 212, 255, 0.12)" stroke-width="1">
+    <line x1="0" y1="450" x2="800" y2="450"/>
+    <line x1="0" y1="490" x2="800" y2="490"/>
+    <line x1="0" y1="540" x2="800" y2="540"/>
+    <line x1="400" y1="400" x2="0" y2="600" stroke-width="1.5"/>
+    <line x1="400" y1="400" x2="200" y2="600" stroke-width="1.5"/>
+    <line x1="400" y1="400" x2="600" y2="600" stroke-width="1.5"/>
+    <line x1="400" y1="400" x2="800" y2="600" stroke-width="1.5"/>
+  </g>
+
+  <rect x="100" y="320" width="600" height="160" rx="10" fill="#132247" stroke="#00d4ff" stroke-width="1.5" opacity="0.9"/>
+  <rect x="100" y="200" width="600" height="120" fill="url(#benchGlow)"/>
+
+  <g transform="translate(140, 240)">
+    <rect width="150" height="100" rx="6" fill="#1a2942" stroke="#4a6fa5" stroke-width="2"/>
+    <rect x="10" y="12" width="90" height="60" rx="4" fill="#061122" stroke="#00e5ff" stroke-width="1"/>
+    <path d="M15,42 Q25,15 35,42 T55,42 T75,42 T95,42" fill="none" stroke="#00ffcc" stroke-width="2"/>
+    <circle cx="118" cy="22" r="6" fill="#334e68" stroke="#00e5ff" stroke-width="1"/>
+    <circle cx="118" cy="42" r="6" fill="#334e68" stroke="#00e5ff" stroke-width="1"/>
+    <circle cx="118" cy="62" r="6" fill="#ffaa00" stroke="#fff" stroke-width="0.5"/>
+    <rect x="10" y="80" width="130" height="10" rx="2" fill="#0d1929"/>
+    <circle cx="22" cy="85" r="2.5" fill="#00ff88"/>
+    <circle cx="42" cy="85" r="2.5" fill="#00e5ff"/>
+  </g>
+
+  <g transform="translate(325, 210)">
+    <rect width="170" height="130" rx="8" fill="#16233b" stroke="#00d4ff" stroke-width="2"/>
+    <rect x="12" y="15" width="105" height="80" rx="4" fill="#030914" stroke="#0088ff" stroke-width="1"/>
+    <rect x="20" y="65" width="6" height="25" fill="#00d4ff" rx="1"/>
+    <rect x="30" y="50" width="6" height="40" fill="#00d4ff" rx="1"/>
+    <rect x="40" y="35" width="6" height="55" fill="#00ffaa" rx="1"/>
+    <rect x="50" y="20" width="6" height="70" fill="#ffdd00" rx="1"/>
+    <rect x="60" y="30" width="6" height="60" fill="#ff3b30" rx="1"/>
+    <rect x="70" y="55" width="6" height="35" fill="#00d4ff" rx="1"/>
+    <rect x="80" y="70" width="6" height="20" fill="#00d4ff" rx="1"/>
+    <rect x="90" y="80" width="6" height="10" fill="#0088ff" rx="1"/>
+    <circle cx="140" cy="35" r="9" fill="#223a5e" stroke="#00e5ff" stroke-width="1.5"/>
+    <rect x="128" y="60" width="25" height="6" rx="2" fill="#4a6fa5"/>
+    <rect x="128" y="72" width="25" height="6" rx="2" fill="#4a6fa5"/>
+    <rect x="128" y="84" width="25" height="6" rx="2" fill="#00ffaa"/>
+  </g>
+
+  <g transform="translate(525, 235)">
+    <rect width="145" height="105" rx="6" fill="#1a2942" stroke="#4a6fa5" stroke-width="2"/>
+    <rect x="12" y="12" width="80" height="35" rx="3" fill="#061122" stroke="#ff3b30" stroke-width="1"/>
+    <text x="20" y="36" fill="#ff3b30" font-family="monospace" font-size="18" font-weight="bold">32.00V</text>
+    <rect x="12" y="55" width="80" height="35" rx="3" fill="#061122" stroke="#00ffaa" stroke-width="1"/>
+    <text x="20" y="79" fill="#00ffaa" font-family="monospace" font-size="18" font-weight="bold">5.000A</text>
+    <circle cx="115" cy="30" r="7" fill="#334e68" stroke="#ff3b30" stroke-width="1.5"/>
+    <circle cx="115" cy="70" r="7" fill="#334e68" stroke="#00ffaa" stroke-width="1.5"/>
+  </g>
+
+  <g transform="translate(350, 360)">
+    <ellipse cx="50" cy="50" rx="60" ry="25" fill="#0e192d" stroke="#00d4ff" stroke-width="1.5"/>
+    <circle cx="50" cy="45" r="20" fill="#1b3252" stroke="#ffaa00" stroke-width="1.5"/>
+    <circle cx="50" cy="45" r="8" fill="#fff"/>
+    <circle cx="50" cy="45" r="25" fill="url(#neonCyan)" opacity="0.4"/>
+  </g>
+
+  <rect x="260" y="40" width="280" height="55" rx="10" fill="#0f1c38" stroke="#00d4ff" stroke-width="2"/>
+  <text x="400" y="65" fill="#00e5ff" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="bold" text-anchor="middle" letter-spacing="1">NATIONAL FORMOSA UNIVERSITY</text>
+  <text x="400" y="84" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" text-anchor="middle" letter-spacing="2">LED_LAB · ATC 0102</text>
+</svg>
