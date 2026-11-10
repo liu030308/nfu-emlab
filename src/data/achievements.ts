@@ -317,24 +317,40 @@ export const patentGroups: PatentGroup[] = [
         title: {
           zh: '以光穿透率面積監控潤滑油含水量之檢測方法',
           en: 'Method for monitoring water content in lubricating oil by optical transmittance area',
-          ja: '光透過率面積による潤滑油含水量の検査方法',
+          ja: '光透過率面積による潤滑油水分量監視・検出方法',
         },
       },
       {
         type: 'utility',
         title: {
           zh: '電池履歷系統',
-          en: 'Battery history management system',
-          ja: 'バッテリー履歴管理システム',
+          en: 'Battery history and lifecycle management system',
+          ja: 'バッテリー履歴・ライフサイクル管理システム',
         },
       },
       {
         type: 'utility',
-        title: { zh: '主動吸附式的承載裝置', en: 'Active suction carrier device', ja: '能動吸着式キャリア装置' },
+        title: {
+          zh: '主動吸附式的承載裝置',
+          en: 'Active suction carrier device',
+          ja: '能動吸着式キャリア装置',
+        },
       },
       {
         type: 'utility',
-        title: { zh: '蒸鍍機送料器', en: 'Material feeder for evaporation systems', ja: '蒸着装置用フィーダー' },
+        title: {
+          zh: '蒸鍍機送料器',
+          en: 'Material feeder for evaporation systems',
+          ja: '蒸着装置用フィーダー',
+        },
+      },
+      {
+        type: 'utility',
+        title: {
+          zh: '用於顯示物質分子的原子組成結構之分子結構模型',
+          en: 'Molecular structure model for displaying atomic composition of substances',
+          ja: '物質分子の原子組成構造を表示するための分子構造模型',
+        },
       },
     ],
   },
@@ -351,13 +367,36 @@ export const patentGroups: PatentGroup[] = [
       },
       {
         type: 'invention',
-        title: { zh: '發光二極體優化照明裝置', en: 'Optimized LED lighting device', ja: '最適化LED照明装置' },
+        title: {
+          zh: '發光二極體優化照明裝置',
+          en: 'Optimized LED lighting device',
+          ja: '最適化LED照明装置',
+        },
       },
       {
         type: 'utility',
-        title: { zh: 'LED 太陽能防竊庭院燈', en: 'Anti-theft solar LED garden lamp', ja: '盗難防止ソーラーLEDガーデンライト' },
+        title: {
+          zh: '高效率散熱型 LED 球泡燈',
+          en: 'High-efficiency thermal dissipation LED bulb',
+          ja: '高効率放熱型LED電球',
+        },
       },
-      { type: 'utility', title: { zh: '球泡燈', en: 'LED bulb', ja: 'LED電球' } },
+      {
+        type: 'utility',
+        title: {
+          zh: 'LED 太陽能防竊庭院燈',
+          en: 'Anti-theft solar LED garden lamp',
+          ja: '盗難防止ソーラーLEDガーデンライト',
+        },
+      },
+      {
+        type: 'utility',
+        title: {
+          zh: '隱藏式 CCTV 防盜照明投射燈',
+          en: 'Concealed CCTV anti-theft security floodlight',
+          ja: '防犯カメラ内蔵型防犯照明投光器',
+        },
+      },
     ],
   },
   {
@@ -365,11 +404,43 @@ export const patentGroups: PatentGroup[] = [
     patents: [
       {
         type: 'invention',
-        title: { zh: '紅外線拔罐器', en: 'Infrared cupping device', ja: '赤外線カッピング器' },
+        title: {
+          zh: '智慧型紅外線拔罐器',
+          en: 'Smart infrared cupping device',
+          ja: 'スマート赤外線カッピング器',
+        },
       },
       {
         type: 'invention',
-        title: { zh: '發光二極體食品溫熱器', en: 'LED food warmer', ja: 'LED食品保温器' },
+        title: {
+          zh: '聚蚊裝置',
+          en: 'Mosquito attracting and trapping apparatus',
+          ja: '蚊誘引・捕獲装置',
+        },
+      },
+      {
+        type: 'invention',
+        title: {
+          zh: '發光二極體食品溫熱器',
+          en: 'LED food warmer device',
+          ja: 'LED食品保温器',
+        },
+      },
+      {
+        type: 'utility',
+        title: {
+          zh: '具有溫度調節功能之行動寵物箱',
+          en: 'Mobile pet carrier with temperature regulation function',
+          ja: '温度調節機能付きポータブルペットケージ',
+        },
+      },
+      {
+        type: 'utility',
+        title: {
+          zh: '便攜式母乳保冷保鮮器',
+          en: 'Portable breast milk cooler and preserver',
+          ja: 'ポータブル母乳保冷器',
+        },
       },
     ],
   },
