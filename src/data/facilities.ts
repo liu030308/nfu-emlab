@@ -3,34 +3,52 @@ import type { L } from '../i18n/ui';
 
 export type Equipment = { name: L; desc: L; image: string };
 
-// 目前只列出研究資料中提到的系統，其他儀器請自行補上
+// 儀器設備列表（更新實體照片與代表性系統）
 export const equipment: Equipment[] = [
   {
     name: { zh: '快速熱退火系統 (RTA)', en: 'Rapid Thermal Annealing (RTA)', ja: '急速熱アニール装置（RTA）' },
     desc: {
-      zh: '鈣鈦礦/量子點薄膜之氬氣環境熱處理',
-      en: 'Ar-ambient annealing of perovskite / QD films',
-      ja: 'ペロブスカイト・量子ドット薄膜のAr雰囲気熱処理',
+      zh: '鈣鈦礦/量子點薄膜之氬氣環境熱處理，可精密控溫並降低薄膜缺陷與熱劣化。',
+      en: 'Ar-ambient thermal annealing of perovskite/QD thin films with precise temperature profiling to reduce defect density.',
+      ja: 'ペロブスカイト・量子ドット薄膜のAr雰囲気精密熱処理。欠陥低減と熱劣化抑制を実現。',
     },
-    image: '/images/equipment/rta.svg',
+    image: '/images/equipment/rta.webp',
   },
   {
     name: { zh: '表面電漿共振 (SPR) 量測系統', en: 'SPR Measurement System', ja: 'SPR計測システム' },
     desc: {
-      zh: '高靈敏度折射率與液體含水量量測',
-      en: 'High-sensitivity refractive-index and water-content measurement',
-      ja: '高感度な屈折率・含水量計測',
+      zh: '非接觸式高靈敏度折射率量測，應用於工業潤滑油水混合度與微量水分光學監控。',
+      en: 'High-sensitivity refractive-index and water-content optical sensing for industrial lubricant monitoring.',
+      ja: '非接触・高感度な屈折率計測。工業用潤滑油の含水量および乳化度モニタリングに応用。',
     },
-    image: '/images/equipment/spr.svg',
+    image: '/images/equipment/spr.webp',
   },
   {
     name: { zh: '自動化數據擷取平台 (DAQ)', en: 'Automated DAQ Platform', ja: '自動データ収集プラットフォーム' },
     desc: {
-      zh: 'Cypress FX2 + LabVIEW 全自動量測與微控制器整合',
-      en: 'Fully automated measurement with Cypress FX2, LabVIEW & microcontrollers',
-      ja: 'Cypress FX2＋LabVIEWによる全自動計測・マイコン統合',
+      zh: 'Cypress FX2 微控制器整合高速數位示波器與多功能電表，全自動數據擷取與分析。',
+      en: 'Fully automated measurement platform integrating Cypress FX2, digital oscilloscopes, DMMs and LabVIEW.',
+      ja: 'Cypress FX2マイコンと高速デジタルオシロスコープ・マルチメータを統合した全自動データ収集システム。',
     },
-    image: '/images/equipment/daq.svg',
+    image: '/images/equipment/daq.webp',
+  },
+  {
+    name: { zh: '積分球光電量測系統', en: 'Integrating Sphere Photometric System', ja: '積分球光度計測システム' },
+    desc: {
+      zh: '高精度 LED 發光光譜、光通量、發光效率與色度座標全光譜分析儀器。',
+      en: 'High-precision LED spectral analysis, total luminous flux, luminous efficacy and chromaticity coordinates.',
+      ja: '高精度LED発光スペクトル、全光束、発光効率および色度座標の全波長光度解析。',
+    },
+    image: '/images/equipment/integrating-sphere.webp',
+  },
+  {
+    name: { zh: '半導體微探針量測平台', en: 'Micro-Probe Measurement Station', ja: 'マイクロプローブ計測ステーション' },
+    desc: {
+      zh: '微米級晶圓、光電薄膜元件之微探針微細接觸量測與電氣特性 (I-V) 掃描。',
+      en: 'Micron-level wafer and thin-film micro-probe electrical I-V parameter characterization.',
+      ja: 'マイクロメートル級ウェハ・薄膜光電子素子の微細プローブ接触計測と電気特性（I-V）評価。',
+    },
+    image: '/images/equipment/probe-station.webp',
   },
 ];
 
@@ -109,7 +127,7 @@ export const news: News[] = [
       en: 'Planning and development of the new Electronic Measurement Lab official website commenced on 2026-11-07, supporting Chinese, English, Japanese, and dark mode, currently in active development.',
       ja: '電子計測研究室の新しい公式ウェブサイトの企画・構築を2026-11-07より開始しました。中国語・英語・日本語の3言語切替やダークモードに対応し、現在公開に向けて開発・調整中です。',
     },
-    image: '/images/news/website-launch.svg',
+    image: '/images/news/website-launch.webp',
   },
   {
     date: '2026-09-01',
@@ -123,7 +141,7 @@ export const news: News[] = [
       en: 'Welcome Jun Wei Liu, Zi-Yu Hong, and Yu-Jen Hsu to the Electronic Measurement Lab!',
       ja: '劉峻瑋さん、洪梓瑜さん、許育人さん、電子計測研究室へようこそ！',
     },
-    image: '/images/news/admissions-2026.svg',
+    image: '/images/news/admissions-2026.webp',
   },
   {
     date: '2026-03-31',
@@ -137,7 +155,7 @@ export const news: News[] = [
       en: 'Prof. Wen-Ray Chen and lab members Jun Wei Liu, Zi-Yu Hong, and Yu-Zan Pan won the Best Student Poster Award at IEEE ICCT-Pacific 2026 in Yamaguchi, Japan.',
       ja: '陳文瑞教授の指導のもと、当研究室の劉峻瑋・洪梓瑜・潘昱澤が日本・山口大学で開催されたIEEE ICCT-Pacific 2026にて「AIoT Base Smart Consumables Drying Cabinet」を発表し、最優秀学生ポスター賞を受賞しました。',
     },
-    image: '/images/news/icct-pacific-2026.svg',
+    image: '/images/news/icct-pacific-2026.webp',
     url: 'https://2026.icct-pacific.org/awards/',
   },
   {
@@ -152,7 +170,7 @@ export const news: News[] = [
       en: 'Advised by Prof. Wen-Ray Chen, lab members Yu-Cong Chen, Yu-Zan Pan, and Yu-Jen Hsu won 3rd Place with "Smart Real-Time Fall Detection System".',
       ja: '陳文瑞教授の指導のもと、当研究室の陳昱琮・潘昱澤・許育人が「スマートリアルタイム転倒検知システムの開発と応用」で第3位を受賞しました。',
     },
-    image: '/images/news/innovation-2025.svg',
+    image: '/images/news/innovation-2025.webp',
     url: 'https://eedept.ncue.edu.tw/innovation2025/s2.html#winning-list',
   },
   {
@@ -167,7 +185,7 @@ export const news: News[] = [
       en: 'Awarded for "Pedal Power Generation in Smart Elderly Rehabilitation Systems" advised by Prof. Wen-Ray Chen.',
       ja: '陳文瑞教授が指導する学生チームが「ペダル発電を用いた高齢者スマート健康リハビリシステム」で受賞しました。',
     },
-    image: '/images/news/innovation-2024.svg',
+    image: '/images/news/innovation-2024.webp',
     url: 'https://dee.nfu.edu.tw/zh_tw/news/恭賀-本系陳文瑞老師指導參加『2024全國大專院校產學創新實作競賽』-榮獲手工具創新設計獎-電子系全體師生恭賀-43444169',
   },
 ];

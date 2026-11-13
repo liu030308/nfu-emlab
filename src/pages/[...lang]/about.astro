@@ -39,7 +39,13 @@ const L = {
         <p>{t(lab.intro, lang)}</p>
         <p><span class="tag">📍 {t(lab.location, lang)}</span></p>
       </div>
-      <Img src={lab.labImage} alt={t(lab.name, lang)} lang={lang} ratio="4/3" label="Lab Photo" />
+      <figure class="lab-plaque-figure">
+        <Img src={lab.labImage} alt={t(lab.name, lang)} lang={lang} ratio="4/3" label="Lab Plaque" />
+        <figcaption class="plaque-caption">
+          <strong>{t({ zh: '電子量測實驗室 實體門牌', en: 'Electronic Measurement Lab Official Plaque', ja: '電子計測研究室 公式木彫表札' }, lang)}</strong>
+          <span>📍 {t(lab.location, lang)}</span>
+        </figcaption>
+      </figure>
     </div>
   </section>
 
@@ -174,6 +180,24 @@ const L = {
   }
   .pi-list li + li {
     margin-top: 0.15rem;
+  }
+  .lab-plaque-figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .plaque-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.88rem;
+    color: var(--muted);
+    padding: 0 0.25rem;
+  }
+  .plaque-caption strong {
+    color: var(--heading);
+    font-weight: 600;
   }
   .muted {
     color: var(--muted);

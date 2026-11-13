@@ -53,7 +53,8 @@ export const lab = {
     },
   ],
   heroImage: '', // 首頁主視覺
-  labImage: '/images/lab-environment.svg', // 實驗室環境示意圖
+  labImage: '/images/lab-plaque.webp', // 實驗室實體門牌照片
+  plaqueImage: '/images/lab-plaque.webp', // 實驗室木質雕刻門牌
 };
 
 export const pi = {

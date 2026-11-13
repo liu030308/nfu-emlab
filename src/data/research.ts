@@ -47,7 +47,7 @@ export const research: ResearchArea[] = [
       { zh: '車用雷射頭燈', en: 'Automotive laser headlamps', ja: '車載レーザーヘッドランプ' },
       { zh: '微型投影光學引擎', en: 'Pico-projector optical engines', ja: '小型プロジェクター光学エンジン' },
     ],
-    image: '/images/research/packaging.svg',
+    image: '/images/research/packaging.webp',
   },
   {
     id: 'perovskite',
@@ -89,7 +89,7 @@ export const research: ResearchArea[] = [
       { zh: '量子點發光元件', en: 'QD light-emitting devices', ja: '量子ドット発光素子' },
       { zh: '綠能光電', en: 'Green-energy optoelectronics', ja: 'グリーンエネルギー光電子' },
     ],
-    image: '/images/research/perovskite.svg',
+    image: '/images/research/perovskite.webp',
   },
   {
     id: 'sensing',
@@ -130,7 +130,7 @@ export const research: ResearchArea[] = [
       },
       { zh: '工業設備預知保養', en: 'Predictive maintenance', ja: '予知保全' },
     ],
-    image: '/images/research/sensing.svg',
+    image: '/images/research/sensing.webp',
   },
 ];
 
