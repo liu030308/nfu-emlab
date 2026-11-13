@@ -7,14 +7,14 @@ export const lab = {
   name: { zh: '電子量測實驗室 LED_LAB', en: 'Electronic Measurement Laboratory LED_LAB', ja: '電子計測研究室 LED_LAB' } as L,
   room: 'ATC 0102',
   location: {
-    zh: '綜合三館（第三教學大樓）1 樓 ATC 0102',
-    en: 'Room ATC 0102, 1F, Academic Building III',
-    ja: '総合第三館 1階 ATC 0102',
+    zh: '第一校區 第三教學大樓 1 樓 ATC 0102',
+    en: 'Room ATC 0102, 1F, Academic Building III (Campus 1)',
+    ja: '第一キャンパス 第三教育研究棟 1階 ATC 0102',
   } as L,
   address: {
-    zh: '632301 雲林縣虎尾鎮文化路 64 號 國立虎尾科技大學',
-    en: 'No. 64, Wenhua Rd., Huwei, Yunlin 632301, Taiwan',
-    ja: '〒632301 台湾 雲林県虎尾鎮文化路64号 国立虎尾科技大学',
+    zh: '632301 雲林縣虎尾鎮文化路 64 號 國立虎尾科技大學（第一校區）',
+    en: 'No. 64, Wenhua Rd., Huwei, Yunlin 632301, Taiwan (Campus 1)',
+    ja: '〒632301 台湾 雲林県虎尾鎮文化路64号 国立虎尾科技大学（第一キャンパス）',
   } as L,
   tagline: {
     zh: '從半導體材料到智慧感測，打造下一代光電量測技術',
@@ -138,9 +138,9 @@ export const pi = {
   email: 'chenwr@nfu.edu.tw',
   profileUrl: 'https://dee.nfu.edu.tw/zh_tw/members/professor/Wen_Ray_Chen',
   office: {
-    zh: '個人研究室：綜合三館 3 樓 ATC0303-2｜系主任辦公室：綜合三館 2 樓 ATC0204-2｜研究實驗室：ATC0102',
-    en: 'Office: ATC0303-2 (3F) | Chair’s Office: ATC0204-2 (2F) | Research Lab: ATC0102, Academic Building III',
-    ja: '個人研究室：総合第三館 3階 ATC0303-2｜学科長室：2階 ATC0204-2｜研究実験室：ATC0102',
+    zh: '個人研究室：第三教學大樓 3 樓 ATC0303-2｜系主任辦公室：第三教學大樓 2 樓 ATC0204-2｜研究實驗室：第一校區 第三教學大樓 1 樓 ATC0102',
+    en: 'Office: ATC0303-2 (3F) | Chair’s Office: ATC0204-2 (2F) | Research Lab: ATC0102 (1F), Academic Building III (Campus 1)',
+    ja: '個人研究室：第三教育研究棟 3階 ATC0303-2｜学科長室：2階 ATC0204-2｜研究実験室：第一キャンパス 第三教育研究棟 1階 ATC0102',
   } as L,
   image: '/images/pi-chen.jpg',
 };
