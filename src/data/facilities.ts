@@ -149,6 +149,15 @@ export const safetyRules: { icon: string; title: L; desc: L }[] = [
     },
   },
   {
+    icon: '🐾',
+    title: { zh: '禁止飼養寵物', en: 'No Pets Allowed', ja: 'ペット飼育・持ち込み禁止' },
+    desc: {
+      zh: '實驗室內全面嚴禁飼養或攜帶任何寵物，以維護環境衛生與精密光電儀器設備安全。',
+      en: 'Keeping or bringing pets into the lab is strictly prohibited to ensure hygiene and the safety of precision optical equipment.',
+      ja: '環境衛生の維持および精密光電測定機器の保護のため、研究室内でのペットの飼育や持ち込みは一切禁止します。',
+    },
+  },
+  {
     icon: '🧯',
     title: { zh: '不導電滅火設備', en: 'Non-conductive Extinguishers', ja: '非導電性消火設備' },
     desc: {
