@@ -103,7 +103,7 @@ export const research: ResearchArea[] = [
       { zh: 'Mini / Micro LED 顯示固晶封裝', en: 'Mini/Micro LED display packaging', ja: 'Mini/Micro LEDディスプレイ実装' },
       { zh: '高可靠度晶片固晶載板', en: 'High-reliability flip-chip substrates', ja: '高信頼性フリップチップ基板' },
     ],
-    image: '/images/equipment/vacuum-evaporation.webp',
+    image: '/images/equipment/deposition-system.webp',
   },
   {
     id: 'aiot',
@@ -443,7 +443,7 @@ export const research: ResearchArea[] = [
       { zh: '節能高均勻度 LED 路燈與投光燈', en: 'Energy-efficient uniform LED streetlights', ja: '省エネ高均一LED街路灯・投光器' },
       { zh: '全彩高對比顯示看板模組', en: 'Full-color high-contrast display signage', ja: 'フルカラー高コントラスト表示看板' },
     ],
-    image: '/images/research/packaging.webp',
+    image: '/images/equipment/integrating-sphere.webp',
   },
   {
     id: 'pv_green',
