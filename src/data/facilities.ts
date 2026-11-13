@@ -72,14 +72,14 @@ export const equipment: Equipment[] = [
   },
   {
     name: {
-      zh: 'AIoT 智慧耗材防潮烘烤箱（ICCT 國際獲獎研發設備）',
-      en: 'AIoT Smart Consumables Drying Cabinet',
-      ja: 'AIoTスマートフィラメント防潮乾燥オーブン',
+      zh: '普羅森 Phrozen FDM 3D 列印機',
+      en: 'Phrozen FDM 3D Printer',
+      ja: 'Phrozen FDM 3Dプリンター',
     },
     desc: {
-      zh: '本實驗室團隊自主研發之高精度智慧防潮烘箱，結合 ESP32 雙微控制器、SHT40 溫濕度即時感測、雲端 IoT 遠端監控與雙溫區獨立 PID 溫控演算法，榮獲 IEEE ICCT-Pacific 2026「最佳學生壁報論文獎」。',
-      en: 'Custom-developed smart drying cabinet by our lab team, integrating dual ESP32 MCUs, SHT40 climate sensing, cloud IoT monitoring, and dual-zone PID control. Awarded Best Student Poster Award at IEEE ICCT-Pacific 2026.',
-      ja: '当研究室チームが独自開発した高精度スマート防潮乾燥オーブン。ESP32デュアルMCU、SHT40環境センサ、クラウドIoT、2ゾーンPID温調を統合し、IEEE ICCT-Pacific 2026「最優秀学生ポスター賞」を受賞。',
+      zh: '普羅森（Phrozen）高速封閉式 FDM 3D 列印機，配備封閉保溫機箱與頂部耗材防潮烘乾加熱盒，專門用於實驗量測治具、感測器外殼、結構構件與專案實作樣機之快速成型。',
+      en: 'Phrozen high-speed enclosed FDM 3D printer with temperature-retaining chamber and top filament dry-box heater for rapid fabrication of test fixtures, sensor enclosures, and prototypes.',
+      ja: 'Phrozen高速密閉型FDM 3Dプリンター。保温チャンバーと上部フィラメント防潮乾燥加熱ボックスを備え、計測用治具・センサーケース・プロトタイプ機構部品の迅速な試作造形に使用。',
     },
     image: '/images/equipment/3d-printer-card.webp',
   },
