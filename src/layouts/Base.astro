@@ -417,6 +417,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         const closeNav = () => {
           if (!siteNav) return;
           siteNav.classList.remove('open');
+          document.body.classList.remove('nav-open');
           if (navBtn) {
             navBtn.classList.remove('open');
             navBtn.setAttribute('aria-expanded', 'false');
@@ -427,6 +428,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
           navBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             const isOpen = siteNav.classList.toggle('open');
+            document.body.classList.toggle('nav-open', isOpen);
             navBtn.classList.toggle('open', isOpen);
             navBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
           });
