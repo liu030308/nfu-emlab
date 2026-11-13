@@ -80,12 +80,51 @@ const L = {
           <p class="photo-caption">📊 <strong>{t({ zh: '高速數位示波器 (BK 2565B)', en: 'Digital Storage Oscilloscope', ja: 'デジタルオシロスコープ' }, lang)}</strong></p>
         </div>
         <div class="card photo-card">
-          <Img src="/images/equipment/rta.webp" alt="真空熱退火系統" lang={lang} ratio="4/3" />
-          <p class="photo-caption">⚡ <strong>{t({ zh: '真空熱退火與精密溫控系統', en: 'Vacuum Annealing System', ja: '真空熱アニール装置' }, lang)}</strong></p>
+          <Img src="/images/equipment/rta.webp" alt="真空熱蒸鍍沉積機台" lang={lang} ratio="4/3" />
+          <p class="photo-caption">⚡ <strong>{t({ zh: '真空熱蒸鍍沉積機台 (VD-7071)', en: 'Vacuum Thermal Evaporator', ja: '真空熱蒸着成膜装置' }, lang)}</strong></p>
         </div>
       </div>
       <div style="margin-top: 1.75rem; text-align: center;">
         <a class="btn btn-ghost" href={pageUrl(lang, 'facilities')}>{t({ zh: '查看全部實驗室機台與規範 →', en: 'View All Equipment & Facilities →', ja: '全設備・安全規則を見る →' }, lang)}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container">
+      <h2 class="section-title">{t({ zh: '歷屆學長姐與團隊活動剪影', en: 'Team & Alumni Activity Highlights', ja: '歴代の先輩方・チーム活動の記録' }, lang)}</h2>
+      <p class="lead" style="margin-bottom: 2rem;">{t({ zh: '凝聚智慧與汗水，代表虎科大於國際學術研討會與全國創新競賽屢獲殊榮的真實影像記錄', en: 'Honoring the dedication of our students representing NFU at international conferences and national competitions', ja: '国際学会や全国コンテストで活躍してきた歴代メンバーの実際の活動記録' }, lang)}</p>
+      <div class="grid grid-3 lab-photos-grid">
+        <div class="card photo-card">
+          <Img src="/images/seniors/icct-2026-award.webp" alt="IEEE ICCT-Pacific 2026 獲獎" lang={lang} ratio="4/3" />
+          <p class="photo-caption">🏆 <strong>{t({ zh: 'IEEE ICCT-Pacific 2026 國際獲獎', en: 'ICCT-Pacific 2026 Award in Japan', ja: 'IEEE ICCT-Pacific 2026 国際受賞' }, lang)}</strong></p>
+          <p class="activity-desc">{t({ zh: '日本山口大學，劉峻瑋、洪梓瑜、潘昱澤、盧暐竑榮獲最佳學生壁報論文獎', en: 'Yamaguchi University, Japan — Best Student Poster Award', ja: '日本山口大学にて最優秀学生ポスター賞を受賞' }, lang)}</p>
+        </div>
+        <div class="card photo-card">
+          <Img src="/images/seniors/innovation-2024-team.webp" alt="2024 全國產學創新實作競賽" lang={lang} ratio="4/3" />
+          <p class="photo-caption">🥇 <strong>{t({ zh: '2024 全國創新實作競賽獲獎', en: '2024 National Innovation Award', ja: '2024 全国イノベーション大会受賞' }, lang)}</strong></p>
+          <p class="activity-desc">{t({ zh: '陳文瑞教授與朱囿儒、林學澤、張翔袁、陳昱琮、潘昱澤榮獲手工具創新設計獎', en: 'Advised by Prof. Chen, team won Innovation Design Award', ja: '陳文瑞教授と学生チームが革新デザイン賞を受賞' }, lang)}</p>
+        </div>
+        <div class="card photo-card">
+          <Img src="/images/seniors/innovation-2023-team.webp" alt="2023 全國產學創新實作競賽" lang={lang} ratio="4/3" />
+          <p class="photo-caption">🎖️ <strong>{t({ zh: '2023 全國產學創新實作競賽', en: '2023 National Innovation Team', ja: '2023 全国イノベーション大会' }, lang)}</strong></p>
+          <p class="activity-desc">{t({ zh: '林揚恩、陳靖中、林學澤、朱囿儒、張翔袁榮獲佳作獎', en: 'Team won Honorable Mention for IoT concentration sensing', ja: '落球式油濃度計測システムにて佳作受賞' }, lang)}</p>
+        </div>
+        <div class="card photo-card">
+          <Img src="/images/seniors/innovation-2023-demo.webp" alt="2023 競賽現場實機展示" lang={lang} ratio="4/3" />
+          <p class="photo-caption">⚙️ <strong>{t({ zh: '競賽展位實機操作與量測展示', en: 'On-site Prototype Demonstration', ja: 'コンテスト会場での実機デモ' }, lang)}</strong></p>
+          <p class="activity-desc">{t({ zh: '學長姐於全國大賽展位向產學評審委員展示 IoT 落球式油品檢測機台', en: 'Live demonstration of the IoT oil sensing apparatus to judges', ja: '審査員に向けたIoT落球式検査装置の実機デモンストレーション' }, lang)}</p>
+        </div>
+        <div class="card photo-card">
+          <Img src="/images/seniors/tie-2021-team.webp" alt="2021 台灣創新技術博覽會 (TIE)" lang={lang} ratio="4/3" />
+          <p class="photo-caption">🥉 <strong>{t({ zh: '2021 台灣創新技術博覽會 (TIE)', en: '2021 Taiwan Innotech Expo', ja: '2021 台湾イノテックエキスポ' }, lang)}</strong></p>
+          <p class="activity-desc">{t({ zh: '蕭宇良、陳彰、張日星、葉佩欣以「電池履歷系統」榮獲銅牌獎', en: 'Bronze Medal for Battery History Management System', ja: '「バッテリー履歴管理システム」にて銅賞受賞' }, lang)}</p>
+        </div>
+        <div class="card photo-card">
+          <Img src="/images/seniors/grad-seniors.webp" alt="實驗室學長姐畢業與合影" lang={lang} ratio="4/3" />
+          <p class="photo-caption">🎓 <strong>{t({ zh: '實驗室歷屆學長姐齊聚', en: 'Lab Alumni & Members', ja: '研究室の歴代メンバー' }, lang)}</strong></p>
+          <p class="activity-desc">{t({ zh: '傳承嚴謹量測精神與深厚學長姐情誼，同窗共學、攜手研發', en: 'Tradition of precision measurement and strong teamwork across cohorts', ja: '精密計測の精神と強固な絆を受け継ぐ研究室の仲間たち' }, lang)}</p>
+        </div>
       </div>
     </div>
   </section>
@@ -238,6 +277,13 @@ const L = {
     margin: 0;
     font-size: 0.95rem;
     color: var(--heading);
+    text-align: center;
+  }
+  .activity-desc {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
     text-align: center;
   }
   .muted {
