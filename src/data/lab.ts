@@ -16,6 +16,7 @@ export const lab = {
     en: 'No. 64, Wenhua Rd., Huwei, Yunlin 632301, Taiwan (Campus 1)',
     ja: '〒632301 台湾 雲林県虎尾鎮文化路64号 国立虎尾科技大学（第一キャンパス）',
   } as L,
+  mapUrl: 'https://maps.app.goo.gl/H6PMFg5xk6Nzutm77',
   tagline: {
     zh: '從半導體材料到智慧感測，打造下一代光電量測技術',
     en: 'From semiconductor materials to smart sensing — building next-generation optoelectronic measurement.',
