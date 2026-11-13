@@ -59,16 +59,29 @@ export const equipment: Equipment[] = [
   },
   {
     name: {
-      zh: 'OPTIMUM IS-250 積分球光電量測系統',
-      en: 'OPTIMUM IS-250 Integrating Sphere Photometric System',
-      ja: 'OPTIMUM IS-250 積分球光度計測システム',
+      zh: '大尺寸高功率照明積分球量測系統',
+      en: 'Large-Aperture Luminaire Integrating Sphere System',
+      ja: '大口径高出力照明積分球計測システム',
     },
     desc: {
-      zh: 'OPTIMUM IS-250 專業積分球量測機台，搭配高靈敏度光纖光譜儀與精密電氣激勵源，專門精確量測發光二極體 (LED) 之全光通量 (Lumen)、發光效率、CIE 色度座標 (x, y)、相關色溫 (CCT) 與全波長發光光譜。',
-      en: 'OPTIMUM IS-250 professional integrating sphere photometric system with fiber spectrometer and precision source measure units for LED luminous flux, luminous efficacy, CIE chromaticity coordinates, CCT, and full-spectrum characterization.',
-      ja: 'OPTIMUM IS-250 積分球光度計測システム。高感度光ファイバー分光器と高精度電源を組み合わせ、LED素子の全光束（ルーメン）、発光効率、CIE色度座標、相関色温度（CCT）および全波長発光スペクトルを高精度に計測。',
+      zh: '大口徑光度量測積分球（大球），專門用於大尺寸高功率 LED 燈具、照明模組、植物生長燈及路燈樣品之全光通量 (Lumen)、發光效率與空間光分佈之精密收集與分析。',
+      en: 'Large-diameter photometric integrating sphere dedicated to total luminous flux, luminous efficacy, and spatial light collection for high-power LED luminaires, plant lights, and streetlamp modules.',
+      ja: '大口径測光積分球。大型高出力LED照明器具、植物育成灯、街路灯モジュールの全光束（ルーメン）、発光効率および配光特性の精密測定に対応。',
     },
-    image: '/images/equipment/integrating-sphere.webp',
+    image: '/images/equipment/integrating-sphere-large.webp',
+  },
+  {
+    name: {
+      zh: 'OPTIMUM IS-250 精密元件積分球量測系統',
+      en: 'OPTIMUM IS-250 Precision Integrating Sphere System',
+      ja: 'OPTIMUM IS-250 精密素子積分球計測システム',
+    },
+    desc: {
+      zh: 'OPTIMUM IS-250 專業高精度桌面型積分球機台（小球），專門針對單顆微光電晶片、覆晶封裝 LED 元件與微型顯示光源，精確量測全波長光譜、CIE 色度座標 (x, y)、相關色溫 (CCT) 與光學演色性。',
+      en: 'OPTIMUM IS-250 high-precision benchtop integrating sphere with fiber spectrometer, customized for single optoelectronic dies and flip-chip LEDs to measure full spectra, CIE coordinates, CCT, and CRI.',
+      ja: 'OPTIMUM IS-250 高精度ベンチトップ型積分球。単一光電子チップ、フリップチップ実装LED素子および微小光源の全波長スペクトル、CIE色度座標、相関色温度（CCT）を高精度に計測。',
+    },
+    image: '/images/equipment/integrating-sphere-small.webp',
   },
   {
     name: {
