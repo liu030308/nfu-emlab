@@ -42,7 +42,7 @@ export const equipment: Equipment[] = [
       en: 'Equipped with VD-7071 deposition power supply, precision AC meters, and stainless steel high-vacuum chamber for semiconductor electrode metallization and thin-film thermal evaporation.',
       ja: 'VD-7071蒸着用電源、高精度計器、ステンレス製高真空チャンバーを備え、半導体電極金属化（Al、Ag、Au）および光電子薄膜の熱蒸着製程に使用。',
     },
-    image: '/images/equipment/rta.webp',
+    image: '/images/equipment/vacuum-chamber.webp',
   },
   {
     name: {
@@ -56,6 +56,19 @@ export const equipment: Equipment[] = [
       ja: 'Advanced Energy MDX-1K DCドライブ、KYKY複合真空計、ガス流量制御を備え、高品質な半導体薄膜スパッタリング成膜およびプラズマ表面処理を実施。',
     },
     image: '/images/equipment/deposition-system.webp',
+  },
+  {
+    name: {
+      zh: 'OPTIMUM IS-250 積分球光電量測系統',
+      en: 'OPTIMUM IS-250 Integrating Sphere Photometric System',
+      ja: 'OPTIMUM IS-250 積分球光度計測システム',
+    },
+    desc: {
+      zh: 'OPTIMUM IS-250 專業積分球量測機台，搭配高靈敏度光纖光譜儀與精密電氣激勵源，專門精確量測發光二極體 (LED) 之全光通量 (Lumen)、發光效率、CIE 色度座標 (x, y)、相關色溫 (CCT) 與全波長發光光譜。',
+      en: 'OPTIMUM IS-250 professional integrating sphere photometric system with fiber spectrometer and precision source measure units for LED luminous flux, luminous efficacy, CIE chromaticity coordinates, CCT, and full-spectrum characterization.',
+      ja: 'OPTIMUM IS-250 積分球光度計測システム。高感度光ファイバー分光器と高精度電源を組み合わせ、LED素子の全光束（ルーメン）、発光効率、CIE色度座標、相関色温度（CCT）および全波長発光スペクトルを高精度に計測。',
+    },
+    image: '/images/equipment/integrating-sphere.webp',
   },
   {
     name: {
