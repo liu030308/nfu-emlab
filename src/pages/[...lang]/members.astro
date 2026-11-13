@@ -531,114 +531,113 @@ const allMembers: Member[] = [piProfile, ...memberGroups.flatMap((g) => g.member
   </section>
 
   <script is:inline>
-    (function () {
-      function openMemberModal(id) {
-        var dlg = document.getElementById('modal-' + id);
-        if (dlg && typeof dlg.showModal === 'function') {
+    (() => {
+      const openMemberModal = (id) => {
+        const dlg = document.getElementById(`modal-${id}`);
+        if (dlg instanceof HTMLDialogElement && typeof dlg.showModal === 'function') {
           dlg.showModal();
           document.body.style.overflow = 'hidden';
           if (history.replaceState) {
-            history.replaceState(null, '', '#member-' + id);
+            history.replaceState(null, '', `#member-${id}`);
           }
         }
-      }
+      };
 
-      function closeMemberModal(dlg) {
+      const closeMemberModal = (dlg) => {
         if (!dlg) return;
         dlg.close();
         document.body.style.overflow = '';
-        if (location.hash.indexOf('#member-') === 0 && history.replaceState) {
+        if (location.hash.startsWith('#member-') && history.replaceState) {
           history.replaceState(null, '', location.pathname + location.search);
         }
-      }
+      };
 
-      document.querySelectorAll('[data-member-open]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var id = btn.getAttribute('data-member-open');
+      document.querySelectorAll('[data-member-open]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-member-open');
           if (id) openMemberModal(id);
         });
       });
 
-      document.querySelectorAll('dialog.member-modal').forEach(function (dlg) {
-        dlg.addEventListener('click', function (e) {
-          if (e.target === dlg || e.target.closest('[data-member-close]')) {
+      document.querySelectorAll('dialog.member-modal').forEach((dlg) => {
+        if (!(dlg instanceof HTMLDialogElement)) return;
+        dlg.addEventListener('click', (e) => {
+          const target = e.target;
+          if (target === dlg || (target instanceof Element && target.closest('[data-member-close]'))) {
             closeMemberModal(dlg);
           }
         });
-        dlg.addEventListener('close', function () {
+        dlg.addEventListener('close', () => {
           document.body.style.overflow = '';
         });
       });
 
-      // 點擊複製電子郵件（Click to copy email with feedback）
-      document.querySelectorAll('.btn-copy-email').forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
+      // 點擊複製電子郵件（Modern Clipboard API with fallback）
+      document.querySelectorAll('.btn-copy-email').forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
           e.preventDefault();
           e.stopPropagation();
-          var email = btn.getAttribute('data-copy-email');
+          const email = btn.getAttribute('data-copy-email');
           if (!email) return;
 
-          var badge = btn.querySelector('.copy-badge');
-          var origBadge = badge ? badge.textContent : '';
+          const badge = btn.querySelector('.copy-badge');
+          const origBadge = badge ? badge.textContent : '';
 
-          function onCopied() {
+          const onCopied = () => {
             btn.classList.add('copied');
             if (badge) badge.textContent = '✓ 已複製！';
-            setTimeout(function () {
+            setTimeout(() => {
               btn.classList.remove('copied');
               if (badge) badge.textContent = origBadge;
             }, 2000);
-          }
+          };
 
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(email).then(onCopied).catch(function () {
-              fallbackCopy(email, onCopied);
-            });
-          } else {
-            fallbackCopy(email, onCopied);
-          }
+          try {
+            if (navigator?.clipboard?.writeText) {
+              await navigator.clipboard.writeText(email);
+              onCopied();
+            } else {
+              const ta = document.createElement('textarea');
+              ta.value = email;
+              ta.style.position = 'fixed';
+              ta.style.opacity = '0';
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand('copy');
+              document.body.removeChild(ta);
+              onCopied();
+            }
+          } catch (_) {}
         });
       });
 
-      function fallbackCopy(text, cb) {
-        var ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        try {
-          document.execCommand('copy');
-          cb();
-        } catch (err) {}
-        document.body.removeChild(ta);
-      }
-
       // 歷屆碩士生系所篩選、年份摺疊與關鍵字即時搜尋
-      var activeDept = 'all';
-      var searchInput = document.getElementById('grad-search');
-      var yearGroups = document.querySelectorAll('.year-accordion');
-      var deptTabs = document.querySelectorAll('[data-dept-filter]');
-      var toggleAllBtn = document.getElementById('toggle-all-years');
-      var allExpanded = false;
+      let activeDept = 'all';
+      const searchInput = document.getElementById('grad-search');
+      const yearGroups = document.querySelectorAll('.year-accordion');
+      const deptTabs = document.querySelectorAll('[data-dept-filter]');
+      const toggleAllBtn = document.getElementById('toggle-all-years');
+      let allExpanded = false;
 
-      function updateToggleBtnText() {
+      const updateToggleBtnText = () => {
         if (!toggleAllBtn) return;
-        var expTxt = toggleAllBtn.getAttribute('data-expand-text') || '展開全部年份';
-        var colTxt = toggleAllBtn.getAttribute('data-collapse-text') || '收合全部年份';
-        toggleAllBtn.textContent = (allExpanded ? '▴ ' + colTxt : '▾ ' + expTxt);
-      }
+        const expTxt = toggleAllBtn.getAttribute('data-expand-text') ?? '展開全部年份';
+        const colTxt = toggleAllBtn.getAttribute('data-collapse-text') ?? '收合全部年份';
+        toggleAllBtn.textContent = allExpanded ? `▴ ${colTxt}` : `▾ ${expTxt}`;
+      };
 
-      function filterGradCards() {
-        var q = searchInput ? searchInput.value.trim().toLowerCase() : '';
-        yearGroups.forEach(function (grp) {
-          var cards = grp.querySelectorAll('.grad-ms-card');
-          var visibleCount = 0;
-          cards.forEach(function (card) {
-            var d = card.getAttribute('data-dept');
-            var s = card.getAttribute('data-search') || '';
-            var matchDept = activeDept === 'all' || d === activeDept;
-            var matchQuery = !q || s.indexOf(q) !== -1;
+      const filterGradCards = () => {
+        const q = searchInput instanceof HTMLInputElement ? searchInput.value.trim().toLowerCase() : '';
+        yearGroups.forEach((grp) => {
+          if (!(grp instanceof HTMLDetailsElement)) return;
+          const cards = grp.querySelectorAll('.grad-ms-card');
+          let visibleCount = 0;
+          cards.forEach((card) => {
+            if (!(card instanceof HTMLElement)) return;
+            const d = card.getAttribute('data-dept');
+            const s = card.getAttribute('data-search') ?? '';
+            const matchDept = activeDept === 'all' || d === activeDept;
+            const matchQuery = !q || s.includes(q);
             if (matchDept && matchQuery) {
               card.style.display = '';
               visibleCount++;
@@ -653,24 +652,22 @@ const allMembers: Member[] = [piProfile, ...memberGroups.flatMap((g) => g.member
             grp.open = grp.getAttribute('data-default-open') === '1';
           }
         });
-      }
+      };
 
-      deptTabs.forEach(function (tab) {
-        tab.addEventListener('click', function () {
-          deptTabs.forEach(function (t) {
-            t.classList.remove('active');
-          });
+      deptTabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          deptTabs.forEach((t) => t.classList.remove('active'));
           tab.classList.add('active');
-          activeDept = tab.getAttribute('data-dept-filter') || 'all';
+          activeDept = tab.getAttribute('data-dept-filter') ?? 'all';
           filterGradCards();
         });
       });
 
       if (toggleAllBtn) {
-        toggleAllBtn.addEventListener('click', function () {
+        toggleAllBtn.addEventListener('click', () => {
           allExpanded = !allExpanded;
-          yearGroups.forEach(function (grp) {
-            if (grp.style.display !== 'none') {
+          yearGroups.forEach((grp) => {
+            if (grp instanceof HTMLDetailsElement && grp.style.display !== 'none') {
               grp.open = allExpanded;
             }
           });
@@ -682,9 +679,9 @@ const allMembers: Member[] = [piProfile, ...memberGroups.flatMap((g) => g.member
         searchInput.addEventListener('input', filterGradCards);
       }
 
-      if (location.hash && location.hash.indexOf('#member-') === 0) {
-        var initialId = location.hash.replace('#member-', '');
-        openMemberModal(initialId);
+      if (location.hash.startsWith('#member-')) {
+        const initialId = location.hash.slice(8);
+        if (initialId) openMemberModal(initialId);
       }
     })();
   </script>

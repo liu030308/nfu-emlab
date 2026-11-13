@@ -58,13 +58,16 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
       rel="stylesheet"
     />
+    <meta name="color-scheme" content="light dark" />
     <script is:inline>
-      (function () {
+      (() => {
         try {
-          var savedTheme = localStorage.getItem('theme');
-          var theme = savedTheme === 'light' ? 'light' : 'dark';
-          document.documentElement.setAttribute('data-theme', theme);
-        } catch (e) {}
+          const savedTheme = localStorage.getItem('theme');
+          const theme = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : 'dark';
+          document.documentElement.dataset.theme = theme;
+          const meta = document.querySelector('meta[name="color-scheme"]');
+          if (meta) meta.content = theme;
+        } catch (_) {}
       })();
     </script>
   </head>
@@ -292,116 +295,148 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
     </footer>
 
     <script is:inline define:vars={{ currentLang: lang, urlZh: navUrlZh, urlEn: navUrlEn, urlJa: navUrlJa }}>
-      (function () {
-        // 主題切換邏輯
-        var themeBtn = document.getElementById('theme-toggle');
+      (() => {
+        // 主題切換邏輯（同步更新 data-theme、meta[color-scheme]、theme-color 與 localStorage）
+        const themeBtn = document.getElementById('theme-toggle');
+        const syncTheme = (theme) => {
+          const root = document.documentElement;
+          root.dataset.theme = theme;
+          const meta = document.querySelector('meta[name="color-scheme"]');
+          if (meta) meta.content = theme;
+          const themeColor = document.getElementById('theme-color-meta');
+          if (themeColor) themeColor.content = theme === 'dark' ? '#070d19' : '#f8fafc';
+        };
+
         if (themeBtn) {
-          themeBtn.addEventListener('click', function () {
-            var root = document.documentElement;
-            var current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-            var next = current === 'dark' ? 'light' : 'dark';
-            root.setAttribute('data-theme', next);
+          themeBtn.addEventListener('click', () => {
+            const root = document.documentElement;
+            const current = root.dataset.theme === 'dark' ? 'dark' : 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            syncTheme(next);
             try {
               localStorage.setItem('theme', next);
-            } catch (e) {}
+            } catch (_) {}
           });
         }
 
+        // 跨分頁同源同步主題變更
+        window.addEventListener('storage', (e) => {
+          if (e.key === 'theme' && (e.newValue === 'light' || e.newValue === 'dark')) {
+            syncTheme(e.newValue);
+          }
+        });
+
         // 手機版導覽選單（無障礙 Button，支援 Esc 關閉與點擊外部關閉）
-        var navBtn = document.getElementById('nav-btn');
-        var siteNav = document.getElementById('site-nav');
-        function closeNav() {
+        const navBtn = document.getElementById('nav-btn');
+        const siteNav = document.getElementById('site-nav');
+        const closeNav = () => {
           if (!siteNav) return;
           siteNav.classList.remove('open');
           if (navBtn) {
             navBtn.classList.remove('open');
             navBtn.setAttribute('aria-expanded', 'false');
           }
-        }
+        };
 
         if (navBtn && siteNav) {
-          navBtn.addEventListener('click', function (e) {
+          navBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            var isOpen = siteNav.classList.toggle('open');
+            const isOpen = siteNav.classList.toggle('open');
             navBtn.classList.toggle('open', isOpen);
             navBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
           });
 
-          document.addEventListener('click', function (e) {
-            if (!siteNav.contains(e.target) && !navBtn.contains(e.target)) {
+          document.addEventListener('click', (e) => {
+            const target = e.target;
+            if (target instanceof Node && !siteNav.contains(target) && !navBtn.contains(target)) {
               closeNav();
             }
           });
 
-          siteNav.querySelectorAll('a').forEach(function (link) {
+          siteNav.querySelectorAll('a').forEach((link) => {
             link.addEventListener('click', closeNav);
           });
         }
 
         // 語言選單與本機語言智慧切換邏輯
-        var dropdown = document.getElementById('lang-dropdown');
-        var btn = document.getElementById('lang-btn');
-        var menu = document.getElementById('lang-menu');
-        var detectedText = document.getElementById('lang-detected-text');
-        var switchDetectedBtn = document.getElementById('lang-btn-switch-detected');
-        var detectedActionDesc = document.getElementById('lang-detected-action-desc');
+        const dropdown = document.getElementById('lang-dropdown');
+        const btn = document.getElementById('lang-btn');
+        const menu = document.getElementById('lang-menu');
+        const detectedText = document.getElementById('lang-detected-text');
+        const switchDetectedBtn = document.getElementById('lang-btn-switch-detected');
+        const detectedActionDesc = document.getElementById('lang-detected-action-desc');
 
-        function closeDropdown() {
+        const closeDropdown = () => {
           if (!dropdown) return;
           dropdown.classList.remove('open');
           if (btn) btn.setAttribute('aria-expanded', 'false');
-        }
+        };
 
         if (dropdown && btn && menu) {
           // 偵測訪客系統／瀏覽器偏好語言
-          var navLangs = navigator.languages || [navigator.language || 'zh'];
-          var detected = 'zh';
-          var detectedFull = navigator.language || 'zh-TW';
-          for (var i = 0; i < navLangs.length; i++) {
-            var l = (navLangs[i] || '').toLowerCase();
+          const navLangs = navigator.languages ?? [navigator.language ?? 'zh'];
+          const detectedFull = navigator.language ?? 'zh-TW';
+          let detected = 'zh';
+
+          for (const raw of navLangs) {
+            const l = (raw ?? '').toLowerCase();
             if (l.startsWith('ja')) { detected = 'ja'; break; }
             if (l.startsWith('en')) { detected = 'en'; break; }
             if (l.startsWith('zh')) { detected = 'zh'; break; }
           }
 
-          var langNameMap = {
-            zh: '繁體中文 (' + detectedFull + ')',
-            en: 'English (' + detectedFull + ')',
-            ja: '日本語 (' + detectedFull + ')'
+          const langNameMap = {
+            zh: `繁體中文 (${detectedFull})`,
+            en: `English (${detectedFull})`,
+            ja: `日本語 (${detectedFull})`,
           };
 
           if (detectedText) {
-            detectedText.textContent = langNameMap[detected] || detectedFull;
+            detectedText.textContent = langNameMap[detected] ?? detectedFull;
           }
 
           // 如果當前頁面與偵測到的瀏覽器語言相同，提示已是目前語言
           if (detectedActionDesc) {
             if (detected === currentLang) {
-              detectedActionDesc.textContent = (currentLang === 'zh' ? '（已是目前頁面語言）' : currentLang === 'en' ? '(Current language)' : '（現在の言語です）');
+              detectedActionDesc.textContent =
+                currentLang === 'zh'
+                  ? '（已是目前頁面語言）'
+                  : currentLang === 'en'
+                    ? '(Current language)'
+                    : '（現在の言語です）';
             } else {
-              detectedActionDesc.textContent = (currentLang === 'zh' ? '點擊立即切換至 ' : currentLang === 'en' ? 'Switch to ' : 'クリックして切り替え: ') + (detected === 'zh' ? '繁體中文' : detected === 'en' ? 'English' : '日本語');
+              const prefix =
+                currentLang === 'zh'
+                  ? '點擊立即切換至 '
+                  : currentLang === 'en'
+                    ? 'Switch to '
+                    : 'クリックして切り替え: ';
+              const targetName =
+                detected === 'zh' ? '繁體中文' : detected === 'en' ? 'English' : '日本語';
+              detectedActionDesc.textContent = `${prefix}${targetName}`;
             }
           }
 
           // 切換選單開啟／關閉
-          btn.addEventListener('click', function (e) {
+          btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            var isOpen = dropdown.classList.toggle('open');
+            const isOpen = dropdown.classList.toggle('open');
             btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
           });
 
           // 點擊選單外部自動收合
-          document.addEventListener('click', function (e) {
-            if (!dropdown.contains(e.target)) {
+          document.addEventListener('click', (e) => {
+            const target = e.target;
+            if (target instanceof Node && !dropdown.contains(target)) {
               closeDropdown();
             }
           });
 
           // 點擊「使用瀏覽器偏好語言切換」
           if (switchDetectedBtn) {
-            switchDetectedBtn.addEventListener('click', function () {
+            switchDetectedBtn.addEventListener('click', () => {
               closeDropdown();
-              var urlMap = { zh: urlZh, en: urlEn, ja: urlJa };
+              const urlMap = { zh: urlZh, en: urlEn, ja: urlJa };
               if (urlMap[detected] && detected !== currentLang) {
                 window.location.href = urlMap[detected];
               }
@@ -412,21 +447,21 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         // ==========================================
         // === 全域無障礙鍵盤 Esc 關閉優先層級 ===
         // ==========================================
-        document.addEventListener('keydown', function (e) {
+        document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') {
             // 優先關閉語言選單並回復語言按鈕焦點
-            if (dropdown && dropdown.classList.contains('open')) {
+            if (dropdown?.classList.contains('open')) {
               e.preventDefault();
               e.stopPropagation();
               closeDropdown();
-              if (btn) btn.focus();
+              btn?.focus();
               return;
             }
             // 若語言選單未開，才關閉手機導覽列並回復漢堡按鈕焦點
-            if (siteNav && siteNav.classList.contains('open')) {
+            if (siteNav?.classList.contains('open')) {
               e.preventDefault();
               closeNav();
-              if (navBtn) navBtn.focus();
+              navBtn?.focus();
             }
           }
         });
@@ -434,148 +469,168 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         // ==========================================
         // === 分頁圖示動畫（Tab Favicon Animation） ===
         // ==========================================
-        (function initTabAnimation() {
+        (() => {
           try {
-            var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
             if (prefersReduced) return;
 
-            var favEl = document.getElementById('dynamic-favicon');
-            if (!favEl) return;
+            const favEl = document.getElementById('dynamic-favicon');
+            if (!favEl || !(favEl instanceof HTMLLinkElement)) return;
 
-            var totalFrames = 8;
-            var frameIdx = 0;
-            var frameTimer = null;
+            const totalFrames = 8;
+            let frameIdx = 0;
+            let frameTimer = null;
+
             // 預載分頁圖示幀以確保流暢切換
-            var frameImgs = [];
-            for (var f = 0; f < totalFrames; f++) {
-              var img = new Image();
-              img.src = '/images/tab_frames/frame_' + f + '.png';
-              frameImgs.push(img);
-            }
+            const frameImgs = Array.from({ length: totalFrames }, (_, f) => {
+              const img = new Image();
+              img.src = `/images/tab_frames/frame_${f}.png`;
+              return img;
+            });
 
-            function cycle() {
+            const cycle = () => {
               if (document.hidden) return;
               frameIdx = (frameIdx + 1) % totalFrames;
               favEl.href = frameImgs[frameIdx].src;
-            }
+            };
 
             frameTimer = setInterval(cycle, 180);
 
-            document.addEventListener('visibilitychange', function () {
+            document.addEventListener('visibilitychange', () => {
               if (document.hidden) {
-                if (frameTimer) { clearInterval(frameTimer); frameTimer = null; }
+                if (frameTimer) {
+                  clearInterval(frameTimer);
+                  frameTimer = null;
+                }
               } else if (!frameTimer) {
                 frameTimer = setInterval(cycle, 180);
               }
             });
-          } catch (e) {}
+          } catch (_) {}
         })();
 
         // ==========================================
         // === 科技感滑鼠互動體驗（Mouse Interactivity） ===
         // ==========================================
-        var hasPointerFine = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
-        var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const hasPointerFine = window.matchMedia?.('(pointer: fine)')?.matches;
+        const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
         if (!hasPointerFine || prefersReducedMotion) return;
 
         // 1. 全域滑鼠聚光燈（支援靜止時暫停 requestAnimationFrame）
-        var mouseX = window.innerWidth / 2;
-        var mouseY = window.innerHeight * 0.35;
-        var targetX = mouseX;
-        var targetY = mouseY;
-        var isSpotlightRunning = false;
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight * 0.35;
+        let targetX = mouseX;
+        let targetY = mouseY;
+        let isSpotlightRunning = false;
 
-        function updateSpotlight() {
-          var dx = targetX - mouseX;
-          var dy = targetY - mouseY;
+        const updateSpotlight = () => {
+          const dx = targetX - mouseX;
+          const dy = targetY - mouseY;
           if (Math.abs(dx) > 0.15 || Math.abs(dy) > 0.15) {
             mouseX += dx * 0.15;
             mouseY += dy * 0.15;
-            document.documentElement.style.setProperty('--mouse-x', mouseX.toFixed(1) + 'px');
-            document.documentElement.style.setProperty('--mouse-y', mouseY.toFixed(1) + 'px');
+            document.documentElement.style.setProperty('--mouse-x', `${mouseX.toFixed(1)}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${mouseY.toFixed(1)}px`);
             requestAnimationFrame(updateSpotlight);
           } else {
             mouseX = targetX;
             mouseY = targetY;
-            document.documentElement.style.setProperty('--mouse-x', mouseX.toFixed(1) + 'px');
-            document.documentElement.style.setProperty('--mouse-y', mouseY.toFixed(1) + 'px');
+            document.documentElement.style.setProperty('--mouse-x', `${mouseX.toFixed(1)}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${mouseY.toFixed(1)}px`);
             isSpotlightRunning = false;
           }
-        }
+        };
 
-        window.addEventListener('mousemove', function (e) {
-          targetX = e.clientX;
-          targetY = e.clientY;
-          if (!isSpotlightRunning) {
-            isSpotlightRunning = true;
-            requestAnimationFrame(updateSpotlight);
-          }
-        }, { passive: true });
+        window.addEventListener(
+          'mousemove',
+          (e) => {
+            targetX = e.clientX;
+            targetY = e.clientY;
+            if (!isSpotlightRunning) {
+              isSpotlightRunning = true;
+              requestAnimationFrame(updateSpotlight);
+            }
+          },
+          { passive: true }
+        );
 
         // 2. 卡片 3D 視差傾斜與邊界流光（Card 3D Tilt & Magnetic Border Glow）
-        function bindCards() {
-          var cards = document.querySelectorAll('.card, .stat, .hero-logo-box, .advisor');
-          cards.forEach(function (card) {
-            if (card._hasTilt) return;
+        const bindCards = () => {
+          const cards = document.querySelectorAll('.card, .stat, .hero-logo-box, .advisor');
+          cards.forEach((card) => {
+            if (!(card instanceof HTMLElement) || card._hasTilt) return;
             card._hasTilt = true;
 
-            card.addEventListener('mousemove', function (e) {
-              var rect = card.getBoundingClientRect();
-              var x = e.clientX - rect.left;
-              var y = e.clientY - rect.top;
-              card.style.setProperty('--card-x', x.toFixed(1) + 'px');
-              card.style.setProperty('--card-y', y.toFixed(1) + 'px');
+            card.addEventListener(
+              'mousemove',
+              (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--card-x', `${x.toFixed(1)}px`);
+                card.style.setProperty('--card-y', `${y.toFixed(1)}px`);
 
-              var cx = rect.width / 2;
-              var cy = rect.height / 2;
-              var rotX = ((y - cy) / cy) * -6;
-              var rotY = ((x - cx) / cx) * 6;
-              card.style.transform = 'perspective(900px) rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg) translateY(-4px)';
-            }, { passive: true });
+                const cx = rect.width / 2;
+                const cy = rect.height / 2;
+                const rotX = ((y - cy) / cy) * -6;
+                const rotY = ((x - cx) / cx) * 6;
+                card.style.transform = `perspective(900px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateY(-4px)`;
+              },
+              { passive: true }
+            );
 
-            card.addEventListener('mouseleave', function () {
+            card.addEventListener('mouseleave', () => {
               card.style.transform = '';
               card.style.removeProperty('--card-x');
               card.style.removeProperty('--card-y');
             });
           });
-        }
+        };
         bindCards();
         window.addEventListener('load', bindCards);
 
         // 3. 首頁 Hero 主視覺 Logo 滑鼠 3D 視差
-        var hero = document.querySelector('.hero');
-        var logoBox = document.querySelector('.hero-logo-box');
-        var halo = document.querySelector('.hero-logo-halo');
-        if (hero && logoBox) {
-          hero.addEventListener('mousemove', function (e) {
-            var rect = hero.getBoundingClientRect();
-            var x = e.clientX - rect.left - rect.width / 2;
-            var y = e.clientY - rect.top - rect.height / 2;
-            var rotX = -(y / rect.height) * 12;
-            var rotY = (x / rect.width) * 12;
-            logoBox.style.transform = 'perspective(1000px) rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg) translateZ(12px)';
-            if (halo) {
-              halo.style.transform = 'translate(' + (-x * 0.04).toFixed(1) + 'px, ' + (-y * 0.04).toFixed(1) + 'px)';
-            }
-          }, { passive: true });
+        const hero = document.querySelector('.hero');
+        const logoBox = document.querySelector('.hero-logo-box');
+        const halo = document.querySelector('.hero-logo-halo');
+        if (hero && logoBox && logoBox instanceof HTMLElement) {
+          hero.addEventListener(
+            'mousemove',
+            (e) => {
+              const rect = hero.getBoundingClientRect();
+              const x = e.clientX - rect.left - rect.width / 2;
+              const y = e.clientY - rect.top - rect.height / 2;
+              const rotX = -(y / rect.height) * 12;
+              const rotY = (x / rect.width) * 12;
+              logoBox.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateZ(12px)`;
+              if (halo && halo instanceof HTMLElement) {
+                halo.style.transform = `translate(${(-x * 0.04).toFixed(1)}px, ${(-y * 0.04).toFixed(1)}px)`;
+              }
+            },
+            { passive: true }
+          );
 
-          hero.addEventListener('mouseleave', function () {
+          hero.addEventListener('mouseleave', () => {
             logoBox.style.transform = '';
-            if (halo) halo.style.transform = '';
+            if (halo && halo instanceof HTMLElement) halo.style.transform = '';
           });
         }
 
         // 4. 按鈕微磁吸回饋（Magnetic Button Attraction）
-        var btns = document.querySelectorAll('.btn, .theme-btn, .lang-btn');
-        btns.forEach(function (b) {
-          b.addEventListener('mousemove', function (e) {
-            var rect = b.getBoundingClientRect();
-            var x = e.clientX - rect.left - rect.width / 2;
-            var y = e.clientY - rect.top - rect.height / 2;
-            b.style.transform = 'translate(' + (x * 0.2).toFixed(1) + 'px, ' + (y * 0.2).toFixed(1) + 'px)';
-          }, { passive: true });
-          b.addEventListener('mouseleave', function () {
+        const btns = document.querySelectorAll('.btn, .theme-btn, .lang-btn');
+        btns.forEach((b) => {
+          if (!(b instanceof HTMLElement)) return;
+          b.addEventListener(
+            'mousemove',
+            (e) => {
+              const rect = b.getBoundingClientRect();
+              const x = e.clientX - rect.left - rect.width / 2;
+              const y = e.clientY - rect.top - rect.height / 2;
+              b.style.transform = `translate(${(x * 0.2).toFixed(1)}px, ${(y * 0.2).toFixed(1)}px)`;
+            },
+            { passive: true }
+          );
+          b.addEventListener('mouseleave', () => {
             b.style.transform = '';
           });
         });
