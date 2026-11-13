@@ -51,6 +51,19 @@ const L = {
                 <li>{t(p, lang)}</li>
               ))}
             </ul>
+            {r.theses && r.theses.length > 0 && (
+              <div class="theses-box">
+                <h3>{t({ zh: '🎓 歷屆學長姐代表學位論文', en: '🎓 Representative Theses by Lab Alumni', ja: '🎓 先輩方の代表修士論文' }, lang)}</h3>
+                <ul class="theses-list">
+                  {r.theses.map((th) => (
+                    <li>
+                      <span class="th-title">📜 {t(th.title, lang)}</span>
+                      <span class="th-author"> — {t(th.student, lang)}{th.year ? ` (${th.year})` : ''}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <h3>{t(L.app, lang)}</h3>
             <div>
               {r.applications.map((a) => (
@@ -126,6 +139,40 @@ const L = {
   }
   .lead {
     margin-bottom: 0.5rem;
+  }
+  .theses-box {
+    margin-top: 1.25rem;
+    padding: 1rem 1.25rem;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--cyan);
+  }
+  .theses-box h3 {
+    margin: 0 0 0.6rem !important;
+    font-size: 0.95rem;
+    color: var(--cyan-text);
+  }
+  .theses-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .theses-list li {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 0 !important;
+    color: var(--text);
+  }
+  .th-title {
+    font-weight: 600;
+  }
+  .th-author {
+    color: var(--muted);
+    font-size: 0.82rem;
   }
 </style>
 
