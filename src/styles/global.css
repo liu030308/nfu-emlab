@@ -570,25 +570,38 @@ button.card:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.38rem 0.75rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 999px;
-  background: var(--card-bg);
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(19, 196, 217, 0.35);
   color: var(--heading);
   font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+:root[data-theme='dark'] .lang-btn {
+  background: rgba(14, 23, 42, 0.78);
+  border-color: rgba(34, 211, 238, 0.35);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .lang-btn:hover,
 .lang-dropdown.open .lang-btn {
   border-color: var(--cyan);
-  box-shadow: 0 0 16px rgba(34, 211, 238, 0.35);
+  box-shadow: 0 0 18px rgba(34, 211, 238, 0.4);
   transform: translateY(-1px);
+}
+
+:root[data-theme='dark'] .lang-btn:hover,
+:root[data-theme='dark'] .lang-dropdown.open .lang-btn {
+  background: rgba(18, 30, 54, 0.88);
+  border-color: var(--cyan);
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.45);
 }
 
 .lang-globe-icon {
@@ -640,19 +653,26 @@ button.card:hover {
   top: calc(100% + 10px);
   right: 0;
   width: 260px;
-  background: var(--card-bg);
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(19, 196, 217, 0.35);
   border-radius: var(--radius);
   padding: 0.65rem;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 24px rgba(34, 211, 238, 0.15);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 18px 45px rgba(11, 37, 69, 0.2), 0 0 28px rgba(34, 211, 238, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  isolation: isolate;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-8px) scale(0.96);
   transform-origin: top right;
-  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s ease;
   z-index: 1000;
+}
+
+:root[data-theme='dark'] .lang-menu {
+  background: rgba(10, 18, 35, 0.85);
+  border-color: rgba(34, 211, 238, 0.4);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.85), 0 0 32px rgba(34, 211, 238, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .lang-dropdown.open .lang-menu {
@@ -662,9 +682,15 @@ button.card:hover {
 }
 
 .lang-menu-info {
-  padding: 0.45rem 0.65rem 0.55rem;
+  padding: 0.5rem 0.7rem;
   border-radius: 8px;
-  background: var(--bg-alt);
+  background: rgba(238, 244, 252, 0.65);
+  border: 1px solid rgba(19, 196, 217, 0.15);
+}
+
+:root[data-theme='dark'] .lang-menu-info {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(34, 211, 238, 0.2);
 }
 
 .lang-menu-info-title {
@@ -784,19 +810,29 @@ button.card:hover {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  border: 1px solid var(--line);
-  background: var(--card-bg);
+  border: 1px solid rgba(19, 196, 217, 0.35);
+  background: rgba(255, 255, 255, 0.82);
   color: var(--text);
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   transition:
     border-color 0.2s,
     color 0.2s,
-    transform 0.2s;
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+:root[data-theme='dark'] .theme-btn {
+  background: rgba(14, 23, 42, 0.78);
+  border-color: rgba(34, 211, 238, 0.35);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 .theme-btn:hover {
   border-color: var(--cyan);
   color: var(--cyan);
-  transform: rotate(12deg);
+  transform: rotate(15deg) scale(1.05);
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.4);
 }
 :root:not([data-theme='dark']) .icon-sun {
   display: none;
@@ -944,10 +980,21 @@ section[id] {
     width: min(320px, calc(100vw - 3rem));
     max-height: min(380px, 60vh);
     overflow-y: auto;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border: 1px solid rgba(19, 196, 217, 0.38);
+    box-shadow: 0 16px 40px rgba(11, 37, 69, 0.25), 0 0 24px rgba(34, 211, 238, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.85);
     transform: translateY(8px) scale(0.96);
     transform-origin: bottom left;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 24px rgba(34, 211, 238, 0.2);
     z-index: 1000;
+  }
+  :root[data-theme='dark'] .lang-menu {
+    background: rgba(10, 18, 35, 0.88);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border: 1px solid rgba(34, 211, 238, 0.45);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.85), 0 0 32px rgba(34, 211, 238, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
   .lang-dropdown.open .lang-menu {
     transform: translateY(0) scale(1);
