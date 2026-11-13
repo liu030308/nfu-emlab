@@ -282,7 +282,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         </div>
         <div>
           <p>📞 {pi.phoneLab}</p>
-          <p>✉️ <a href={`mailto:${pi.email}`}>{pi.email}</a></p>
+          <p>✉️ <a href={`mailto:${pi.email}`} data-contact-email-trigger>{pi.email}</a></p>
           <p>{t(lab.address, lang)}</p>
         </div>
       </div>
@@ -293,6 +293,91 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         </span>
       </div>
     </footer>
+
+    <!-- 全域智慧郵件聯絡彈窗 (Contact Email Dialog) -->
+    <dialog id="contact-email-modal" class="contact-email-modal" aria-labelledby="contact-modal-title">
+      <div class="contact-email-box">
+        <button type="button" class="contact-email-close" id="contact-modal-close" aria-label={lang === 'zh' ? '關閉' : lang === 'en' ? 'Close' : '閉じる'}>✕</button>
+        <div class="contact-email-header">
+          <h2 id="contact-modal-title">
+            <span aria-hidden="true">✉️</span>
+            <span>{lang === 'zh' ? '聯絡實驗室・發送郵件' : lang === 'en' ? 'Contact Lab・Send Email' : '研究室へのお問い合わせ'}</span>
+          </h2>
+          <p>
+            {lang === 'zh'
+              ? '歡迎專題實作、產學合作、量測技術諮詢與參觀交流'
+              : lang === 'en'
+              ? 'Welcome research projects, industry collaboration, testing inquiries, and visits'
+              : '学生配属・産学連携・受託計測・研究室見学のご相談'}
+          </p>
+        </div>
+
+        <div class="contact-email-card">
+          <div>
+            <div style="font-size:0.75rem; color:var(--muted); margin-bottom:0.15rem;">
+              {lang === 'zh' ? '指導教授電子郵件' : lang === 'en' ? 'Professor Email' : '指導教授メールアドレス'}
+            </div>
+            <span class="contact-email-address">{pi.email}</span>
+          </div>
+          <span class="contact-copy-badge" id="contact-badge-copied">
+            ✓ {lang === 'zh' ? '已自動複製' : lang === 'en' ? 'Auto Copied' : 'コピー完了'}
+          </span>
+        </div>
+
+        <div class="contact-action-list">
+          <a
+            class="contact-action-item primary"
+            href={`https://mail.google.com/mail/?view=cm&fs=1&to=${pi.email}&su=${encodeURIComponent('【LED_LAB】諮詢與合作洽談')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="contact-action-meta">
+              <span>🌐 {lang === 'zh' ? '開啟 Gmail 網頁版發信' : lang === 'en' ? 'Open Gmail on the Web' : 'Gmail Web版で作成'}</span>
+              <small>{lang === 'zh' ? '在新分頁開啟 Gmail 寫信介面（最推薦，免裝軟體）' : lang === 'en' ? 'Opens compose window in new tab (Recommended)' : '新しいタブで作成画面を開く（推奨）'}</small>
+            </div>
+            <span class="contact-action-arrow">↗</span>
+          </a>
+
+          <a
+            class="contact-action-item"
+            href={`mailto:${pi.email}?subject=${encodeURIComponent('【LED_LAB】諮詢與合作洽談')}`}
+          >
+            <div class="contact-action-meta">
+              <span>✉️ {lang === 'zh' ? '開啟預設郵件應用程式' : lang === 'en' ? 'Open Default Mail App' : '既定のメールアプリを開く'}</span>
+              <small>{lang === 'zh' ? '啟動本機或手機內建 Outlook / Mail 應用程式' : lang === 'en' ? 'Launches system Mail / Outlook client' : 'PC・スマートフォンのメールアプリを起動'}</small>
+            </div>
+            <span class="contact-action-arrow">→</span>
+          </a>
+
+          <a
+            class="contact-action-item"
+            href={`https://outlook.office.com/mail/deeplink/compose?to=${pi.email}&subject=${encodeURIComponent('【LED_LAB】諮詢與合作洽談')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="contact-action-meta">
+              <span>🏢 {lang === 'zh' ? '開啟 Outlook 網頁版' : lang === 'en' ? 'Open Outlook Web' : 'Outlook Web版で作成'}</span>
+              <small>{lang === 'zh' ? '適合學校與企業 Microsoft 365 帳號直接登入發信' : lang === 'en' ? 'Best for Microsoft 365 university / work accounts' : '大学や職場のMicrosoft 365アカウント用'}</small>
+            </div>
+            <span class="contact-action-arrow">↗</span>
+          </a>
+
+          <button type="button" class="contact-action-item" id="btn-copy-email-again">
+            <div class="contact-action-meta">
+              <span id="label-copy-again">📋 {lang === 'zh' ? '手動再次複製信箱地址' : lang === 'en' ? 'Copy Email Address Again' : 'メールアドレスを再コピー'}</span>
+              <small>{lang === 'zh' ? '方便貼至任何通訊軟體或備忘錄' : lang === 'en' ? 'Paste into any app or messaging tool' : '他のアプリやメールソフトに貼り付け'}</small>
+            </div>
+            <span class="contact-action-arrow">📋</span>
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- 全域懸浮 Toast 提示 -->
+    <div id="contact-toast" class="contact-toast" role="status" aria-live="polite">
+      <span>📋</span>
+      <span id="contact-toast-text">{lang === 'zh' ? `已複製電子信箱：${pi.email}` : lang === 'en' ? `Email copied: ${pi.email}` : `メールアドレスをコピーしました: ${pi.email}`}</span>
+    </div>
 
     <script is:inline define:vars={{ currentLang: lang, urlZh: navUrlZh, urlEn: navUrlEn, urlJa: navUrlJa }}>
       (() => {
@@ -633,6 +718,100 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
           b.addEventListener('mouseleave', () => {
             b.style.transform = '';
           });
+        });
+
+        // 5. 智慧郵件聯絡彈窗與自動複製邏輯
+        const contactModal = document.getElementById('contact-email-modal');
+        const contactCloseBtn = document.getElementById('contact-modal-close');
+        const contactToast = document.getElementById('contact-toast');
+        const copyAgainBtn = document.getElementById('btn-copy-email-again');
+        const badgeCopied = document.getElementById('contact-badge-copied');
+        const targetEmail = 'chenwr@nfu.edu.tw';
+
+        const showToast = (text) => {
+          if (!contactToast) return;
+          if (text) {
+            const span = document.getElementById('contact-toast-text');
+            if (span) span.textContent = text;
+          }
+          contactToast.classList.add('show');
+          clearTimeout(window.__contactToastTimer);
+          window.__contactToastTimer = setTimeout(() => {
+            contactToast.classList.remove('show');
+          }, 2600);
+        };
+
+        const copyEmailToClipboard = async () => {
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(targetEmail);
+            } else {
+              const ta = document.createElement('textarea');
+              ta.value = targetEmail;
+              ta.style.position = 'fixed';
+              ta.style.opacity = '0';
+              document.body.appendChild(ta);
+              ta.focus();
+              ta.select();
+              document.execCommand('copy');
+              document.body.removeChild(ta);
+            }
+            showToast();
+            if (badgeCopied) {
+              badgeCopied.style.display = 'inline-flex';
+            }
+          } catch (_) {}
+        };
+
+        const openContactModal = () => {
+          if (contactModal instanceof HTMLDialogElement) {
+            if (typeof contactModal.showModal === 'function') {
+              contactModal.showModal();
+            } else {
+              contactModal.setAttribute('open', '');
+            }
+            copyEmailToClipboard();
+          }
+        };
+
+        const closeContactModal = () => {
+          if (contactModal instanceof HTMLDialogElement) {
+            if (typeof contactModal.close === 'function') {
+              contactModal.close();
+            } else {
+              contactModal.removeAttribute('open');
+            }
+          }
+        };
+
+        if (contactCloseBtn) {
+          contactCloseBtn.addEventListener('click', closeContactModal);
+        }
+        if (contactModal) {
+          contactModal.addEventListener('click', (e) => {
+            if (e.target === contactModal) closeContactModal();
+          });
+        }
+        if (copyAgainBtn) {
+          copyAgainBtn.addEventListener('click', () => {
+            copyEmailToClipboard();
+            const lbl = document.getElementById('label-copy-again');
+            if (lbl) {
+              const orig = lbl.textContent;
+              lbl.textContent = '✓ 已成功複製！';
+              setTimeout(() => { lbl.textContent = orig; }, 2000);
+            }
+          });
+        }
+
+        // 攔截點擊「寄信給我們」、所有 mailto 連結或含有 data-contact-email-trigger 的元素
+        document.addEventListener('click', (e) => {
+          const trigger = e.target instanceof Element ? e.target.closest('[data-contact-email-trigger], a[href^="mailto:"]') : null;
+          if (!trigger) return;
+          // 若在彈窗內部點擊 mailto，放行瀏覽器原生處理
+          if (trigger.closest('#contact-email-modal')) return;
+          e.preventDefault();
+          openContactModal();
         });
       })();
     </script>

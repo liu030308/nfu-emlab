@@ -69,9 +69,9 @@ const mapQuery = encodeURIComponent('國立虎尾科技大學 綜合三館');
           <dt>{t(L.phone, lang)}</dt>
           <dd>{pi.phoneLab} / {pi.phoneOffice}</dd>
           <dt>Email</dt>
-          <dd><a href={`mailto:${pi.email}`}>{pi.email}</a></dd>
+          <dd><a href={`mailto:${pi.email}`} data-contact-email-trigger>{pi.email}</a></dd>
         </dl>
-        <a class="btn btn-primary" href={`mailto:${pi.email}`}>✉️ {t(L.mail, lang)}</a>
+        <button type="button" class="btn btn-primary" id="btn-mail-us" data-contact-email-trigger>✉️ {t(L.mail, lang)}</button>
       </div>
       <iframe
         class="map"

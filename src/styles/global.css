@@ -441,8 +441,28 @@ button.card:hover {
   position: absolute;
   inset: auto 0 0 0;
   height: 60px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'%3E%3Cpath d='M0 40h60l15-25 20 40 18-30 12 15h80l10-20 15 30 12-15h158' fill='none' stroke='%2313c4d9' stroke-width='2' opacity='.55'/%3E%3C/svg%3E")
-    repeat-x bottom / 400px 60px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'%3E%3Cpath d='M-4 40 L60 40 L72 33 L84 40 L100 40 L108 45 L122 8 L138 54 L148 40 L158 32 L168 40 L240 40 L252 26 L264 50 L276 20 L288 45 L298 40 L312 32 L324 40 L404 40' fill='none' stroke='%2322d3ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='.85'/%3E%3Ccircle cx='122' cy='8' r='2.5' fill='%2338bdf8'/%3E%3Ccircle cx='276' cy='20' r='2' fill='%2322d3ee'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: 0 bottom;
+  background-size: 400px 60px;
+  animation: hero-wave-flow 14s linear infinite;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.45));
+}
+
+@keyframes hero-wave-flow {
+  0% {
+    background-position-x: 0;
+  }
+  100% {
+    background-position-x: -400px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-hero::after {
+    animation: none;
+  }
 }
 
 /* Header */
@@ -849,27 +869,250 @@ section[id] {
     top: 68px;
     left: 0;
     right: 0;
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
     flex-direction: column;
     align-items: stretch;
-    padding: 1rem 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--line);
-    box-shadow: var(--shadow);
+    padding: 1rem 1.25rem 1.75rem;
+    border-bottom: 1px solid rgba(19, 196, 217, 0.25);
+    box-shadow: 0 20px 40px rgba(11, 37, 69, 0.15), 0 0 20px rgba(19, 196, 217, 0.1);
     display: none;
+    z-index: 100;
+  }
+  :root[data-theme='dark'] .site-nav {
+    background: rgba(7, 13, 25, 0.92);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid rgba(34, 211, 238, 0.3);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.75), 0 0 30px rgba(34, 211, 238, 0.15);
   }
   .site-nav.open {
     display: flex;
+    animation: mobile-nav-slide 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   .site-nav ul {
     flex-direction: column;
+    gap: 0.35rem;
   }
   .site-nav ul a {
     display: block;
-    padding: 0.7rem 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 1.02rem;
+    font-weight: 500;
+    transition: all 0.18s ease;
+  }
+  .site-nav ul a:hover,
+  .site-nav ul a:active {
+    background: var(--cyan-soft);
+    color: var(--cyan-text);
+  }
+  .site-nav ul a[aria-current='page'] {
+    background: var(--cyan-soft);
+    color: var(--cyan-text);
+    font-weight: 700;
+    border-left: 3px solid var(--cyan);
   }
   .nav-actions {
-    padding-top: 0.5rem;
+    padding-top: 0.85rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
+}
+
+@keyframes mobile-nav-slide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================
+   全域智慧郵件聯絡彈窗 (Interactive Contact Email Modal)
+   ========================================================== */
+.contact-email-modal {
+  border: none;
+  background: transparent;
+  padding: 0;
+  max-width: 92vw;
+  width: 500px;
+  margin: auto;
+  border-radius: var(--radius);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55), 0 0 35px rgba(34, 211, 238, 0.22);
+}
+.contact-email-modal::backdrop {
+  background: rgba(7, 13, 25, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.contact-email-box {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+:root[data-theme='dark'] .contact-email-box {
+  background: rgba(13, 22, 38, 0.95);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+.contact-email-close {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg-alt);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+.contact-email-close:hover {
+  color: var(--cyan);
+  border-color: var(--cyan);
+  background: var(--cyan-soft);
+  transform: rotate(90deg);
+}
+.contact-email-header {
+  margin-bottom: 1.25rem;
+  padding-right: 2rem;
+}
+.contact-email-header h2 {
+  font-size: 1.35rem;
+  margin: 0 0 0.35rem;
+  color: var(--heading);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.contact-email-header p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.contact-email-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1.15rem;
+  border-radius: 10px;
+  background: var(--bg-alt);
+  border: 1px dashed var(--cyan);
+  margin-bottom: 1.25rem;
+}
+.contact-email-address {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 0.02em;
+  word-break: break-all;
+}
+.contact-copy-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.16);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  white-space: nowrap;
+}
+.contact-action-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.contact-action-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.15rem;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--card-bg);
+  text-decoration: none;
+  color: var(--heading);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+.contact-action-item:hover {
+  border-color: var(--cyan);
+  background: var(--cyan-soft);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(34, 211, 238, 0.15);
+}
+.contact-action-item.primary {
+  border-color: var(--cyan);
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(59, 130, 246, 0.08));
+}
+.contact-action-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-align: left;
+}
+.contact-action-meta small {
+  font-size: 0.76rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+.contact-action-arrow {
+  color: var(--cyan);
+  font-size: 1.1rem;
+}
+
+/* 浮動複製提示 Toast */
+.contact-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(13, 22, 38, 0.95);
+  color: #fff;
+  border: 1px solid var(--cyan);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(34, 211, 238, 0.25);
+  padding: 0.75rem 1.35rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 9999;
+  opacity: 0;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease;
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.contact-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
 }
 
 /* Footer */
