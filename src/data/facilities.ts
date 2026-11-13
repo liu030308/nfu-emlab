@@ -3,52 +3,85 @@ import type { L } from '../i18n/ui';
 
 export type Equipment = { name: L; desc: L; image: string };
 
-// 儀器設備列表（更新實體照片與代表性系統）
+// 儀器設備列表（全面採用實驗室學長姐親自拍攝之實體機台照片）
 export const equipment: Equipment[] = [
   {
-    name: { zh: '快速熱退火系統 (RTA)', en: 'Rapid Thermal Annealing (RTA)', ja: '急速熱アニール装置（RTA）' },
-    desc: {
-      zh: '鈣鈦礦/量子點薄膜之氬氣環境熱處理，可精密控溫並降低薄膜缺陷與熱劣化。',
-      en: 'Ar-ambient thermal annealing of perovskite/QD thin films with precise temperature profiling to reduce defect density.',
-      ja: 'ペロブスカイト・量子ドット薄膜のAr雰囲気精密熱処理。欠陥低減と熱劣化抑制を実現。',
+    name: {
+      zh: '半導體微探針量測平台',
+      en: 'Micro-Probe Measurement Station',
+      ja: 'マイクロプローブ計測ステーション',
     },
-    image: '/images/equipment/rta.webp',
+    desc: {
+      zh: '高倍率顯微鏡結合微米級探針位移平台與溫控載台，專門進行微電子晶片、薄膜元件微接觸量測與電氣特性 (I-V) 分析。',
+      en: 'High-magnification microscope integrated with micron-level probe positioners and thermal stage for microelectronic chip and thin-film I-V characterization.',
+      ja: '高倍率光学顕微鏡とマイクロプローブ移動機構、温度制御ステージを統合し、微小電子素子や薄膜の電気特性（I-V）を精密測定。',
+    },
+    image: '/images/equipment/probe-station.webp',
   },
   {
-    name: { zh: '表面電漿共振 (SPR) 量測系統', en: 'SPR Measurement System', ja: 'SPR計測システム' },
-    desc: {
-      zh: '非接觸式高靈敏度折射率量測，應用於工業潤滑油水混合度與微量水分光學監控。',
-      en: 'High-sensitivity refractive-index and water-content optical sensing for industrial lubricant monitoring.',
-      ja: '非接触・高感度な屈折率計測。工業用潤滑油の含水量および乳化度モニタリングに応用。',
+    name: {
+      zh: '高速數位存儲示波器 (BK Precision 2565B)',
+      en: 'BK Precision 2565B Digital Storage Oscilloscope',
+      ja: 'BK Precision 2565B デジタルストレージオシロスコープ',
     },
-    image: '/images/equipment/spr.webp',
-  },
-  {
-    name: { zh: '自動化數據擷取平台 (DAQ)', en: 'Automated DAQ Platform', ja: '自動データ収集プラットフォーム' },
     desc: {
-      zh: 'Cypress FX2 微控制器整合高速數位示波器與多功能電表，全自動數據擷取與分析。',
-      en: 'Fully automated measurement platform integrating Cypress FX2, digital oscilloscopes, DMMs and LabVIEW.',
-      ja: 'Cypress FX2マイコンと高速デジタルオシロスコープ・マルチメータを統合した全自動データ収集システム。',
+      zh: '100 MHz 頻寬雙通道數位示波器，提供高速即時波形取樣、微弱信號捕捉、雜訊濾波與自動化頻率參數分析。',
+      en: '100 MHz dual-channel digital oscilloscope for high-speed waveform acquisition, weak-signal capture, noise filtering and automated parametric analysis.',
+      ja: '100MHz帯域のデジタルストレージオシロスコープ。高速波形サンプリング、微弱信号捕捉、ノイズ除去および自動パラメータ測定に対応。',
     },
     image: '/images/equipment/daq.webp',
   },
   {
-    name: { zh: '積分球光電量測系統', en: 'Integrating Sphere Photometric System', ja: '積分球光度計測システム' },
-    desc: {
-      zh: '高精度 LED 發光光譜、光通量、發光效率與色度座標全光譜分析儀器。',
-      en: 'High-precision LED spectral analysis, total luminous flux, luminous efficacy and chromaticity coordinates.',
-      ja: '高精度LED発光スペクトル、全光束、発光効率および色度座標の全波長光度解析。',
+    name: {
+      zh: '真空熱退火與精密溫控系統',
+      en: 'Vacuum Thermal Annealing & Temperature Control System',
+      ja: '真空熱アニール・精密温度制御システム',
     },
-    image: '/images/equipment/integrating-sphere.webp',
+    desc: {
+      zh: '高真空不鏽鋼退火腔體搭配數位觸控監控介面，專用於鈣鈦礦薄膜、量子點發光層之受控氣氛退火與熱穩定性改善。',
+      en: 'Stainless steel high-vacuum annealing chamber with digital touch controller for controlled-ambient thermal processing of perovskites and quantum dots.',
+      ja: '高真空ステンレス製チャンバーとデジタルタッチパネル制御を備え、ペロブスカイト薄膜や量子ドットの精密熱処理と安定性向上を実現。',
+    },
+    image: '/images/equipment/rta.webp',
   },
   {
-    name: { zh: '半導體微探針量測平台', en: 'Micro-Probe Measurement Station', ja: 'マイクロプローブ計測ステーション' },
-    desc: {
-      zh: '微米級晶圓、光電薄膜元件之微探針微細接觸量測與電氣特性 (I-V) 掃描。',
-      en: 'Micron-level wafer and thin-film micro-probe electrical I-V parameter characterization.',
-      ja: 'マイクロメートル級ウェハ・薄膜光電子素子の微細プローブ接触計測と電気特性（I-V）評価。',
+    name: {
+      zh: '真空電漿鍍膜與沉積機台',
+      en: 'Plasma Deposition & Thin-Film Vacuum System',
+      ja: 'プラズマ成膜・真空薄膜蒸着システム',
     },
-    image: '/images/equipment/probe-station.webp',
+    desc: {
+      zh: '配備 Advanced Energy MDX-1K 磁控驅動電源與 KYKY 複合真空監控計，執行高真空半導體薄膜鍍膜與電漿表面改質。',
+      en: 'Equipped with Advanced Energy MDX-1K magnetron drive and KYKY vacuum gauges for high-vacuum thin-film deposition and plasma processing.',
+      ja: 'Advanced Energy MDX-1KマグネトロンドライブとKYKY真空計を装備し、高真空薄膜成膜およびプラズマ表面改質を実施。',
+    },
+    image: '/images/equipment/deposition-system.webp',
+  },
+  {
+    name: {
+      zh: '精密量測工作台（信號源・電表・程控電源）',
+      en: 'Precision Multi-Instrument Test Bench',
+      ja: '精密計測ベンチ（信号発生器・マルチメータ・直流電源）',
+    },
+    desc: {
+      zh: '整合 BK Precision 4055 任意波形產生器、5491B 雙顯示五位半數位電表及 MOTECH 可程控直流電源，提供全方位電路激勵與精密量測。',
+      en: 'Integrated BK Precision 4055 arbitrary waveform generator, 5491B 50,000-count DMM, and MOTECH programmable DC power supply.',
+      ja: 'BK Precision 4055任意波形発生器、5491B高精度デジタルマルチメータおよびMOTECHプログラマブル直流電源を統合した総合計測ベンチ。',
+    },
+    image: '/images/equipment/instruments-rack-card.webp',
+  },
+  {
+    name: {
+      zh: '光固化 3D 快速成型與機構研發工作站',
+      en: 'Phrozen 3D Prototyping & Curing Station',
+      ja: '光造形3Dプリンティング・試作開発ステーション',
+    },
+    desc: {
+      zh: 'Phrozen 3D 高解析光固化快速成型系統與恆溫保護箱，用於實驗治具、光學模組固定件、感測器外殼與競賽原型樣機製作。',
+      en: 'Phrozen high-resolution resin 3D printing and temperature-controlled curing enclosure for experimental fixtures, optical mounts, and prototype casings.',
+      ja: 'Phrozen高精細光造形3Dプリンタと温湿度保護ブース。実験用治具、光学系固定具、センサー外装および試作プロトタイプの迅速製作に使用。',
+    },
+    image: '/images/equipment/3d-printer-card.webp',
   },
 ];
 
