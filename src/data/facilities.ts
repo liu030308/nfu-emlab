@@ -210,9 +210,9 @@ export const news: News[] = [
       ja: '祝！IEEE ICCT-Pacific 2026 最優秀学生ポスター賞を受賞',
     },
     body: {
-      zh: '陳文瑞教授指導本實驗室劉峻瑋、洪梓瑜、潘昱澤、盧暐竑前往日本山口大學參加 ICCT-Pacific 2026 國際會議，發表論文「AIoT Base Smart Consumables Drying Cabinet」，榮獲 Best Student Poster Award！',
-      en: 'Prof. Wen-Ray Chen and lab members Jun Wei Liu, Zi-Yu Hong, Yu-Zan Pan, and Wei-Hung Lu won the Best Student Poster Award at IEEE ICCT-Pacific 2026 in Yamaguchi, Japan.',
-      ja: '陳文瑞教授の指導のもと、当研究室の劉峻瑋・洪梓瑜・潘昱澤・盧暐竑が日本・山口大学で開催されたIEEE ICCT-Pacific 2026にて「AIoT Base Smart Consumables Drying Cabinet」を発表し、最優秀学生ポスター賞を受賞しました。',
+      zh: '陳文瑞教授指導本實驗室劉峻瑋、洪梓瑜、潘昱澤前往日本山口大學參加 ICCT-Pacific 2026 國際會議，發表論文「AIoT Base Smart Consumables Drying Cabinet」，榮獲 Best Student Poster Award！',
+      en: 'Prof. Wen-Ray Chen and lab members Jun-Wei Liu, Zi-Yu Hong, and Yu-Zan Pan won the Best Student Poster Award at IEEE ICCT-Pacific 2026 in Yamaguchi, Japan.',
+      ja: '陳文瑞教授の指導のもと、当研究室の劉峻瑋・洪梓瑜・潘昱澤が日本・山口大学で開催されたIEEE ICCT-Pacific 2026にて「AIoT Base Smart Consumables Drying Cabinet」を発表し、最優秀学生ポスター賞を受賞しました。',
     },
     image: '/images/seniors/icct-2026-award.webp',
     url: 'https://dee.nfu.edu.tw/zh_tw/news/Announcements/%E6%81%AD%E8%B3%80-%E9%9B%BB%E5%AD%90%E7%B3%BB%E9%99%B3%E6%96%87%E7%91%9E%E8%80%81%E5%B8%AB%E6%8C%87%E5%B0%8E%E5%AD%B8%E7%94%9F%E5%8A%89%E5%B3%BB%E7%91%8B-%E6%B4%AA%E6%A2%93%E7%91%9C-%E6%BD%98%E6%98%B1%E6%BE%A4-%E7%9B%A7%E6%9A%90%E7%AB%91%E5%8F%83%E5%8A%A0-ICCT-Pacific-2026-2026-03-29-Yamaguchi-Japan-%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0-%E7%8D%B2%E5%BE%97%E6%9C%80%E4%BD%B3%E5%AD%B8%E7%94%9F%E5%A3%81%E5%A0%B1%E8%AB%96%E6%96%87%E7%8D%8EBest-Student-Poster-Award-%E8%AB%96%E6%96%87%E4%B8%BB%E9%A1%8C-AIoT-Base-Smart-Consumables-Drying-Cabinet-69367103',

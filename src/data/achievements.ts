@@ -20,9 +20,9 @@ export const awards: Award[] = [
       ja: 'IEEE ICCT-Pacific 2026 国際会議（日本・山口大学）',
     },
     detail: {
-      zh: '最佳學生壁報論文獎 (Best Student Poster Award) — AIoT Base Smart Consumables Drying Cabinet（劉峻瑋、洪梓瑜、潘昱澤、盧暐竑｜陳文瑞教授指導）',
-      en: 'Best Student Poster Award — AIoT Base Smart Consumables Drying Cabinet (J.-W. Liu, Z.-Y. Hong, Y.-Z. Pan, W.-H. Lu, Advised by Prof. W.-R. Chen)',
-      ja: '最優秀学生ポスター賞 (Best Student Poster Award) — AIoT Base Smart Consumables Drying Cabinet（劉峻瑋、洪梓瑜、潘昱澤、盧暐竑）',
+      zh: '最佳學生壁報論文獎 (Best Student Poster Award) — AIoT Base Smart Consumables Drying Cabinet（劉峻瑋、洪梓瑜、潘昱澤｜陳文瑞教授指導）',
+      en: 'Best Student Poster Award — AIoT Base Smart Consumables Drying Cabinet (J.-W. Liu, Z.-Y. Hong, Y.-Z. Pan, Advised by Prof. W.-R. Chen)',
+      ja: '最優秀学生ポスター賞 (Best Student Poster Award) — AIoT Base Smart Consumables Drying Cabinet（劉峻瑋、洪梓瑜、潘昱澤）',
     },
     medal: 'gold',
     badgeLabel: { zh: '最佳學生海報獎', en: 'Best Student Poster Award', ja: '最優秀学生ポスター賞' },

@@ -471,27 +471,9 @@ export const deptLabels: Record<'ee' | 'opto' | 'opto-emi', L> = {
   },
 };
 
-// 歷屆畢業碩士與代表性校友（2008 – 2026，共 115 位畢業碩士生）
+// 歷屆畢業碩士與代表性校友（2008 – 2026）
 // 資料來源：國家圖書館臺灣博碩士論文知識加值系統 (ndltd.ncl.edu.tw)、國立虎尾科技大學圖書館館藏系統與電子工程系榮譽榜
 export const alumni: Alumnus[] = [
-  {
-    id: 'project-2026-lu-wei-hung',
-    name: '盧暐竑',
-    nameEn: 'Wei-Hung Lu',
-    year: 2026,
-    type: 'project',
-    deptCode: 'ee',
-    thesis: 'AIoT Base Smart Consumables Drying Cabinet（智慧防潮烘箱）研發團隊成員',
-    thesisEn: 'AIoT Base Smart Consumables Drying Cabinet Development Team Member',
-    note: 'IEEE ICCT-Pacific 2026 最佳學生壁報論文獎（Best Student Poster Award）、考取國立成功大學光電科學與工程學系碩士班',
-    image: '',
-    url: 'https://dee.nfu.edu.tw/zh_tw/news/Announcements/%E6%81%AD%E8%B3%80-%E9%9B%BB%E5%AD%90%E7%B3%BB%E9%99%B3%E6%96%87%E7%91%9E%E8%80%81%E5%B8%AB%E6%8C%87%E5%B0%8E%E5%AD%B8%E7%94%9F%E5%8A%89%E5%B3%BB%E7%91%8B-%E6%B4%AA%E6%A2%93%E7%91%9C-%E6%BD%98%E6%98%B1%E6%BE%A4-%E7%9B%A7%E6%9A%90%E7%AB%91%E5%8F%83%E5%8A%A0-ICCT-Pacific-2026-2026-03-29-Yamaguchi-Japan-%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0-%E7%8D%B2%E5%BE%97%E6%9C%80%E4%BD%B3%E5%AD%B8%E7%94%9F%E5%A3%81%E5%A0%B1%E8%AB%96%E6%96%87%E7%8D%8EBest-Student-Poster-Award-%E8%AB%96%E6%96%87%E4%B8%BB%E9%A1%8C-AIoT-Base-Smart-Consumables-Drying-Cabinet-69367103',
-    bio: {
-      zh: '畢業於虎尾科技大學電子工程系，於電子量測實驗室陳文瑞教授指導下參與智慧物聯網與光電感測專題研究。與劉峻瑋、洪梓瑜、潘昱澤共同研發「AIoT Base Smart Consumables Drying Cabinet」，前往日本山口大學參加 IEEE ICCT-Pacific 2026 榮獲最佳學生壁報論文獎 (Best Student Poster Award)。畢業後順利考取國立成功大學光電科學與工程學系碩士班。',
-      en: 'Graduated in Electronic Engineering from National Formosa University under Prof. Wen-Ray Chen. Co-developed the AIoT Base Smart Consumables Drying Cabinet with Jun-Wei Liu, Zi-Yu Hong, and Yu-Zan Pan, winning the Best Student Poster Award at IEEE ICCT-Pacific 2026 in Yamaguchi, Japan. Admitted to the M.S. program in Photonics at National Cheng Kung University.',
-      ja: '国立虎尾科技大学電子工学科卒業。陳文瑞教授の指導のもと、劉峻瑋・洪梓瑜・潘昱澤らと「AIoT Base Smart Consumables Drying Cabinet」を共同開発し、日本・山口大学で開催されたIEEE ICCT-Pacific 2026にて最優秀学生ポスター賞を受賞。卒業後は国立成功大学光電科学・工程学系修士課程に進学。',
-    },
-  },
   {
     id: 'ms-2026-chang-hsiang-yuan',
     name: '張翔袁',
