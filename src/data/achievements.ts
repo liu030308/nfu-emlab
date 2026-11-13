@@ -44,6 +44,7 @@ export const awards: Award[] = [
     medal: 'bronze',
     badgeLabel: { zh: '全國第三名', en: '3rd Place', ja: '第3位（銅賞）' },
     url: 'https://eedept.ncue.edu.tw/innovation2025/s2.html#winning-list',
+    image: '/images/news/innovation-2025.webp',
   },
   {
     year: 2024,
