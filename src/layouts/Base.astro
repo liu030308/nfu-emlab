@@ -23,6 +23,14 @@ const ogImageUrl = Astro.site ? new URL(withBase('/images/pi-chen.jpg'), Astro.s
 const navUrlZh = is404 ? pageUrl('zh') : pageUrl('zh', page);
 const navUrlEn = is404 ? pageUrl('en') : pageUrl('en', page);
 const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
+
+// 依當前頁面語系按需載入對應字型（避免中文站額外下載日文字型、英文站多下載 CJK 字型）
+const fontUrl =
+  lang === 'zh'
+    ? 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap'
+    : lang === 'ja'
+      ? 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap'
+      : 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap';
 ---
 
 <!doctype html>
@@ -54,10 +62,8 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
     <meta property="og:image" content={ogImageUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preload" as="style" href={fontUrl} onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href={fontUrl} /></noscript>
     <meta name="color-scheme" content="light dark" />
     <script is:inline>
       (() => {
@@ -164,6 +170,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
               data-url-zh={navUrlZh}
               data-url-en={navUrlEn}
               data-url-ja={navUrlJa}
+              data-tab-frame-prefix={withBase('/images/tab_frames/frame_')}
             >
               <button
                 type="button"
@@ -396,17 +403,36 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
       <span id="contact-toast-text">{lang === 'zh' ? `已複製電子信箱：${pi.email}` : lang === 'en' ? `Email copied: ${pi.email}` : `メールアドレスをコピーしました: ${pi.email}`}</span>
     </div>
 
-    <script is:inline define:vars={{ currentLang: lang, urlZh: navUrlZh, urlEn: navUrlEn, urlJa: navUrlJa }}>
+    <script>
       (() => {
+        const win = window as unknown as {
+          __contactToastTimer?: ReturnType<typeof setTimeout>;
+          googleTranslateElementInit?: () => void;
+          google?: {
+            translate?: {
+              TranslateElement?: new (opts: Record<string, unknown>, id: string) => unknown;
+            };
+          };
+        };
+
+        const dropdown = document.getElementById('lang-dropdown');
+        const currentLang = (dropdown?.dataset.currentLang || 'zh') as 'zh' | 'en' | 'ja';
+        const urlZh = dropdown?.dataset.urlZh || '/';
+        const urlEn = dropdown?.dataset.urlEn || '/en/';
+        const urlJa = dropdown?.dataset.urlJa || '/ja/';
+        const tabFramePrefix = dropdown?.dataset.tabFramePrefix || '/images/tab_frames/frame_';
+
         // 主題切換邏輯（同步更新 data-theme、meta[color-scheme]、theme-color 與 localStorage）
         const themeBtn = document.getElementById('theme-toggle');
-        const syncTheme = (theme) => {
+        const syncTheme = (theme: string) => {
           const root = document.documentElement;
           root.dataset.theme = theme;
           const meta = document.querySelector('meta[name="color-scheme"]');
-          if (meta) meta.content = theme;
+          if (meta instanceof HTMLMetaElement) meta.content = theme;
           const themeColor = document.getElementById('theme-color-meta');
-          if (themeColor) themeColor.content = theme === 'dark' ? '#070d19' : '#f8fafc';
+          if (themeColor instanceof HTMLMetaElement) {
+            themeColor.content = theme === 'dark' ? '#070d19' : '#f8fafc';
+          }
         };
 
         if (themeBtn) {
@@ -463,7 +489,6 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         }
 
         // 語言選單（自動 / 手動模式 + 萬國語言支援）
-        const dropdown = document.getElementById('lang-dropdown');
         const btn = document.getElementById('lang-btn');
         const menu = document.getElementById('lang-menu');
         const tabAuto = document.getElementById('lang-tab-auto');
@@ -481,7 +506,17 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         const CODE_KEY = 'nfu_lang_code';
         const pageSourceLang = currentLang === 'zh' ? 'zh-TW' : currentLang;
 
-        const WORLD_LANGS = [
+        type WorldLang = {
+          code: string;
+          nativeCode?: 'zh' | 'en' | 'ja';
+          name: string;
+          enName: string;
+          flag: string;
+          native?: boolean;
+          kw?: string;
+        };
+
+        const WORLD_LANGS: WorldLang[] = [
           { code: 'zh-TW', nativeCode: 'zh', name: '繁體中文', enName: 'Traditional Chinese', flag: '🇹🇼', native: true, kw: '繁中 正體 台灣' },
           { code: 'en', nativeCode: 'en', name: 'English', enName: 'English', flag: '🇺🇸', native: true, kw: '英文 英語 美國' },
           { code: 'ja', nativeCode: 'ja', name: '日本語', enName: 'Japanese', flag: '🇯🇵', native: true, kw: '日文 日語 日本' },
@@ -531,7 +566,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
           return parts[2] || '';
         };
 
-        const setGoogTransCookie = (targetCode) => {
+        const setGoogTransCookie = (targetCode: string) => {
           document.cookie = `googtrans=/${pageSourceLang}/${targetCode}; path=/`;
         };
 
@@ -544,7 +579,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
           });
         };
 
-        const detectBrowserLang = () => {
+        const detectBrowserLang = (): WorldLang => {
           const navLangs = navigator.languages?.length ? navigator.languages : [navigator.language || 'zh-TW'];
           for (const raw of navLangs) {
             const lower = (raw || '').toLowerCase();
@@ -572,12 +607,12 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         };
 
         let pendingGtCode = '';
-        const triggerGtCombo = (targetCode) => {
+        const triggerGtCombo = (targetCode: string) => {
           pendingGtCode = targetCode;
           let tries = 0;
           const poll = setInterval(() => {
             const combo = document.querySelector('#google_translate_element select.goog-te-combo');
-            if (combo && combo instanceof HTMLSelectElement && combo.options.length > 0) {
+            if (combo instanceof HTMLSelectElement && combo.options.length > 0) {
               clearInterval(poll);
               if (combo.value !== targetCode) {
                 combo.value = targetCode;
@@ -589,20 +624,18 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
           }, 120);
         };
 
-        const ensureGoogleTranslate = (targetCode) => {
+        const ensureGoogleTranslate = (targetCode: string) => {
           setGoogTransCookie(targetCode);
           const existingCombo = document.querySelector('#google_translate_element select.goog-te-combo');
-          if (existingCombo && existingCombo instanceof HTMLSelectElement) {
+          if (existingCombo instanceof HTMLSelectElement) {
             existingCombo.value = targetCode;
             existingCombo.dispatchEvent(new Event('change'));
             return;
           }
-          window.googleTranslateElementInit = () => {
-            if (window.google?.translate?.TranslateElement) {
-              new window.google.translate.TranslateElement(
-                { pageLanguage: pageSourceLang, autoDisplay: false },
-                'google_translate_element'
-              );
+          win.googleTranslateElementInit = () => {
+            const Ctor = win.google?.translate?.TranslateElement;
+            if (Ctor) {
+              new Ctor({ pageLanguage: pageSourceLang, autoDisplay: false }, 'google_translate_element');
               if (pendingGtCode) triggerGtCombo(pendingGtCode);
             }
           };
@@ -620,9 +653,9 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         if (dropdown && btn && menu) {
           const detectedFull = navigator.language || 'zh-TW';
           const detectedLang = detectBrowserLang();
-          const normPath = (s) => s.replace(/\/+$/, '') || '/';
+          const normPath = (s: string) => s.replace(/\/+$/, '') || '/';
 
-          let currentMode = 'auto';
+          let currentMode: 'auto' | 'manual' = 'auto';
           let activeCode = pageSourceLang;
           try {
             if (localStorage.getItem(MODE_KEY) === 'manual') currentMode = 'manual';
@@ -727,7 +760,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
             }
           };
 
-          const setModeUI = (mode) => {
+          const setModeUI = (mode: 'auto' | 'manual') => {
             currentMode = mode;
             if (tabAuto) {
               tabAuto.classList.toggle('active', mode === 'auto');
@@ -741,7 +774,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
             if (panelManual) panelManual.hidden = mode !== 'manual';
           };
 
-          const applyLanguage = (code, mode, useReplace = false) => {
+          const applyLanguage = (code: string, mode: 'auto' | 'manual', useReplace = false) => {
             const targetObj = WORLD_LANGS.find((l) => l.code === code) || WORLD_LANGS[0];
             try {
               localStorage.setItem(MODE_KEY, mode);
@@ -799,7 +832,6 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
               clearGoogTransCookie();
             }
           } else {
-            // 自動模式：若本會期尚未於首頁自動偵測切換，或已套用非原生語言 Cookie 則保持翻譯
             const isRootEntry = normPath(window.location.pathname) === normPath(urlZh);
             let autoApplied = false;
             try {
@@ -819,19 +851,16 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
             }
           }
 
-          // 防止點擊選單內部空白處關閉選單
           menu.addEventListener('click', (e) => {
             e.stopPropagation();
           });
 
-          // 切換選單開啟／關閉
           btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const isOpen = dropdown.classList.toggle('open');
             btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
           });
 
-          // 點擊「自動」分頁：進入自動模式並立即套用瀏覽器語言
           if (tabAuto) {
             tabAuto.addEventListener('click', () => {
               setModeUI('auto');
@@ -839,7 +868,6 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
             });
           }
 
-          // 點擊「手動」分頁：顯示萬國語言搜尋與清單
           if (tabManual) {
             tabManual.addEventListener('click', () => {
               setModeUI('manual');
@@ -853,21 +881,18 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
             });
           }
 
-          // 搜尋萬國語言
           if (searchInput instanceof HTMLInputElement) {
             searchInput.addEventListener('input', () => {
               renderManualList(searchInput.value);
             });
           }
 
-          // 點擊「使用瀏覽器語言切換」
           if (switchDetectedBtn) {
             switchDetectedBtn.addEventListener('click', () => {
               applyLanguage(detectedLang.code, 'auto');
             });
           }
 
-          // 點擊選單外部自動收合
           document.addEventListener('click', (e) => {
             const target = e.target;
             if (target instanceof Node && !dropdown.contains(target)) {
@@ -877,7 +902,106 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         }
 
         // ==========================================
-        // === 全域無障礙鍵盤 Esc 關閉優先層級 ===
+        // === 智慧郵件聯絡彈窗與自動複製邏輯（支援桌機與行動裝置） ===
+        // ==========================================
+        const contactModal = document.getElementById('contact-email-modal');
+        const contactCloseBtn = document.getElementById('contact-modal-close');
+        const contactToast = document.getElementById('contact-toast');
+        const copyAgainBtn = document.getElementById('btn-copy-email-again');
+        const badgeCopied = document.getElementById('contact-badge-copied');
+        const targetEmail = 'chenwr@nfu.edu.tw';
+
+        const showToast = (text?: string) => {
+          if (!contactToast) return;
+          if (text) {
+            const span = document.getElementById('contact-toast-text');
+            if (span) span.textContent = text;
+          }
+          contactToast.classList.add('show');
+          clearTimeout(win.__contactToastTimer);
+          win.__contactToastTimer = setTimeout(() => {
+            contactToast.classList.remove('show');
+          }, 2600);
+        };
+
+        const copyEmailToClipboard = async () => {
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(targetEmail);
+            } else {
+              const ta = document.createElement('textarea');
+              ta.value = targetEmail;
+              ta.style.position = 'fixed';
+              ta.style.opacity = '0';
+              document.body.appendChild(ta);
+              ta.focus();
+              ta.select();
+              document.execCommand('copy');
+              document.body.removeChild(ta);
+            }
+            showToast();
+            if (badgeCopied) {
+              badgeCopied.style.display = 'inline-flex';
+            }
+          } catch (_) {}
+        };
+
+        const openContactModal = () => {
+          if (contactModal instanceof HTMLDialogElement) {
+            if (typeof contactModal.showModal === 'function') {
+              contactModal.showModal();
+            } else {
+              contactModal.setAttribute('open', '');
+            }
+            copyEmailToClipboard();
+          }
+        };
+
+        const closeContactModal = () => {
+          if (contactModal instanceof HTMLDialogElement) {
+            if (typeof contactModal.close === 'function') {
+              contactModal.close();
+            } else {
+              contactModal.removeAttribute('open');
+            }
+          }
+        };
+
+        if (contactCloseBtn) {
+          contactCloseBtn.addEventListener('click', closeContactModal);
+        }
+        if (contactModal) {
+          contactModal.addEventListener('click', (e) => {
+            if (e.target === contactModal) closeContactModal();
+          });
+        }
+        if (copyAgainBtn) {
+          copyAgainBtn.addEventListener('click', () => {
+            copyEmailToClipboard();
+            const lbl = document.getElementById('label-copy-again');
+            if (lbl) {
+              const orig = lbl.textContent;
+              lbl.textContent = '✓ 已成功複製！';
+              setTimeout(() => {
+                lbl.textContent = orig;
+              }, 2000);
+            }
+          });
+        }
+
+        document.addEventListener('click', (e) => {
+          const trigger =
+            e.target instanceof Element
+              ? e.target.closest('[data-contact-email-trigger], a[href^="mailto:"]')
+              : null;
+          if (!trigger) return;
+          if (trigger.closest('#contact-email-modal')) return;
+          e.preventDefault();
+          openContactModal();
+        });
+
+        // ==========================================
+        // === 全站通用卡片詳細資訊彈窗與無障礙鍵盤優先層級 ===
         // ==========================================
         const uModal = document.getElementById('u-card-modal');
         const uCloseBtn = document.getElementById('u-modal-close');
@@ -892,7 +1016,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         const uSections = document.getElementById('u-modal-sections');
         const uActionsWrap = document.getElementById('u-modal-actions-wrap');
         const uActions = document.getElementById('u-modal-actions');
-        let lastCardTrigger = null;
+        let lastCardTrigger: HTMLElement | null = null;
 
         const closeCardModal = () => {
           if (uModal instanceof HTMLDialogElement && uModal.open) {
@@ -905,7 +1029,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
           }
         };
 
-        const openCardModal = (data, trigger) => {
+        const openCardModal = (data: any, trigger: Element | null) => {
           if (!(uModal instanceof HTMLDialogElement) || typeof uModal.showModal !== 'function') return;
           lastCardTrigger = trigger instanceof HTMLElement ? trigger : null;
 
@@ -976,7 +1100,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
           if (uSections) {
             uSections.innerHTML = '';
             const secs = Array.isArray(data.sections) ? data.sections : [];
-            secs.forEach((sec) => {
+            secs.forEach((sec: any) => {
               const wrap = document.createElement('div');
               wrap.className = 'u-modal-section';
 
@@ -989,7 +1113,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
               if (Array.isArray(sec.list) && sec.list.length > 0) {
                 const ul = document.createElement('ul');
                 ul.className = 'u-modal-list';
-                sec.list.forEach((item) => {
+                sec.list.forEach((item: string) => {
                   const li = document.createElement('li');
                   li.textContent = item;
                   ul.appendChild(li);
@@ -1000,7 +1124,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
               if (Array.isArray(sec.tags) && sec.tags.length > 0) {
                 const tagsBox = document.createElement('div');
                 tagsBox.className = 'u-modal-tags';
-                sec.tags.forEach((tg) => {
+                sec.tags.forEach((tg: string) => {
                   const s = document.createElement('span');
                   s.className = 'tag';
                   s.textContent = tg;
@@ -1012,7 +1136,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
               if (Array.isArray(sec.cards) && sec.cards.length > 0) {
                 const grid = document.createElement('div');
                 grid.className = 'u-modal-subcards';
-                sec.cards.forEach((c) => {
+                sec.cards.forEach((c: any) => {
                   const card = document.createElement('div');
                   card.className = 'u-modal-subcard';
 
@@ -1064,7 +1188,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
             uActions.innerHTML = '';
             const acts = Array.isArray(data.actions) ? data.actions : [];
             if (acts.length > 0) {
-              acts.forEach((act) => {
+              acts.forEach((act: any) => {
                 if (act.contactEmail) {
                   const b = document.createElement('button');
                   b.type = 'button';
@@ -1072,15 +1196,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
                   b.textContent = act.label;
                   b.addEventListener('click', () => {
                     closeCardModal();
-                    const triggerEl = document.querySelector('[data-contact-email-trigger]');
-                    if (triggerEl instanceof HTMLElement && window.matchMedia?.('(pointer: fine)')?.matches && !window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches) {
-                      triggerEl.click();
-                    } else {
-                      const emailDlg = document.getElementById('contact-email-modal');
-                      if (emailDlg instanceof HTMLDialogElement && typeof emailDlg.showModal === 'function') {
-                        emailDlg.showModal();
-                      }
-                    }
+                    openContactModal();
                   });
                   uActions.appendChild(b);
                 } else {
@@ -1125,7 +1241,9 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
           if (!(target instanceof Element)) return;
           const trigger = target.closest('[data-card-modal]');
           if (!trigger) return;
-          const innerSkip = target.closest('a[data-no-modal], button[data-no-modal], iframe, input, select, [data-contact-email-trigger]');
+          const innerSkip = target.closest(
+            'a[data-no-modal], button[data-no-modal], iframe, input, select, [data-contact-email-trigger]'
+          );
           if (innerSkip && trigger.contains(innerSkip) && innerSkip !== trigger) return;
           const innerLink = target.closest('a');
           if (innerLink && trigger.contains(innerLink) && innerLink !== trigger) return;
@@ -1138,7 +1256,9 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
             if ((!Array.isArray(data.actions) || data.actions.length === 0) && trigger.tagName === 'A') {
               const href = trigger.getAttribute('href');
               if (href) {
-                data.actions = [{ label: defaultOpenLabel, url: href, primary: true, external: href.startsWith('http') }];
+                data.actions = [
+                  { label: defaultOpenLabel, url: href, primary: true, external: href.startsWith('http') },
+                ];
               }
             }
             openCardModal(data, trigger);
@@ -1169,7 +1289,6 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
               closeCardModal();
               return;
             }
-            // 優先關閉語言選單並回復語言按鈕焦點
             if (dropdown?.classList.contains('open')) {
               e.preventDefault();
               e.stopPropagation();
@@ -1177,7 +1296,6 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
               btn?.focus();
               return;
             }
-            // 若語言選單未開，才關閉手機導覽列並回復漢堡按鈕焦點
             if (siteNav?.classList.contains('open')) {
               e.preventDefault();
               closeNav();
@@ -1195,6 +1313,26 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         });
 
         // ==========================================
+        // === 站內連結懸停／觸控預載（Instant Navigation Prefetch） ===
+        // ==========================================
+        const prefetched = new Set<string>();
+        const prefetchHref = (href: string) => {
+          if (!href || prefetched.has(href) || !href.startsWith('/') || href.includes('#')) return;
+          prefetched.add(href);
+          const link = document.createElement('link');
+          link.rel = 'prefetch';
+          link.href = href;
+          document.head.appendChild(link);
+        };
+        const handlePrefetch = (e: Event) => {
+          const a = e.target instanceof Element ? e.target.closest('a[href]') : null;
+          if (!a || a.hasAttribute('data-card-modal')) return;
+          prefetchHref(a.getAttribute('href') || '');
+        };
+        document.addEventListener('pointerover', handlePrefetch, { passive: true });
+        document.addEventListener('touchstart', handlePrefetch, { passive: true });
+
+        // ==========================================
         // === 分頁圖示動畫（Tab Favicon Animation） ===
         // ==========================================
         (() => {
@@ -1203,16 +1341,15 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
             if (prefersReduced) return;
 
             const favEl = document.getElementById('dynamic-favicon');
-            if (!favEl || !(favEl instanceof HTMLLinkElement)) return;
+            if (!(favEl instanceof HTMLLinkElement)) return;
 
             const totalFrames = 8;
             let frameIdx = 0;
-            let frameTimer = null;
+            let frameTimer: ReturnType<typeof setInterval> | null = null;
 
-            // 預載分頁圖示幀以確保流暢切換
             const frameImgs = Array.from({ length: totalFrames }, (_, f) => {
               const img = new Image();
-              img.src = `/images/tab_frames/frame_${f}.png`;
+              img.src = `${tabFramePrefix}${f}.png`;
               return img;
             });
 
@@ -1286,8 +1423,8 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         const bindCards = () => {
           const cards = document.querySelectorAll('.card, .stat, .hero-logo-box, .advisor');
           cards.forEach((card) => {
-            if (!(card instanceof HTMLElement) || card._hasTilt) return;
-            card._hasTilt = true;
+            if (!(card instanceof HTMLElement) || card.dataset.hasTilt) return;
+            card.dataset.hasTilt = '1';
 
             card.addEventListener(
               'mousemove',
@@ -1321,7 +1458,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
         const hero = document.querySelector('.hero');
         const logoBox = document.querySelector('.hero-logo-box');
         const halo = document.querySelector('.hero-logo-halo');
-        if (hero && logoBox && logoBox instanceof HTMLElement) {
+        if (hero && logoBox instanceof HTMLElement) {
           hero.addEventListener(
             'mousemove',
             (e) => {
@@ -1331,7 +1468,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
               const rotX = -(y / rect.height) * 12;
               const rotY = (x / rect.width) * 12;
               logoBox.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateZ(12px)`;
-              if (halo && halo instanceof HTMLElement) {
+              if (halo instanceof HTMLElement) {
                 halo.style.transform = `translate(${(-x * 0.04).toFixed(1)}px, ${(-y * 0.04).toFixed(1)}px)`;
               }
             },
@@ -1340,7 +1477,7 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
 
           hero.addEventListener('mouseleave', () => {
             logoBox.style.transform = '';
-            if (halo && halo instanceof HTMLElement) halo.style.transform = '';
+            if (halo instanceof HTMLElement) halo.style.transform = '';
           });
         }
 
@@ -1361,100 +1498,6 @@ const navUrlJa = is404 ? pageUrl('ja') : pageUrl('ja', page);
           b.addEventListener('mouseleave', () => {
             b.style.transform = '';
           });
-        });
-
-        // 5. 智慧郵件聯絡彈窗與自動複製邏輯
-        const contactModal = document.getElementById('contact-email-modal');
-        const contactCloseBtn = document.getElementById('contact-modal-close');
-        const contactToast = document.getElementById('contact-toast');
-        const copyAgainBtn = document.getElementById('btn-copy-email-again');
-        const badgeCopied = document.getElementById('contact-badge-copied');
-        const targetEmail = 'chenwr@nfu.edu.tw';
-
-        const showToast = (text) => {
-          if (!contactToast) return;
-          if (text) {
-            const span = document.getElementById('contact-toast-text');
-            if (span) span.textContent = text;
-          }
-          contactToast.classList.add('show');
-          clearTimeout(window.__contactToastTimer);
-          window.__contactToastTimer = setTimeout(() => {
-            contactToast.classList.remove('show');
-          }, 2600);
-        };
-
-        const copyEmailToClipboard = async () => {
-          try {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-              await navigator.clipboard.writeText(targetEmail);
-            } else {
-              const ta = document.createElement('textarea');
-              ta.value = targetEmail;
-              ta.style.position = 'fixed';
-              ta.style.opacity = '0';
-              document.body.appendChild(ta);
-              ta.focus();
-              ta.select();
-              document.execCommand('copy');
-              document.body.removeChild(ta);
-            }
-            showToast();
-            if (badgeCopied) {
-              badgeCopied.style.display = 'inline-flex';
-            }
-          } catch (_) {}
-        };
-
-        const openContactModal = () => {
-          if (contactModal instanceof HTMLDialogElement) {
-            if (typeof contactModal.showModal === 'function') {
-              contactModal.showModal();
-            } else {
-              contactModal.setAttribute('open', '');
-            }
-            copyEmailToClipboard();
-          }
-        };
-
-        const closeContactModal = () => {
-          if (contactModal instanceof HTMLDialogElement) {
-            if (typeof contactModal.close === 'function') {
-              contactModal.close();
-            } else {
-              contactModal.removeAttribute('open');
-            }
-          }
-        };
-
-        if (contactCloseBtn) {
-          contactCloseBtn.addEventListener('click', closeContactModal);
-        }
-        if (contactModal) {
-          contactModal.addEventListener('click', (e) => {
-            if (e.target === contactModal) closeContactModal();
-          });
-        }
-        if (copyAgainBtn) {
-          copyAgainBtn.addEventListener('click', () => {
-            copyEmailToClipboard();
-            const lbl = document.getElementById('label-copy-again');
-            if (lbl) {
-              const orig = lbl.textContent;
-              lbl.textContent = '✓ 已成功複製！';
-              setTimeout(() => { lbl.textContent = orig; }, 2000);
-            }
-          });
-        }
-
-        // 攔截點擊「寄信給我們」、所有 mailto 連結或含有 data-contact-email-trigger 的元素
-        document.addEventListener('click', (e) => {
-          const trigger = e.target instanceof Element ? e.target.closest('[data-contact-email-trigger], a[href^="mailto:"]') : null;
-          if (!trigger) return;
-          // 若在彈窗內部點擊 mailto，放行瀏覽器原生處理
-          if (trigger.closest('#contact-email-modal')) return;
-          e.preventDefault();
-          openContactModal();
         });
       })();
     </script>
